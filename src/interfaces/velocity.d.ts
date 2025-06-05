@@ -1,4 +1,4 @@
-import type { IVector2D } from './positionable.d.ts';
+import type { IVector2D } from './positionable.ts';
 
 export interface IVelocity {
     getDirection(): IVector2D;

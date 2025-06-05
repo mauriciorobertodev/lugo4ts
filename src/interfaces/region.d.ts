@@ -1,5 +1,5 @@
-import type { IPlayer } from './player.d.ts';
-import type { IPoint } from './positionable.d.ts';
+import type { IPlayer } from './player.ts';
+import type { IPoint } from './positionable.ts';
 
 export interface IRegion {
     eq(region: IRegion): boolean;

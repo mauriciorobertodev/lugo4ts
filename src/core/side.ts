@@ -1,3 +1,5 @@
+import { Team_Side } from '../generated/server.js';
+
 import { ErrSideInvalid } from './errors.js';
 
 export enum Side {
@@ -25,6 +27,28 @@ export class SideFactory {
                 return Side.AWAY;
             default:
                 throw new ErrSideInvalid(value);
+        }
+    }
+
+    static toString(side: Side): string {
+        switch (side) {
+            case Side.HOME:
+                return 'home';
+            case Side.AWAY:
+                return 'away';
+            default:
+                throw new ErrSideInvalid(side);
+        }
+    }
+
+    static toInt(side: Side): number {
+        switch (side) {
+            case Side.HOME:
+                return 0;
+            case Side.AWAY:
+                return 1;
+            default:
+                throw new ErrSideInvalid(side);
         }
     }
 }

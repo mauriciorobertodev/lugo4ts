@@ -1,4 +1,4 @@
-import type { IBot } from './bot.d.ts';
+import type { IBot } from './bot.ts';
 
 export interface IClient {
     playAsBot(bot: IBot): void;

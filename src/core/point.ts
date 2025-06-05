@@ -1,4 +1,4 @@
-import type { IPoint } from '../interfaces/positionable.d.ts';
+import type { IPoint } from '../interfaces/positionable.ts';
 
 import { IsPositionable } from './positionable.js';
 

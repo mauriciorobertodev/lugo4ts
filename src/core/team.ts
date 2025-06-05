@@ -1,4 +1,4 @@
-import type { ITeam } from '../interfaces/team.d.ts';
+import type { ITeam } from '../interfaces/team.ts';
 
 import { Player } from './player.js';
 import { Side } from './side.js';

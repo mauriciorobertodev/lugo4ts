@@ -1,7 +1,7 @@
 import { Player as LugoPlayer, Team_Side } from '../generated/server.js';
 
-import type { IPlayer } from '../interfaces/player.d.ts';
-import type { IRegion } from '../interfaces/region.d.ts';
+import type { IPlayer } from '../interfaces/player.ts';
+import type { IRegion } from '../interfaces/region.ts';
 
 import { Point } from './point.js';
 import { Side } from './side.js';

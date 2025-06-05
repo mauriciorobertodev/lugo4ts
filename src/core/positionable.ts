@@ -1,6 +1,6 @@
 import { Point as LugoPoint, Vector as LugoVector } from '../generated/physics.js';
 
-import type { IPositionable } from '../interfaces/positionable.d.ts';
+import type { IPositionable } from '../interfaces/positionable.ts';
 
 import { Point } from './point.js';
 import { Vector2D } from './vector.js';

@@ -1,4 +1,4 @@
-import type { IMapper } from '../interfaces/mapper.d.ts';
+import type { IMapper } from '../interfaces/mapper.ts';
 
 import {
     ErrMapperColOutOfMapped,

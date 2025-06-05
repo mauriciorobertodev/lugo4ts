@@ -1,4 +1,4 @@
-import type { IGameInspector } from './game-inspector.d.ts';
+import type { IGameInspector } from './game-inspector.ts';
 
 export interface IBot {
     beforeActions(inspector: IGameInspector): void;

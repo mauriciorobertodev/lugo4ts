@@ -1,4 +1,4 @@
-import type { IRegion } from '../interfaces/region.d.ts';
+import type { IRegion } from '../interfaces/region.ts';
 
 import { Mapper } from './mapper.js';
 import { Player } from './player.js';

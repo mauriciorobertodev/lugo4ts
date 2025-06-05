@@ -1,6 +1,6 @@
 import { Catch, GameSnapshot, Jump, Kick, Move, Order } from '../generated/server.js';
 
-import type { IGameInspector } from '../interfaces/game-inspector.d.ts';
+import type { IGameInspector } from '../interfaces/game-inspector.ts';
 
 import { BallFactory } from '../factories/ball.factory.js';
 import { ClockFactory } from '../factories/clock.factory.js';

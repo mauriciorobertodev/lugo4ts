@@ -1,4 +1,4 @@
-import type { IShotClock } from '../interfaces/shot-clock.d.ts';
+import type { IShotClock } from '../interfaces/shot-clock.ts';
 
 import { Side } from './side.js';
 import { SPECS } from './specs.js';

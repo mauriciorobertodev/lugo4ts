@@ -2,13 +2,13 @@ import type { GameSnapshot, Order } from '../generated/server.ts';
 
 import type { PlayerState } from '../player.ts';
 import type { Side } from '../side.ts';
-import type { IBall } from './ball.d.ts';
-import type { IGoal } from './goal.d.ts';
-import type { IPlayer } from './player.d.ts';
-import type { IPoint, IVector2D } from './positionable.d.ts';
-import type { IShotClock } from './shot-clock.d.ts';
-import type { ITeam } from './team.d.ts';
-import type { IVelocity } from './velocity.d.ts';
+import type { IBall } from './ball.ts';
+import type { IGoal } from './goal.ts';
+import type { IPlayer } from './player.ts';
+import type { IPoint, IVector2D } from './positionable.ts';
+import type { IShotClock } from './shot-clock.ts';
+import type { ITeam } from './team.ts';
+import type { IVelocity } from './velocity.ts';
 
 export interface IGameInspector {
     getSnapshot(): GameSnapshot;

@@ -1,6 +1,6 @@
 import { Velocity as LugoVelocity } from '../generated/physics.js';
 
-import type { IVelocity } from '../interfaces/velocity.d.ts';
+import type { IVelocity } from '../interfaces/velocity.ts';
 
 import { Vector2D } from './vector.js';
 

@@ -1,4 +1,4 @@
-import type { IGoal } from '../interfaces/goal.d.ts';
+import type { IGoal } from '../interfaces/goal.ts';
 
 import { Point } from './point.js';
 import { Side } from './side.js';

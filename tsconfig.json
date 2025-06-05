@@ -4,7 +4,8 @@
         "module": "NodeNext",
         "rootDir": "./src",
         "outDir": "./dist",
-        "declaration": true, // gerar arquivos .d.ts
+        "declaration": true,
+        "emitDeclarationOnly": false,
         "declarationMap": true, // opcional, cria sourcemaps para .d.ts
         "sourceMap": true, // opcional, sourcemaps para JS
         "esModuleInterop": true,
@@ -13,6 +14,6 @@
         "skipLibCheck": true,
         "moduleResolution": "NodeNext"
     },
-    "include": ["src"],
+    "include": ["src/**/*.ts"],
     "exclude": ["node_modules", "dist", "test", "tests", "coverage", "docs"]
 }

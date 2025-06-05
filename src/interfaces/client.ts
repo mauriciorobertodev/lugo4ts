@@ -1,4 +1,4 @@
-import type { IBot } from './bot.ts';
+import type { IBot } from './bot.js';
 
 export interface IClient {
     playAsBot(bot: IBot): void;

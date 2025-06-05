@@ -1,4 +1,4 @@
-import type { Side } from '../side.ts';
+import type { Side } from '../core/side.ts';
 
 export interface IShotClock {
     getRemainingTurnsWithBall(): number;

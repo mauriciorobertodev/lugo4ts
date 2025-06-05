@@ -1,4 +1,4 @@
-import type { FormationType } from '../formation.ts';
+import type { FormationType } from '../core/formation.ts';
 import type { IPoint } from './positionable.js';
 
 export interface IFormation {

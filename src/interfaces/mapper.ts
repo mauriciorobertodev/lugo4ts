@@ -1,6 +1,6 @@
-import type { Side } from '../side.ts';
-import type { IPoint } from './positionable.ts';
-import type { IRegion } from './region.ts';
+import type { Side } from '../core/side.ts';
+import type { IPoint } from './positionable.js';
+import type { IRegion } from './region.js';
 
 export interface IMapper {
     getCols(): number;

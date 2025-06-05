@@ -1,5 +1,5 @@
-import type { Side } from '../side.ts';
-import type { IPlayer } from './player.ts';
+import type { Side } from '../core/side.ts';
+import type { IPlayer } from './player.js';
 
 export interface ITeam {
     getPlayers(): IPlayer[];

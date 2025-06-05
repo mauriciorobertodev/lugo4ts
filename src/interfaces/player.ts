@@ -1,8 +1,7 @@
-import type { Side } from '../side.ts';
-import type { IPlayer } from './player.ts';
-import type { IPoint, IVector2D } from './positionable.ts';
-import type { IRegion } from './region.ts';
-import type { IVelocity } from './velocity.ts';
+import type { Side } from '../core/side.ts';
+import type { IPoint, IVector2D } from './positionable.js';
+import type { IRegion } from './region.js';
+import type { IVelocity } from './velocity.js';
 
 export interface IPlayer {
     getNumber(): number;

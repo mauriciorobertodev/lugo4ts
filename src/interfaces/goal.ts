@@ -1,6 +1,5 @@
-import type { Side } from '../side.ts';
-import type { IGoal } from './goal.ts';
-import type { IPoint } from './positionable.ts';
+import type { Side } from '../core/side.ts';
+import type { IPoint } from './positionable.js';
 
 export interface IGoal {
     getCenter(): IPoint;

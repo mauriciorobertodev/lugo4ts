@@ -1,4 +1,4 @@
-import type { Point as LugoPoint, Vector as LugoVector } from '../generated/physics.ts';
+import type { Point as LugoPoint, Vector as LugoVector } from '../generated/physics.js';
 
 export interface IPositionable {
     eq(positionable: IPositionable): boolean;

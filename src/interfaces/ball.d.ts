@@ -1,6 +1,6 @@
 import type { IPoint, IVector2D } from './positionable.d.ts';
-import type { IVelocity } from './velocity.d.ts';
 import type { IRegion } from './region.d.ts';
+import type { IVelocity } from './velocity.d.ts';
 
 export interface IBall {
     getPosition(): IPoint;

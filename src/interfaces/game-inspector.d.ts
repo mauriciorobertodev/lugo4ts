@@ -1,4 +1,5 @@
 import type { GameSnapshot, Order } from '../generated/server.ts';
+
 import type { PlayerState } from '../player.ts';
 import type { Side } from '../side.ts';
 import type { IBall } from './ball.d.ts';

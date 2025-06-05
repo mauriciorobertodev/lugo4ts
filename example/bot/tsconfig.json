@@ -1,0 +1,11 @@
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+	  "outDir": "../.example-dist",
+	  "rootDir": "../../.",
+	  "paths": {
+		"@lugo4ts/*": ["../../src/*"],
+	  },
+	},
+	"include": ["./src", "../../src"]
+}

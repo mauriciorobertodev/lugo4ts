@@ -1,8 +1,19 @@
 {
-    "name": "lugo4ts",
-    "version": "1.0.0",
-    "main": "index.js",
+    "name": "@mauricioroberto/lugo4ts",
+    "version": "0.0.1-beta",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "type": "module",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mauriciorobertodev/lugo4ts.git"
+    },
     "scripts": {
         "dev": "tsx src/index.ts",
         "build": "tsc",
@@ -12,10 +23,15 @@
         "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
         "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json}\""
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "description": "",
+    "keywords": [
+        "typescript",
+        "lugo bots",
+        "lugo4ts",
+        "bot"
+    ],
+    "author": "Mauricio Roberto <mauricio.roberto.dev@gmail.com>",
+    "license": "MIT",
+    "description": "Um pacote para facilitar o desenvolvimento de aplicações Lugo Bots em TypeScript.",
     "dependencies": {
         "@grpc/grpc-js": "^1.13.4",
         "@protobuf-ts/grpc-transport": "^2.11.0"

@@ -1,8 +1,11 @@
+import type { IFormation } from '../interfaces/formation.js';
+import { IPoint } from '../interfaces/positionable.js';
+
 import { ErrFormationInvalidKey, ErrFormationInvalidPosition, ErrFormationPlayerPositionNotDefined } from './errors.js';
 import { Point } from './point.js';
 import { SPECS } from './specs.js';
 
-export class Formation {
+export class Formation implements IFormation {
     private positions: Record<number, Point>;
     private name: string;
     private type?: FormationType;
@@ -49,8 +52,12 @@ export class Formation {
         return this;
     }
 
-    toArray(): Record<number, Point> {
+    toObject(): Record<number, IPoint> {
         return this.positions;
+    }
+
+    toArray(): Point[] {
+        return Object.values(this.positions);
     }
 
     static createZeroed(): Formation {

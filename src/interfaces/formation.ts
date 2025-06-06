@@ -56,7 +56,8 @@ export interface IFormation {
     setPositionOf11(position: IPoint): this;
     definePositionOf11(x: number, y: number): this;
 
-    toArray(): any[];
+    toObject(): Record<number, IPoint>;
+    toArray(): IPoint[];
 
     // static methods in TS interfaces can be modeled as static members in classes,
     // so here just define their signatures for reference.

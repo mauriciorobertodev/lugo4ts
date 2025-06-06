@@ -2,7 +2,7 @@ import { credentials } from '@grpc/grpc-js';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 
 import { BroadcastClient } from '../generated/broadcast.client.js';
-import { GameEvent, WatcherRequest } from '../generated/broadcast.js';
+import { GameSetup } from '../generated/broadcast.js';
 import { RemoteClient } from '../generated/remote.client.js';
 
 import type { IGameController } from '../interfaces/controller.js';
@@ -56,7 +56,7 @@ export class GameController implements IGameController {
         try {
             await this.remote.nextTurn({});
         } catch (error) {
-            console.error('Erro ao avançar turno:', error);
+            console.error('[CONTROLLER] Erro ao avançar turno:', error);
         }
     }
 
@@ -64,7 +64,7 @@ export class GameController implements IGameController {
         try {
             await this.remote.nextOrder({});
         } catch (error) {
-            console.error('Erro ao avançar ordem:', error);
+            console.error('[CONTROLLER] Erro ao avançar ordem:', error);
         }
     }
 
@@ -72,7 +72,7 @@ export class GameController implements IGameController {
         try {
             await this.remote.pauseOrResume({});
         } catch (error) {
-            console.error('Erro ao iniciar jogo:', error);
+            console.error('[CONTROLLER] Erro ao iniciar jogo:', error);
         }
     }
 
@@ -85,7 +85,7 @@ export class GameController implements IGameController {
             const call = await this.remote.getGameSnapshot({});
             return call.response.gameSnapshot ? SnapshotFactory.fromLugoSnapshot(call.response.gameSnapshot) : null;
         } catch (error) {
-            console.error('Erro ao obter snapshot do jogo:', error);
+            console.error('[CONTROLLER] Erro ao obter snapshot do jogo:', error);
             return null;
         }
     }
@@ -94,7 +94,7 @@ export class GameController implements IGameController {
         try {
             await this.remote.resetPlayerPositions({});
         } catch (error) {
-            console.error('Erro ao resetar posições dos jogadores:', error);
+            console.error('[CONTROLLER] Erro ao resetar posições dos jogadores:', error);
         }
     }
 
@@ -111,7 +111,7 @@ export class GameController implements IGameController {
                 velocity: player.getVelocity().toLugoVelocity(),
             });
         } catch (error) {
-            console.error('Erro ao resetar posições dos jogadores:', error);
+            console.error('[CONTROLLER] Erro ao resetar posições dos jogadores:', error);
         }
     }
 
@@ -123,7 +123,7 @@ export class GameController implements IGameController {
                 position: position.toLugoPoint(),
             });
         } catch (error) {
-            console.error('Erro ao definir posição do jogador:', error);
+            console.error('[CONTROLLER] Erro ao definir posição do jogador:', error);
         }
     }
 
@@ -135,7 +135,7 @@ export class GameController implements IGameController {
                 velocity: velocity.toLugoVelocity(),
             });
         } catch (error) {
-            console.error('Erro ao definir velocidade do jogador:', error);
+            console.error('[CONTROLLER] Erro ao definir velocidade do jogador:', error);
         }
     }
 
@@ -147,7 +147,7 @@ export class GameController implements IGameController {
                 velocity: { speed },
             });
         } catch (error) {
-            console.error('Erro ao definir velocidade do jogador:', error);
+            console.error('[CONTROLLER] Erro ao definir velocidade do jogador:', error);
         }
     }
 
@@ -158,7 +158,7 @@ export class GameController implements IGameController {
                 velocity: ball.getVelocity().toLugoVelocity(),
             });
         } catch (error) {
-            console.error('Erro ao definir propriedades da bola:', error);
+            console.error('[CONTROLLER] Erro ao definir propriedades da bola:', error);
         }
     }
 
@@ -166,7 +166,7 @@ export class GameController implements IGameController {
         try {
             await this.remote.setBallProperties({ position: position.toLugoPoint() });
         } catch (error) {
-            console.error('Erro ao definir posição da bola:', error);
+            console.error('[CONTROLLER] Erro ao definir posição da bola:', error);
         }
     }
 
@@ -174,7 +174,7 @@ export class GameController implements IGameController {
         try {
             await this.remote.setBallProperties({ velocity: velocity.toLugoVelocity() });
         } catch (error) {
-            console.error('Erro ao definir velocidade da bola:', error);
+            console.error('[CONTROLLER] Erro ao definir velocidade da bola:', error);
         }
     }
 
@@ -182,7 +182,7 @@ export class GameController implements IGameController {
         try {
             await this.remote.setBallProperties({ velocity: { speed } });
         } catch (error) {
-            console.error('Erro ao definir velocidade da bola:', error);
+            console.error('[CONTROLLER] Erro ao definir velocidade da bola:', error);
         }
     }
 
@@ -191,36 +191,44 @@ export class GameController implements IGameController {
 
         const { responses } = this.broadcast.onEvent({ uuid: this.uuid });
 
+        responses.onNext((event) => {
+            console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
+        });
+
         responses.onMessage((event) => {
-            console.log('[EVENT]', event?.event?.oneofKind);
+            console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
         });
 
         responses.onError((err) => {
-            console.error('Erro no stream:', err);
+            console.error('[EVENT] Erro no stream:', err);
         });
 
         responses.onComplete(() => {
-            console.warn('⚠️ Stream finalizada.');
+            console.warn('[EVENT] ⚠️ Stream finalizada.');
         });
 
-        console.log('[✅ Stream iniciado]');
+        console.log('[EVENT] ✅ Stream iniciado');
     }
 
-    async startGame(): Promise<void> {
+    async startGame(): Promise<GameSetup | null> {
         try {
             const call = await this.broadcast.startGame({ watcherUuid: this.uuid });
-            console.log('Game started');
+            console.log('[GAME START] ✅ Iniciado');
+            return call.response;
         } catch (error) {
-            console.error('Error starting game:', error);
+            console.error('[GAME START] ❌ Erro ao iniciar:', error);
+            return null;
         }
     }
 
-    async getGameSetup(): Promise<void> {
+    async getGameSetup(): Promise<GameSetup> {
         try {
             const call = await this.broadcast.getGameSetup({ uuid: this.uuid });
-            console.log('Game setup received');
+            console.log('[GAME SETUP] ✅ Recebido');
+            return call.response;
         } catch (error) {
-            console.error('Error getting game setup:', error);
+            console.error('[GAME SETUP] ❌ Erro ao obter:', error);
+            throw error;
         }
     }
 }

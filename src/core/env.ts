@@ -9,12 +9,24 @@ export class Env {
     private botNumber: number;
     private botToken: string;
 
-    constructor() {
-        this.grpcUrl = process.env.BOT_GRPC_URL ?? 'localhost:5000';
-        this.grpcInsecure = this.parseBoolean(process.env.BOT_GRPC_INSECURE ?? 'true');
-        this.botSide = SideFactory.fromString((process.env.BOT_TEAM ?? '').toLowerCase());
-        this.botNumber = this.validateBotNumber(process.env.BOT_NUMBER ?? '');
-        this.botToken = process.env.BOT_TOKEN ?? '';
+    constructor({
+        grpcUrl,
+        grpcInsecure,
+        botSide,
+        botNumber,
+        botToken,
+    }: {
+        grpcUrl?: string;
+        grpcInsecure?: boolean;
+        botSide?: Side;
+        botNumber?: number;
+        botToken?: string;
+    } = {}) {
+        this.grpcUrl = grpcUrl ?? process.env.BOT_GRPC_URL ?? 'localhost:5000';
+        this.grpcInsecure = grpcInsecure ?? this.parseBoolean(process.env.BOT_GRPC_INSECURE ?? 'true');
+        this.botSide = botSide ?? SideFactory.fromString((process.env.BOT_TEAM ?? '').toLowerCase());
+        this.botNumber = botNumber ?? this.validateBotNumber(process.env.BOT_NUMBER ?? '');
+        this.botToken = botToken ?? process.env.BOT_TOKEN ?? '';
         this.throwIfNeedToken();
     }
 

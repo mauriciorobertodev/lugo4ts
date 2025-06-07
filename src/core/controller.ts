@@ -193,35 +193,37 @@ export class GameController implements IGameController {
     }
 
     async setupEventListeners(): Promise<void> {
-        await this.getGameSetup();
-
         const { responses } = this.broadcast.onEvent({ uuid: this.uuid });
 
         responses.onNext((event) => {
-            console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
+            // console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
         });
 
         responses.onMessage((event: GameEvent) => {
-            console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
-
             switch (event.event?.oneofKind) {
                 case 'breakpoint':
                     this.listener?.('pause', {});
+                    this.listeners['pause']?.forEach((callback) => callback({}));
                     break;
                 case 'goal':
-                    this.listener?.('goal', { side: SideFactory.fromInt(event.event.goal.side) });
+                    const side = SideFactory.fromInt(event.event.goal.side);
+                    this.listener?.('goal', { side });
+                    this.listeners['goal']?.forEach((callback) => callback({ side }));
+
                     break;
                 case 'debugReleased':
-                    this.listener?.('play', { debugReleased: event.event.debugReleased });
+                    this.listener?.('play', {});
+                    this.listeners['play']?.forEach((callback) => callback({}));
                     break;
                 case 'gameOver':
                     this.listener?.('over', {});
+                    this.listeners['over']?.forEach((callback) => callback({}));
                     break;
                 case 'newPlayer':
                     if (event.event.newPlayer.player) {
-                        this.listener?.('player-join', {
-                            player: PlayerFactory.fromLugoPlayer(event.event.newPlayer.player),
-                        });
+                        const player = PlayerFactory.fromLugoPlayer(event.event.newPlayer.player);
+                        this.listener?.('player-join', { player });
+                        this.listeners['player-join']?.forEach((callback) => callback({ player }));
                     }
                     break;
                 case 'lostPlayer':

@@ -7,4 +7,10 @@ export interface ITeam {
     getScore(): number;
     getSide(): Side;
     hasPlayer(number: number): boolean;
+    getPlayer(number: number): IPlayer;
+    tryGetPlayer(number: number): IPlayer | null;
+    getRandomPlayer(ignoreGoalkeeper: boolean): IPlayer;
+    tryGetRandomPlayer(ignoreGoalkeeper: boolean): IPlayer | null;
+    getGoalkeeper(): IPlayer;
+    tryGetGoalkeeper(): IPlayer | null;
 }

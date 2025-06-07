@@ -1,7 +1,10 @@
 import { ErrFormationInvalidType } from '../core/errors.js';
 import { Formation, FormationType } from '../core/formation.js';
+import { Mapper } from '../core/mapper.js';
 import { Point } from '../core/point.js';
 import { SPECS } from '../core/specs.js';
+import { Util } from '../core/util.js';
+import { PointFactory } from './point.factory.js';
 
 export class FormationTypeFactory {
     static fromString(value: string): FormationType {
@@ -45,5 +48,38 @@ export class FormationFactory {
         }
 
         return new Formation(positions);
+    }
+
+    static random({
+        positions = {},
+        maxX = SPECS.MAX_X_COORDINATE,
+        maxY = SPECS.MAX_Y_COORDINATE,
+        minX = 0,
+        minY = 0,
+        maxPlayers = SPECS.MAX_PLAYERS,
+        minPlayers = 1,
+    }: {
+        positions?: Record<number, [number, number]>;
+        maxX?: number;
+        maxY?: number;
+        minX?: number;
+        minY?: number;
+        maxPlayers?: number;
+        minPlayers?: number;
+    } = {}): Formation {
+        const formation = new Formation({});
+
+        const playerCount = Util.randomInt(minPlayers, maxPlayers);
+
+        for (let i = 1; i <= playerCount; i++) {
+            if (positions[i]) {
+                const [x, y] = positions[i];
+                formation.definePositionOf(i, x, y);
+                continue;
+            }
+            formation.definePositionOf(i, Util.randomInt(minX, maxX), Util.randomInt(minY, maxY));
+        }
+
+        return formation;
     }
 }

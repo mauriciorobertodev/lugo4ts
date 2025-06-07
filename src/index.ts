@@ -15,15 +15,3 @@ export * from './core/vector.js';
 export * from './core/velocity.js';
 export * from './core/controller.js';
 export * from './core/snapshot.js';
-
-// export * from './factories/snapshot.factory.js';
-// export * from './factories/formation.factory.js';
-// export * from './factories/point.factory.js';
-// export * from './factories/side.factory.js';
-// export * from './factories/vector.factory.js';
-// export * from './factories/velocity.factory.js';
-// export * from './factories/player.factory.js';
-// export * from './factories/ball.factory.js';
-// export * from './factories/team.factory.js';
-// export * from './factories/goal.factory.js';
-// export * from './factories/clock.factory.js';

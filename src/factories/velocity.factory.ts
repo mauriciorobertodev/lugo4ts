@@ -1,5 +1,7 @@
 import { Vector as LugoVector, Velocity as LugoVelocity } from '../generated/physics.js';
 
+import { SPECS } from '../core/specs.js';
+import { Util } from '../core/util.js';
 import { Vector2D } from '../core/vector.js';
 import { Velocity } from '../core/velocity.js';
 import { VectorFactory } from './vector.factory.js';
@@ -18,5 +20,14 @@ export class VelocityFactory {
 
     static fromDirectionAndSpeed(direction: Vector2D, speed: number): Velocity {
         return new Velocity(direction.normalize(), speed);
+    }
+
+    static random({
+        direction = VectorFactory.random(),
+        speed,
+        maxSpeed = SPECS.PLAYER_MAX_SPEED,
+    }: { direction?: Vector2D; speed?: number; maxSpeed?: number } = {}): Velocity {
+        const velocity = new Velocity(direction.normalize(), speed ?? Util.randomFloat(0, maxSpeed));
+        return velocity;
     }
 }

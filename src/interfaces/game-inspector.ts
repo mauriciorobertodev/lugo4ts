@@ -12,7 +12,6 @@ import type { ITeam } from './team.js';
 import type { IVelocity } from './velocity.js';
 
 export interface IGameInspector {
-    getSnapshot(): GameSnapshot;
     getTurn(): number;
     getPlayer(side: Side, number: number): IPlayer;
     tryGetPlayer(side: Side, number: number): IPlayer | null;

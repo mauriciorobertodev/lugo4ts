@@ -7,8 +7,8 @@ import { Point } from './point.js';
 
 export class Vector2D implements IVector2D {
     constructor(
-        public x = 0,
-        public y = 0
+        private x = 0,
+        private y = 0
     ) {}
 
     getX(): number {

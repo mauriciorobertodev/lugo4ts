@@ -30,26 +30,36 @@ import { Vector2D } from './vector.js';
 import { Velocity } from './velocity.js';
 
 export class GameInspector implements IGameInspector {
-    private snapshot: GameSnapshot;
     private me: Player;
     private state: PlayerState;
 
-    constructor(playerSide: Side, playerNumber: number, snapshot: GameSnapshot) {
-        this.snapshot = snapshot;
+    private readonly turn: number = 0;
+    private readonly homeTeam: Team | null = null;
+    private readonly awayTeam: Team | null = null;
+    private readonly ball: Ball | null = null;
+    private readonly shotClock: ShotClock | null = null;
+    private readonly turnsBallInGoalZone: number = 0;
+
+    constructor(
+        playerSide: Side,
+        playerNumber: number,
+        homeTeam?: Team,
+        awayTeam?: Team,
+        ball?: Ball,
+        shotClock?: ShotClock,
+        turnsBallInGoalZone: number = 0
+    ) {
+        this.homeTeam = homeTeam ?? null;
+        this.awayTeam = awayTeam ?? null;
+        this.ball = ball ?? null;
+        this.shotClock = shotClock ?? null;
+        this.turnsBallInGoalZone = turnsBallInGoalZone;
         this.me = this.getPlayer(playerSide, playerNumber);
         this.state = this.definePlayerState();
     }
 
-    getSnapshot(): GameSnapshot {
-        return this.snapshot;
-    }
-
-    tryGetSnapshot(): GameSnapshot | null {
-        return this.snapshot;
-    }
-
     getTurn(): number {
-        return this.snapshot.turn ?? 0;
+        return this.turn;
     }
 
     getPlayer(side: Side, number: number): Player {
@@ -76,18 +86,18 @@ export class GameInspector implements IGameInspector {
 
     getTeam(side: Side): Team {
         if (side === Side.HOME) {
-            if (!this.snapshot.homeTeam) {
+            if (!this.homeTeam) {
                 throw new ErrHomeTeamNotFound();
             }
 
-            return TeamFactory.fromLugoTeam(this.snapshot.homeTeam);
+            return this.homeTeam;
         }
 
-        if (!this.snapshot.awayTeam) {
+        if (!this.awayTeam) {
             throw new ErrAwayTeamNotFound();
         }
 
-        return TeamFactory.fromLugoTeam(this.snapshot.awayTeam);
+        return this.awayTeam;
     }
 
     getFieldCenter(): Point {
@@ -95,17 +105,17 @@ export class GameInspector implements IGameInspector {
     }
 
     hasShotClock(): boolean {
-        return !!this.snapshot.shotClock;
+        return !!this.shotClock;
     }
 
     getShotClock(): ShotClock | null {
-        if (!this.snapshot.shotClock) return null;
-        return ClockFactory.fromLugoShotClock(this.snapshot.shotClock);
+        if (!this.shotClock) return null;
+        return this.shotClock;
     }
 
     getBall(): Ball {
-        if (!this.snapshot.ball) throw new ErrBallNotFound();
-        return BallFactory.fromLugoBall(this.snapshot.ball);
+        if (!this.ball) throw new ErrBallNotFound();
+        return this.ball;
     }
 
     getBallHolder(): Player | null {
@@ -117,7 +127,7 @@ export class GameInspector implements IGameInspector {
     }
 
     getBallTurnsInGoalZone(): number {
-        return this.getSnapshot().turnsBallInGoalZone ?? 0;
+        return this.turnsBallInGoalZone ?? 0;
     }
 
     getBallRemainingTurnsInGoalZone(): number {

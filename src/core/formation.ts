@@ -8,12 +8,10 @@ import { SPECS } from './specs.js';
 export class Formation implements IFormation {
     private positions: Record<number, Point>;
     private name: string;
-    private type?: FormationType;
 
     constructor(positions: Record<number, Point>, name = '', type?: FormationType) {
         this.positions = positions;
         this.name = name || Math.random().toString(36).substring(2, 10);
-        this.type = type;
     }
 
     getName(): string {
@@ -22,15 +20,6 @@ export class Formation implements IFormation {
 
     setName(name: string): this {
         this.name = name;
-        return this;
-    }
-
-    getType(): FormationType {
-        return this.type ?? FormationType.NOT_DEFINED;
-    }
-
-    setType(type: FormationType): this {
-        this.type = type;
         return this;
     }
 

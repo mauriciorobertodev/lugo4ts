@@ -1,6 +1,7 @@
 import { Team_Side } from '../generated/server.js';
 
 import { ErrSideInvalid } from './errors.js';
+import { Util } from './util.js';
 
 export enum Side {
     HOME = 'home',
@@ -50,5 +51,9 @@ export class SideFactory {
             default:
                 throw new ErrSideInvalid(side);
         }
+    }
+
+    static random(): Side {
+        return SideFactory.fromInt(Util.randomInt(0, 1));
     }
 }

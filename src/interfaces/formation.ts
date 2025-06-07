@@ -5,9 +5,6 @@ export interface IFormation {
     getName(): string;
     setName(name: string): this;
 
-    getType(): FormationType;
-    setType(type: FormationType): this;
-
     getPositionOf(playerNumber: number): IPoint;
     setPositionOf(playerNumber: number, position: IPoint): this;
     definePositionOf(playerNumber: number, x: number, y: number): this;

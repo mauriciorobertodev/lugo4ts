@@ -2,15 +2,18 @@ import { credentials } from '@grpc/grpc-js';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 
 import { BroadcastClient } from '../generated/broadcast.client.js';
-import { GameSetup } from '../generated/broadcast.js';
+import { GameEvent, GameSetup } from '../generated/broadcast.js';
 import { RemoteClient } from '../generated/remote.client.js';
+import { GameSnapshot_State } from '../generated/server.js';
 
 import type { IGameController } from '../interfaces/controller.js';
 import { ISnapshot } from '../interfaces/snapshot.js';
 
+import { PlayerFactory } from '../factories/player.factory.js';
 import { SnapshotFactory } from '../factories/snapshot.factory.js';
 
 import { Ball } from './ball.js';
+import { Event, EventData, GenericEventListener } from './events.js';
 import { Formation } from './formation.js';
 import { Player } from './player.js';
 import { Point } from './point.js';
@@ -22,6 +25,9 @@ export class GameController implements IGameController {
     private uuid: string = crypto.randomUUID();
     private remote: RemoteClient;
     private broadcast: BroadcastClient;
+
+    private listeners: { [K in Event]?: ((data: EventData[K]) => void)[] } = {};
+    private listener: GenericEventListener | null = null;
 
     constructor(serverAddress: string) {
         const transport = new GrpcTransport({
@@ -195,8 +201,51 @@ export class GameController implements IGameController {
             console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
         });
 
-        responses.onMessage((event) => {
+        responses.onMessage((event: GameEvent) => {
             console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
+
+            switch (event.event?.oneofKind) {
+                case 'breakpoint':
+                    this.listener?.('pause', {});
+                    break;
+                case 'goal':
+                    this.listener?.('goal', { side: SideFactory.fromInt(event.event.goal.side) });
+                    break;
+                case 'debugReleased':
+                    this.listener?.('play', { debugReleased: event.event.debugReleased });
+                    break;
+                case 'gameOver':
+                    this.listener?.('over', {});
+                    break;
+                case 'newPlayer':
+                    if (event.event.newPlayer.player) {
+                        this.listener?.('player-join', {
+                            player: PlayerFactory.fromLugoPlayer(event.event.newPlayer.player),
+                        });
+                    }
+                    break;
+                case 'lostPlayer':
+                    if (event.event.lostPlayer.player) {
+                        this.listener?.('player-leave', {
+                            player: PlayerFactory.fromLugoPlayer(event.event.lostPlayer.player),
+                        });
+                    }
+                    break;
+                case 'stateChange':
+                    if (event.event.stateChange.newState === GameSnapshot_State.PLAYING) {
+                        if (!event.gameSnapshot) {
+                            this.listener?.('turn', {});
+                            return;
+                        } else {
+                            this.listener?.('turn', {
+                                snapshot: SnapshotFactory.fromLugoSnapshot(event.gameSnapshot),
+                            });
+                        }
+                    }
+                    break;
+                default:
+                    console.warn('[EVENT] Evento desconhecido:', event.event?.oneofKind);
+            }
         });
 
         responses.onError((err) => {
@@ -230,5 +279,16 @@ export class GameController implements IGameController {
             console.error('[GAME SETUP] ❌ Erro ao obter:', error);
             throw error;
         }
+    }
+
+    public onEvent(listener: GenericEventListener) {
+        this.listener = listener;
+    }
+
+    public on<K extends Event>(event: K, callback: (data: EventData[K]) => void) {
+        if (!this.listeners[event]) {
+            this.listeners[event] = [];
+        }
+        this.listeners[event]!.push(callback);
     }
 }

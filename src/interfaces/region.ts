@@ -1,5 +1,4 @@
-import type { IPlayer } from './player.js';
-import type { IPoint } from './positionable.js';
+import type { IPlayer, IPoint } from '@/interfaces.js';
 
 export interface IRegion {
     eq(region: IRegion): boolean;

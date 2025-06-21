@@ -1,29 +1,41 @@
-import type { IGoal } from '../interfaces/goal.ts';
-
-import { Point } from './point.js';
-import { Side } from './side.js';
+import { Point, SPECS, Side } from '@/core.js';
+import type { IGoal, IPoint } from '@/interfaces.js';
 
 export class Goal implements IGoal {
     constructor(
         protected place: Side,
-        protected center: Point,
-        protected topPole: Point,
-        protected bottomPole: Point
+        protected center: IPoint,
+        protected topPole: IPoint,
+        protected bottomPole: IPoint
     ) {}
 
-    getCenter(): Point {
+    getCenter(): IPoint {
         return this.center;
     }
 
-    getPlace(): Side {
+    getSide(): Side {
         return this.place;
     }
 
-    getTopPole(): Point {
+    getTopPole(): IPoint {
         return this.topPole;
     }
 
-    getBottomPole(): Point {
+    getBottomPole(): IPoint {
         return this.bottomPole;
     }
 }
+
+export const HOME_GOAL: IGoal = new Goal(
+    Side.HOME,
+    new Point(0, SPECS.MAX_Y_COORDINATE / 2),
+    new Point(0, SPECS.GOAL_MAX_Y),
+    new Point(0, SPECS.GOAL_MIN_Y)
+);
+
+export const AWAY_GOAL: IGoal = new Goal(
+    Side.AWAY,
+    new Point(SPECS.MAX_X_COORDINATE, SPECS.MAX_Y_COORDINATE / 2),
+    new Point(SPECS.MAX_X_COORDINATE, SPECS.GOAL_MAX_Y),
+    new Point(SPECS.MAX_X_COORDINATE, SPECS.GOAL_MIN_Y)
+);

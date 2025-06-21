@@ -5,7 +5,16 @@
     "trailingComma": "es5",
     "printWidth": 120,
     "plugins": ["@trivago/prettier-plugin-sort-imports"],
-    "importOrder": ["^../generated/.*$", "^../interfaces/.*$", "^../factories/.*$", "^[./]"],
+    "importOrder": [
+        "^@/generated/.*$",
+        "^@/interfaces.*$",
+        "^@/core.*$",
+        "^@/utils.*$",
+        "^@/errors.*$",
+        "^@/lugo.*$",
+        "^@/playground.*$",
+        "^[./]"
+    ],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true
 }

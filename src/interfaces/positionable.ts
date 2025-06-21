@@ -1,8 +1,6 @@
-import type { Point as LugoPoint, Vector as LugoVector } from '../generated/physics.js';
-
 export interface IPositionable {
-    eq(positionable: IPositionable): boolean;
-    is(positionable: IPositionable): boolean;
+    eq(positionable: IPoint): boolean;
+    is(positionable: IPoint): boolean;
 
     getX(): number;
     setX(x: number): this;
@@ -18,40 +16,52 @@ export interface IPositionable {
     scaleY(value: number): this;
     divideY(value: number): this;
 
+    magnitude(): number;
+
     normalize(): this;
-    normalized(): IPositionable;
 
     add(value: IPositionable | number): this;
-    added(value: IPositionable | number): IPositionable;
-
     subtract(value: IPositionable | number): this;
-    subtracted(value: IPositionable | number): IPositionable;
-
     divide(value: IPositionable | number): this;
-    divided(value: IPositionable | number): IPositionable;
-
     scale(value: IPositionable | number): this;
-    scaled(value: IPositionable | number): IPositionable;
 
-    magnitude(): number;
-    clone(): IPositionable;
-    directionTo(to: IPositionable): IVector2D;
-    distanceTo(to: IPositionable): number;
+    // normalized(): IPositionable;
+    // added(value: IPositionable | number): IPositionable;
+    // subtracted(value: IPositionable | number): IPositionable;
+    // divided(value: IPositionable | number): IPositionable;
+    // scaled(value: IPositionable | number): IPositionable;
+
+    toString(): string;
+}
+
+export interface IVector2D extends IPositionable {
+    clone(): IVector2D;
+
+    normalized(): IVector2D;
+
+    added(value: IPositionable | number): IVector2D;
+    subtracted(value: IPositionable | number): IVector2D;
+    divided(value: IPositionable | number): IVector2D;
+    scaled(value: IPositionable | number): IVector2D;
+}
+
+export interface IPoint extends IPositionable {
+    clone(): IPoint;
+
+    directionTo(to: IPoint): IVector2D;
+
+    distanceTo(to: IPoint): number;
 
     moveToDirection(direction: IVector2D, distance: number): this;
-    movedToDirection(direction: IVector2D, distance: number): IVector2D;
+    movedToDirection(direction: IVector2D, distance: number): IPoint;
 
     moveToPoint(point: IPoint, distance: number): this;
     movedToPoint(point: IPoint, distance: number): IPoint;
 
-    toLugoPoint(): LugoPoint;
-    toLugoVector(): LugoVector;
+    normalized(): IPoint;
 
-    toString(): string;
-    toVector2D(): IVector2D;
-    toPoint(): IPoint;
+    added(value: IPositionable | number): IPoint;
+    subtracted(value: IPositionable | number): IPoint;
+    divided(value: IPositionable | number): IPoint;
+    scaled(value: IPositionable | number): IPoint;
 }
-
-export interface IVector2D extends IPositionable {}
-
-export interface IPoint extends IPositionable {}

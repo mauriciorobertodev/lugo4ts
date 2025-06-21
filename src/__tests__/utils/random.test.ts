@@ -1,0 +1,26 @@
+import { randomElement, randomFloat, randomInt } from '@/utils.js';
+import { describe, expect, test } from 'vitest';
+
+describe('Utils/Random', () => {
+    test('DEVE gerar um número aleatório entre dois valores', () => {
+        const min = 1;
+        const max = 10;
+        const random = randomInt(min, max);
+        expect(random).toBeGreaterThanOrEqual(min);
+        expect(random).toBeLessThanOrEqual(max);
+    });
+
+    test('DEVE gerar um número aleatório de ponto flutuante entre dois valores', () => {
+        const min = 1;
+        const max = 10;
+        const random = randomFloat(min, max);
+        expect(random).toBeGreaterThanOrEqual(min);
+        expect(random).toBeLessThanOrEqual(max);
+    });
+
+    test('DEVE selecionar um elemento aleatório de um array', () => {
+        const array = [1, 2, 3, 4, 5];
+        const random = randomElement(array);
+        expect(array).toContain(random);
+    });
+});

@@ -1,22 +1,16 @@
-import { Player as LugoPlayer, Team_Side } from '../generated/server.js';
+import { Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
+import type { IPlayer, IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
 
-import type { IPlayer } from '../interfaces/player.ts';
-import type { IRegion } from '../interfaces/region.ts';
-
-import { Point } from './point.js';
-import { Side } from './side.js';
-import { SPECS } from './specs.js';
-import { Vector2D } from './vector.js';
-import { Velocity } from './velocity.js';
+import { Player as LugoPlayer, Team_Side } from '@/generated/server.js';
 
 export class Player implements IPlayer {
     constructor(
         private number: number,
         private isJumping: boolean,
         private side: Side,
-        private position: Point,
-        private initPosition: Point,
-        private velocity: Velocity
+        private position: IPoint,
+        private initPosition: IPoint,
+        private velocity: IVelocity
     ) {}
 
     getNumber(): number {
@@ -27,15 +21,20 @@ export class Player implements IPlayer {
         return this.velocity.getSpeed();
     }
 
-    getDirection(): Vector2D {
+    getDirection(): IVector2D {
         return this.velocity.getDirection();
     }
 
-    getPosition(): Point {
+    getPosition(): IPoint {
         return this.position;
     }
 
-    getVelocity(): Velocity {
+    setPosition(position: Point): this {
+        this.position = position;
+        return this;
+    }
+
+    getVelocity(): IVelocity {
         return this.velocity;
     }
 
@@ -43,7 +42,7 @@ export class Player implements IPlayer {
         return this.side;
     }
 
-    getInitPosition(): Point {
+    getInitPosition(): IPoint {
         return this.initPosition;
     }
 
@@ -73,39 +72,28 @@ export class Player implements IPlayer {
         return this.side === Side.HOME ? less : !less;
     }
 
-    directionToPlayer(player: Player): Vector2D {
+    directionToPlayer(player: IPlayer): IVector2D {
         return this.position.directionTo(player.getPosition());
     }
 
-    distanceToPlayer(player: Player): number {
+    distanceToPlayer(player: IPlayer): number {
         return this.position.distanceTo(player.getPosition());
     }
 
-    directionToRegion(region: IRegion): Vector2D {
-        return this.position.directionTo(region.getCenter()) as Vector2D;
+    directionToRegion(region: IRegion): IVector2D {
+        return this.position.directionTo(region.getCenter());
     }
 
     distanceToRegion(region: IRegion): number {
         return this.position.distanceTo(region.getCenter());
     }
 
-    directionToPoint(point: Point): Vector2D {
+    directionToPoint(point: IPoint): IVector2D {
         return this.position.directionTo(point) as Vector2D;
     }
 
-    distanceToPoint(point: Point): number {
+    distanceToPoint(point: IPoint): number {
         return this.position.distanceTo(point);
-    }
-
-    toLugoPlayer(): LugoPlayer {
-        return LugoPlayer.create({
-            number: this.number,
-            isJumping: this.isJumping,
-            position: this.position.toLugoPoint(),
-            initPosition: this.initPosition.toLugoPoint(),
-            velocity: this.velocity.toLugoVelocity(),
-            teamSide: this.side === Side.HOME ? Team_Side.HOME : Team_Side.AWAY,
-        });
     }
 }
 

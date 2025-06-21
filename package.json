@@ -34,7 +34,8 @@
     "description": "Um pacote para facilitar o desenvolvimento de aplicações Lugo Bots em TypeScript.",
     "dependencies": {
         "@grpc/grpc-js": "^1.13.4",
-        "@protobuf-ts/grpc-transport": "^2.11.0"
+        "@protobuf-ts/grpc-transport": "^2.11.0",
+        "@tensorflow/tfjs-node": "^4.22.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.28.0",
@@ -43,20 +44,24 @@
         "@protobuf-ts/runtime": "^2.11.0",
         "@trivago/prettier-plugin-sort-imports": "^5.2.2",
         "@types/node": "^22.15.29",
+        "@types/seedrandom": "^3.0.8",
         "@typescript-eslint/eslint-plugin": "^8.33.1",
         "@typescript-eslint/parser": "^8.33.1",
-        "@vitest/coverage-istanbul": "^3.1.4",
+        "@vitest/coverage-istanbul": "^3.2.3",
         "eslint": "^9.28.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-import": "^2.31.0",
         "grpc_tools_node_protoc_ts": "^5.3.3",
         "grpc-tools": "^1.13.0",
+        "madge": "^8.0.0",
         "prettier": "^3.5.3",
         "rxjs": "^7.8.2",
+        "seedrandom": "^3.0.5",
         "ts-proto": "^2.7.2",
         "ts-protoc-gen": "^0.15.1-pre.a71b34e",
         "tsx": "^4.19.4",
         "typescript": "^5.8.3",
-        "vitest": "^3.1.4"
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.2.3"
     }
 }

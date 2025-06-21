@@ -1,9 +1,6 @@
-import { Point as LugoPoint, Vector as LugoVector } from '../generated/physics.js';
+import type { IPoint, IPositionable, IVector2D } from '@/interfaces.js';
 
-import type { IPoint } from '../interfaces/positionable.js';
-import type { IPositionable } from '../interfaces/positionable.ts';
-
-import { Vector2D } from './vector.js';
+import { pointToVector2D } from '@/utils.js';
 
 export class Point implements IPoint {
     constructor(
@@ -80,7 +77,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    normalized(): IPositionable {
+    normalized(): IPoint {
         return this.clone().normalize();
     }
 
@@ -95,7 +92,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    added(value: IPositionable | number): IPositionable {
+    added(value: IPositionable | number): IPoint {
         return this.clone().add(value);
     }
 
@@ -110,7 +107,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    subtracted(value: IPositionable | number): IPositionable {
+    subtracted(value: IPositionable | number): IPoint {
         return this.clone().subtract(value);
     }
 
@@ -125,7 +122,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    divided(value: IPositionable | number): IPositionable {
+    divided(value: IPositionable | number): IPoint {
         return this.clone().divide(value);
     }
 
@@ -140,7 +137,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    scaled(value: IPositionable | number): IPositionable {
+    scaled(value: IPositionable | number): IPoint {
         return this.clone().scale(value);
     }
 
@@ -148,55 +145,43 @@ export class Point implements IPoint {
         return Math.sqrt(this.getX() ** 2 + this.getY() ** 2);
     }
 
-    directionTo(to: IPositionable): Vector2D {
-        return to.subtracted(this).normalize().toVector2D() as Vector2D;
+    directionTo(to: IPoint): IVector2D {
+        return pointToVector2D(to.subtracted(this).normalize());
     }
 
-    distanceTo(to: IPositionable): number {
+    distanceTo(to: IPoint): number {
         return to.subtracted(this).magnitude();
     }
 
-    moveToDirection(direction: Vector2D, distance: number): this {
+    moveToDirection(direction: IVector2D, distance: number): this {
         return this.add(direction.normalized().scale(distance));
     }
 
-    movedToDirection(direction: Vector2D, distance: number): IPositionable {
+    movedToDirection(direction: IVector2D, distance: number): IPoint {
         return this.added(direction.normalized().scale(distance));
     }
 
-    moveToPoint(point: Point, distance: number): this {
+    moveToPoint(point: IPoint, distance: number): this {
         return this.moveToDirection(this.directionTo(point), distance);
     }
 
-    movedToPoint(point: Point, distance: number): IPositionable {
+    movedToPoint(point: IPoint, distance: number): IPoint {
         return this.movedToDirection(this.directionTo(point), distance);
-    }
-
-    toLugoPoint(): LugoPoint {
-        return LugoPoint.create({ x: this.getX(), y: this.getY() });
-    }
-
-    toLugoVector(): LugoVector {
-        return LugoVector.create({ x: this.getX(), y: this.getY() });
     }
 
     toString(): string {
         return `(${this.getX().toFixed(2)}, ${this.getY().toFixed(2)})`;
     }
 
-    toVector2D(): Vector2D {
-        return new Vector2D(this.getX(), this.getY());
-    }
-
-    toPoint(): Point {
-        return new Point(this.getX(), this.getY());
-    }
-
-    is(positionable: IPositionable): boolean {
+    is(positionable: IPoint): boolean {
         return this.getX() === positionable.getX() && this.getY() === positionable.getY();
     }
 
-    eq(positionable: IPositionable): boolean {
+    eq(positionable: IPoint): boolean {
         return this.is(positionable);
+    }
+
+    copy(): Point {
+        return new Point(this.getX(), this.getY());
     }
 }

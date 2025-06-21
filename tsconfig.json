@@ -4,6 +4,10 @@
         "module": "NodeNext",
         "rootDir": "./src",
         "outDir": "./dist",
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["*"]
+        },
         "declaration": true,
         "emitDeclarationOnly": false,
         "declarationMap": true, // opcional, cria sourcemaps para .d.ts

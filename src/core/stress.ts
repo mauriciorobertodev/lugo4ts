@@ -1,16 +1,10 @@
+import { GameInspector, PlayerState, SPECS, Side } from '@/core.js';
+import { IBot, IGameInspector } from '@/interfaces.js';
+import { randomGameInspector } from '@/utils.js';
 import chalk from 'chalk';
 import { performance } from 'perf_hooks';
 
-import { Order } from '../generated/server.js';
-
-import { IBot } from '../interfaces/bot.js';
-
-import { InspectorFactory } from '../factories/snapshot.factory.js';
-
-import { PlayerState } from '../core/player.js';
-import { GameInspector } from './inspector.js';
-import { Side } from './side.js';
-import { SPECS } from './specs.js';
+import { Order } from '@/generated/server.js';
 
 type TestCase = 'onDisputing' | 'onHolding' | 'onDefending' | 'onSupporting' | 'asGoalkeeper';
 
@@ -77,40 +71,40 @@ export class BotPerformanceTester {
 
             for (let i = 0; i < test.times; i++) {
                 const start = performance.now();
-                let inspector: GameInspector;
+                let inspector: IGameInspector;
                 let orders: Order[] = [];
 
                 switch (test.case) {
                     case 'onDisputing':
-                        inspector = InspectorFactory.random({
+                        inspector = randomGameInspector({
                             playerState: PlayerState.DISPUTING,
                             playerSide: this.side,
                         });
                         orders = this.bot.onDisputing(inspector);
                         break;
                     case 'onHolding':
-                        inspector = InspectorFactory.random({
+                        inspector = randomGameInspector({
                             playerState: PlayerState.HOLDING,
                             playerSide: this.side,
                         });
                         orders = this.bot.onHolding(inspector);
                         break;
                     case 'onDefending':
-                        inspector = InspectorFactory.random({
+                        inspector = randomGameInspector({
                             playerState: PlayerState.DEFENDING,
                             playerSide: this.side,
                         });
                         orders = this.bot.onDefending(inspector);
                         break;
                     case 'onSupporting':
-                        inspector = InspectorFactory.random({
+                        inspector = randomGameInspector({
                             playerState: PlayerState.SUPPORTING,
                             playerSide: this.side,
                         });
                         orders = this.bot.onSupporting(inspector);
                         break;
                     case 'asGoalkeeper':
-                        inspector = InspectorFactory.random({
+                        inspector = randomGameInspector({
                             playerNumber: SPECS.GOALKEEPER_NUMBER,
                             playerState: PlayerState.DEFENDING,
                             playerSide: this.side,

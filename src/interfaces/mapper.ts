@@ -1,6 +1,6 @@
-import type { Side } from '../core/side.ts';
-import type { IPoint } from './positionable.js';
-import type { IRegion } from './region.js';
+import type { IPoint, IRegion } from '@/interfaces.js';
+
+import type { Side } from '@/core.js';
 
 export interface IMapper {
     getCols(): number;
@@ -13,8 +13,15 @@ export interface IMapper {
     getRegionHeight(): number;
 
     getSide(): Side;
+    setSide(side: Side): this;
 
     getRegion(col: number, row: number): IRegion;
     getRegionFromPoint(point: IPoint): IRegion;
     getRandomRegion(): IRegion;
 }
+
+export type MapperObject = {
+    cols: number;
+    rows: number;
+    side: Side;
+};

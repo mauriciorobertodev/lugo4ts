@@ -1,0 +1,34 @@
+import { IPoint } from '@/interfaces.js';
+
+import { Point } from '@/core.js';
+
+export function clamp(value: number, min: number, max: number): number {
+    return Math.max(min, Math.min(max, value));
+}
+
+export function lerp(start: number, end: number, t: number): number {
+    return start + (end - start) * t;
+}
+
+/**
+ *  Interpolates between two points a and b by a factor t.
+ *  @param a The starting point.
+ *  @param b The ending point.
+ *  @param t The interpolation factor, between 0 and 1.
+ *  @returns A new Point that is the result of the interpolation.
+ *  @throws Error if t is not between 0 and 1.
+ *  @example
+ *  const pointA = new Point(0, 0);
+ *  const pointB = new Point(10, 10);
+ *  // Result: Point(5, 5)
+ *  const interpolatedPoint = PointUtils.lerp(pointA, pointB, 0.5);
+ *  @see {@link https://en.wikipedia.org/wiki/Linear_interpolation}
+ */
+export function lerp2D(a: IPoint, b: IPoint, t: number): IPoint {
+    if (t < 0 || t > 1) throw new Error('Interpolation factor t must be between 0 and 1');
+    return new Point(lerp(a.getX(), b.getX(), t), lerp(a.getY(), b.getY(), t));
+}
+
+export function isBetween(value: number, min: number, max: number): boolean {
+    return value >= min && value <= max;
+}

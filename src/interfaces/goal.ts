@@ -1,9 +1,10 @@
-import type { Side } from '../core/side.ts';
-import type { IPoint } from './positionable.js';
+import type { IPoint } from '@/interfaces.js';
+
+import type { Side } from '@/core.js';
 
 export interface IGoal {
     getCenter(): IPoint;
-    getPlace(): Side;
+    getSide(): Side;
     getTopPole(): IPoint;
     getBottomPole(): IPoint;
 }

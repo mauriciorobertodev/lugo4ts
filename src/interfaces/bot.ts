@@ -1,7 +1,8 @@
-import type { Order } from '../generated/server.js';
+import type { Order } from '@/generated/server.js';
 
-import type { PlayerState } from '../core/player.js';
-import type { IGameInspector } from './game-inspector.js';
+import type { IGameInspector } from '@/interfaces.js';
+
+import type { PlayerState } from '@/core.js';
 
 export interface IBot {
     beforeActions(inspector: IGameInspector): void;

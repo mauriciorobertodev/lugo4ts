@@ -1,20 +1,19 @@
-import { Velocity as LugoVelocity } from '../generated/physics.js';
+import { Vector2D } from '@/core.js';
+import type { IVector2D, IVelocity } from '@/interfaces.js';
 
-import type { IVelocity } from '../interfaces/velocity.ts';
-
-import { Vector2D } from './vector.js';
+import { Velocity as LugoVelocity } from '@/generated/physics.js';
 
 export class Velocity implements IVelocity {
     constructor(
-        private direction: Vector2D = new Vector2D(),
+        private direction: IVector2D = new Vector2D(),
         private speed: number = 0
     ) {}
 
-    getDirection(): Vector2D {
+    getDirection(): IVector2D {
         return this.direction;
     }
 
-    setDirection(direction: Vector2D): this {
+    setDirection(direction: IVector2D): this {
         this.direction = direction;
         return this;
     }

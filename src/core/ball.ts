@@ -1,48 +1,49 @@
-import { Ball as LugoBall } from '../generated/server.js';
-
-import { IBall } from '../interfaces/ball.js';
-
-import { VelocityFactory } from '../factories/velocity.factory.js';
-
-import { Player } from './player.js';
-import { Point } from './point.js';
-import { Region } from './region.js';
-import { SPECS } from './specs.js';
-import { Vector2D } from './vector.js';
-import { Velocity } from './velocity.js';
+import { Point, SPECS } from '@/core.js';
+import { IBall, IPlayer, IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
+import { zeroedVelocity } from '@/utils.js';
 
 export class Ball implements IBall {
-    private position: Point;
-    private velocity: Velocity;
+    private position: IPoint;
+    private velocity: IVelocity;
 
     constructor(
-        position: Point | null,
-        velocity: Velocity | null,
-        private holder: Player | null
+        position: IPoint | null,
+        velocity: IVelocity | null,
+        private holder: IPlayer | null
     ) {
         this.position = position ?? new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y);
-        this.velocity = velocity ?? VelocityFactory.newZeroed();
+        this.velocity = velocity ?? zeroedVelocity();
     }
 
-    getPosition(): Point {
+    setDirection(direction: IVector2D): this {
+        this.velocity = this.velocity.setDirection(direction);
+        return this;
+    }
+
+    setSpeed(speed: number): this {
+        this.velocity = this.velocity.setSpeed(speed);
+        return this;
+    }
+
+    getPosition(): IPoint {
         return this.position;
     }
 
-    setPosition(position: Point): this {
+    setPosition(position: IPoint): this {
         this.position = position;
         return this;
     }
 
-    getVelocity(): Velocity {
+    getVelocity(): IVelocity {
         return this.velocity;
     }
 
-    setVelocity(velocity: Velocity): this {
+    setVelocity(velocity: IVelocity): this {
         this.velocity = velocity;
         return this;
     }
 
-    getDirection(): Vector2D {
+    getDirection(): IVector2D {
         return this.getVelocity().getDirection();
     }
 
@@ -54,44 +55,41 @@ export class Ball implements IBall {
         return !!this.holder;
     }
 
-    getHolder(): Player | null {
+    getHolder(): IPlayer | null {
         return this.holder;
     }
 
-    holderIs(holder: Player): boolean {
+    setHolder(holder: IPlayer | null): this {
+        this.holder = holder;
+        return this;
+    }
+
+    holderIs(holder: IPlayer): boolean {
         if (!this.holder) return false;
         return this.holder.getNumber() === holder.getNumber() && this.holder.getTeamSide() === holder.getTeamSide();
     }
 
-    directionToPlayer(player: Player): Vector2D {
+    directionToPlayer(player: IPlayer): IVector2D {
         return this.getPosition().directionTo(player.getPosition());
     }
 
-    directionToPoint(point: Point): Vector2D {
+    directionToPoint(point: IPoint): IVector2D {
         return this.getPosition().directionTo(point);
     }
 
-    directionToRegion(region: Region): Vector2D {
+    directionToRegion(region: IRegion): IVector2D {
         return this.getPosition().directionTo(region.getCenter());
     }
 
-    distanceToPlayer(player: Player): number {
+    distanceToPlayer(player: IPlayer): number {
         return this.getPosition().distanceTo(player.getPosition());
     }
 
-    distanceToPoint(point: Point): number {
+    distanceToPoint(point: IPoint): number {
         return this.getPosition().distanceTo(point);
     }
 
-    distanceToRegion(region: Region): number {
+    distanceToRegion(region: IRegion): number {
         return this.getPosition().distanceTo(region.getCenter());
-    }
-
-    toLugoBall(): LugoBall {
-        return LugoBall.create({
-            position: this.getPosition().toLugoPoint(),
-            velocity: this.getVelocity().toLugoVelocity(),
-            holder: this.getHolder()?.toLugoPlayer(),
-        });
     }
 }

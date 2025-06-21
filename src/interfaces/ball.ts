@@ -1,7 +1,4 @@
-import type { IPlayer } from './player.js';
-import type { IPoint, IVector2D } from './positionable.js';
-import type { IRegion } from './region.js';
-import type { IVelocity } from './velocity.js';
+import type { IPlayer, IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
 
 export interface IBall {
     getPosition(): IPoint;
@@ -11,7 +8,10 @@ export interface IBall {
     setVelocity(vel: IVelocity): this;
 
     getDirection(): IVector2D;
+    setDirection(direction: IVector2D): this;
+
     getSpeed(): number;
+    setSpeed(speed: number): this;
 
     hasHolder(): boolean;
     getHolder(): IPlayer | null;
@@ -25,3 +25,9 @@ export interface IBall {
     distanceToPoint(point: IPoint): number;
     distanceToRegion(region: IRegion): number;
 }
+
+export type BallObject = {
+    position: IPoint;
+    velocity: IVelocity;
+    holder: IPlayer | null;
+};

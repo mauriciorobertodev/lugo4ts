@@ -1,29 +1,30 @@
-import type { Side } from '../core/side.js';
-import type { IBall } from './ball.js';
-import type { IFormation } from './formation.js';
-import type { IPlayer } from './player.js';
-import type { IPoint } from './positionable.js';
-import type { ISnapshot } from './snapshot.js';
-import type { IVelocity } from './velocity.js';
+import type { IBall, IFormation, IGameSnapshot, IPlayer, IPoint, IVelocity } from '@/interfaces.js';
+
+import type { Environment, Side } from '@/core.js';
 
 export interface IGameController {
-    goToNextTurn(): Promise<void>;
-    goToNextOrder(): Promise<void>;
+    nextTurn(): Promise<void>;
+    nextOrder(): Promise<void>;
     play(): Promise<void>;
     pause(): Promise<void>;
-    getGameSnapshot(): Promise<ISnapshot | null>;
-    resetPlayerPositions(): Promise<void>;
-    resetBallPosition(): Promise<void>;
+    getGameSnapshot(): Promise<IGameSnapshot | null>;
+    resumeListeningPhase(): Promise<void>;
+    resetPlayerPositions(): Promise<IGameSnapshot>;
+    resetBallPosition(): Promise<IGameSnapshot>;
 
-    setPlayer(player: IPlayer): Promise<void>;
-    setPlayerPosition(player: IPlayer, position: IPoint): Promise<void>;
-    setPlayerVelocity(player: IPlayer, velocity: IVelocity): Promise<void>;
-    setPlayerSpeed(player: IPlayer, speed: number): Promise<void>;
+    setTurn(turn: number): Promise<IGameSnapshot>;
 
-    setBall(ball: IBall): Promise<void>;
-    setBallPosition(position: IPoint): Promise<void>;
-    setBallVelocity(velocity: IVelocity): Promise<void>;
-    setBallSpeed(speed: number): Promise<void>;
+    applyEnvironment(environment: Environment): Promise<IGameSnapshot>;
+
+    setPlayer(player: IPlayer): Promise<IGameSnapshot>;
+    setPlayerPosition(player: IPlayer, position: IPoint): Promise<IGameSnapshot>;
+    setPlayerVelocity(player: IPlayer, velocity: IVelocity): Promise<IGameSnapshot>;
+    setPlayerSpeed(player: IPlayer, speed: number): Promise<IGameSnapshot>;
+
+    setBall(ball: IBall): Promise<IGameSnapshot>;
+    setBallPosition(position: IPoint): Promise<IGameSnapshot>;
+    setBallVelocity(velocity: IVelocity): Promise<IGameSnapshot>;
+    setBallSpeed(speed: number): Promise<IGameSnapshot>;
 
     setTeamFormation(side: Side, formation: IFormation): Promise<void>;
     setHomeTeamFormation(formation: IFormation): Promise<void>;

@@ -1,0 +1,36 @@
+import { IPoint } from '@/interfaces.js';
+
+import { Point, SPECS } from '@/core.js';
+
+// ------------------------------------------------------------
+// Factories
+// ------------------------------------------------------------
+
+/**
+ * Creates a new Point with the given coordinates.
+ */
+export function fieldCenterPoint(): IPoint {
+    return new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y);
+}
+
+// ------------------------------------------------------------
+// Validators
+// ------------------------------------------------------------
+
+/**
+ * Checks if the given point is valid inside the field.
+ * A point is valid if its coordinates are within the field boundaries defined by SPECS.
+ * @param point The point to check.
+ * @returns True if the point is valid, false otherwise.
+ * @example
+ * isValidInsideFieldPoint(new Point(10, 20)); // true
+ * isValidInsideFieldPoint(new Point(-1, 20)); // false
+ */
+export function isValidInsideFieldPoint(point: IPoint): boolean {
+    return (
+        point.getX() >= 0 &&
+        point.getX() <= SPECS.MAX_X_COORDINATE &&
+        point.getY() >= 0 &&
+        point.getY() <= SPECS.MAX_Y_COORDINATE
+    );
+}

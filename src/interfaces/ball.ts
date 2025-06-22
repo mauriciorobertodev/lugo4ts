@@ -15,6 +15,7 @@ export interface IBall {
 
     hasHolder(): boolean;
     getHolder(): IPlayer | null;
+    setHolder(holder: IPlayer | null): this;
     holderIs(holder: IPlayer): boolean;
 
     directionToPlayer(player: IPlayer): IVector2D;

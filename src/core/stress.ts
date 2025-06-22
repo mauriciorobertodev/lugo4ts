@@ -1,10 +1,13 @@
-import { GameInspector, PlayerState, SPECS, Side } from '@/core.js';
-import { IBot, IGameInspector } from '@/interfaces.js';
-import { randomGameInspector } from '@/utils.js';
 import chalk from 'chalk';
 import { performance } from 'perf_hooks';
 
 import { Order } from '@/generated/server.js';
+
+import { IBot, IGameInspector } from '@/interfaces.js';
+
+import { PlayerState, SPECS, Side } from '@/core.js';
+
+import { randomGameInspector } from '@/utils.js';
 
 type TestCase = 'onDisputing' | 'onHolding' | 'onDefending' | 'onSupporting' | 'asGoalkeeper';
 

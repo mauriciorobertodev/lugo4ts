@@ -1,5 +1,7 @@
-import { Point, Side } from '@/core.js';
 import type { IMapper, IPlayer, IPoint, IRegion } from '@/interfaces.js';
+
+import { Point } from '@/core/point.js';
+import { Side } from '@/core/side.js';
 
 export class Region implements IRegion {
     constructor(

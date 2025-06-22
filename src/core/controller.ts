@@ -1,3 +1,14 @@
+import { credentials } from '@grpc/grpc-js';
+import { GrpcTransport } from '@protobuf-ts/grpc-transport';
+
+import { BroadcastClient } from '@/generated/broadcast.client.js';
+import { GameEvent, GameSetup } from '@/generated/broadcast.js';
+import { RemoteClient } from '@/generated/remote.client.js';
+import { GameProperties } from '@/generated/remote.js';
+import { GameSnapshot_State } from '@/generated/server.js';
+
+import { IFormation, IGameController } from '@/interfaces.js';
+
 import {
     Ball,
     Environment,
@@ -11,16 +22,8 @@ import {
     Side,
     Velocity,
 } from '@/core.js';
-import { IFormation, IGameController } from '@/interfaces.js';
-import { intToSide, sideToInt } from '@/utils.js';
-import { credentials } from '@grpc/grpc-js';
-import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 
-import { BroadcastClient } from '@/generated/broadcast.client.js';
-import { GameEvent, GameSetup } from '@/generated/broadcast.js';
-import { RemoteClient } from '@/generated/remote.client.js';
-import { GameProperties } from '@/generated/remote.js';
-import { GameSnapshot_State } from '@/generated/server.js';
+import { intToSide, sideToInt } from '@/utils.js';
 
 import {
     fromLugoGameSnapshot,
@@ -130,7 +133,7 @@ export class GameController implements IGameController {
         return this.setBallPosition(new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y));
     }
 
-    async setPlayer(player: Player): Promise<GameSnapshot> {
+    async addPlayer(player: Player): Promise<GameSnapshot> {
         return new Promise<GameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setPlayerProperties({
@@ -389,7 +392,7 @@ export class GameController implements IGameController {
                     console.log('[CONTROLLER] Definindo jogadores do time da HOME...');
                     for (const player of homeTeam) {
                         console.log(`[CONTROLLER] Definindo jogador HOME ${player.getNumber()}...`);
-                        await this.setPlayer(player);
+                        await this.addPlayer(player);
                         console.log(`[CONTROLLER] Jogador HOME ${player.getNumber()} definido.`);
                     }
                 }
@@ -398,7 +401,7 @@ export class GameController implements IGameController {
                     console.log('[CONTROLLER] Definindo jogadores do time da AWAY...');
                     for (const player of awayTeam) {
                         console.log(`[CONTROLLER] Definindo jogador AWAY ${player.getNumber()}...`);
-                        await this.setPlayer(player);
+                        await this.addPlayer(player);
                         console.log(`[CONTROLLER] Jogador AWAY ${player.getNumber()} definido.`);
                     }
                 }

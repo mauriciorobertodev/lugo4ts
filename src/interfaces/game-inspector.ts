@@ -9,7 +9,6 @@ export interface IGameInspector {
     getPlayer(side: Side, number: number): IPlayer;
     tryGetPlayer(side: Side, number: number): IPlayer | null;
     getTeam(side: Side): ITeam;
-    getFieldCenter(): IPoint;
 
     hasShotClock(): boolean;
     getShotClock(): IShotClock | null;

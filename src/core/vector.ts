@@ -1,10 +1,4 @@
-import { Point as LugoPoint, Vector as LugoVector } from '@/generated/physics.js';
-
 import type { IPositionable, IVector2D } from '@/interfaces.js';
-
-import { Point } from '@/core.js';
-
-import { pointToVector2D } from '@/utils.js';
 
 export class Vector2D implements IVector2D {
     constructor(
@@ -148,7 +142,7 @@ export class Vector2D implements IVector2D {
     }
 
     toString(): string {
-        return `(${this.getX().toFixed(2)}, ${this.getY().toFixed(2)})`;
+        return `(${this.getX().toFixed(10)}, ${this.getY().toFixed(10)})`;
     }
 
     is(positionable: IVector2D): boolean {

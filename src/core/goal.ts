@@ -1,5 +1,8 @@
-import { Point, SPECS, Side } from '@/core.js';
-import type { IGoal, IPoint } from '@/interfaces.js';
+import { IGoal, IPoint } from '@/interfaces.js';
+
+import { Point } from '@/core/point.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
 export class Goal implements IGoal {
     constructor(

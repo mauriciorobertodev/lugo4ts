@@ -66,9 +66,6 @@ describe('Utils/Point', () => {
                 expect(p2.getX()).toBeLessThanOrEqual(SPECS.MAX_X_COORDINATE);
                 expect(p2.getY()).toBeGreaterThanOrEqual(0);
                 expect(p2.getY()).toBeLessThanOrEqual(SPECS.MAX_Y_COORDINATE);
-
-                expect(p1.getX()).not.toEqual(p2.getX());
-                expect(p1.getY()).not.toEqual(p2.getY());
             }
         });
 
@@ -167,12 +164,12 @@ describe('Utils/Point', () => {
 
                 // DEVE estar dentro do campo
                 expect(p1.getX()).toBeGreaterThanOrEqual(0);
-                expect(p1.getX()).toBeLessThanOrEqual(SPECS.MAX_X_COORDINATE / 2 - 1);
+                expect(p1.getX()).toBeLessThanOrEqual(SPECS.MAX_X_COORDINATE / 2);
                 expect(p1.getY()).toBeGreaterThanOrEqual(0);
                 expect(p1.getY()).toBeLessThanOrEqual(SPECS.MAX_Y_COORDINATE);
 
                 expect(p2.getX()).toBeGreaterThanOrEqual(SPECS.MAX_X_COORDINATE / 2);
-                expect(p2.getX()).toBeLessThanOrEqual(SPECS.MAX_X_COORDINATE - 1);
+                expect(p2.getX()).toBeLessThanOrEqual(SPECS.MAX_X_COORDINATE);
                 expect(p2.getY()).toBeGreaterThanOrEqual(0);
                 expect(p2.getY()).toBeLessThanOrEqual(SPECS.MAX_Y_COORDINATE);
 

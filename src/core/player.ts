@@ -1,7 +1,9 @@
-import { Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
 import type { IPlayer, IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
 
-import { Player as LugoPlayer, Team_Side } from '@/generated/server.js';
+import { Point } from '@/core/point.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
+import { Vector2D } from '@/core/vector.js';
 
 export class Player implements IPlayer {
     constructor(

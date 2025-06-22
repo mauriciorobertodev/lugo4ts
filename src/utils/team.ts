@@ -29,19 +29,27 @@ export function randomTeam({
     score?: number;
     players?: IPlayer[];
 } = {}): ITeam {
-    return new Team(
-        name,
-        score,
-        side,
-        Array.from({ length: populate }, (_, index) => {
-            if (players[index]) {
-                if (players[index].getTeamSide() !== side) {
-                    throw new Error(`Player at index ${index} does not match team side ${side}`);
-                }
-                return players[index];
-            }
+    players.forEach((p) => {
+        if (p.getTeamSide() !== side) throw new Error(`Player ${p.getNumber()} does not match team side ${side}`);
+    });
 
-            return randomPlayer({ number: index + 1, side });
-        })
-    );
+    const takenNumbers = new Set<number>();
+    for (const p of players) {
+        if (takenNumbers.has(p.getNumber())) {
+            throw new Error(`Duplicated player number ${p.getNumber()} in players array`);
+        }
+        takenNumbers.add(p.getNumber());
+    }
+
+    const teamPlayers: IPlayer[] = [...players];
+
+    for (let num = 1; teamPlayers.length < populate; num++) {
+        if (takenNumbers.has(num)) continue;
+        teamPlayers.push(randomPlayer({ number: num, side }));
+        takenNumbers.add(num);
+    }
+
+    teamPlayers.sort((a, b) => a.getNumber() - b.getNumber());
+
+    return new Team(name, score, side, teamPlayers);
 }

@@ -1,6 +1,9 @@
-import { Point, SPECS } from '@/core.js';
 import { IBall, IPlayer, IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
-import { zeroedVelocity } from '@/utils.js';
+
+import { Point } from '@/core/point.js';
+import { SPECS } from '@/core/specs.js';
+
+import { zeroedVelocity } from '@/utils/velocity.js';
 
 export class Ball implements IBall {
     private position: IPoint;

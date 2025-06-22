@@ -1,6 +1,10 @@
-import { SPECS, Side } from '@/core.js';
 import { IEnv } from '@/interfaces.js';
-import { stringToSide } from '@/utils.js';
+
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
+
+import { isValidPlayerNumber } from '@/utils.js';
+import { stringToSide } from '@/utils/side.js';
 
 import { ErrBotInvalidNumber, ErrEnvNeedToken } from '@/errors.js';
 
@@ -24,8 +28,8 @@ export class Env implements IEnv {
         botNumber?: number;
         botToken?: string;
     } = {}) {
-        this.grpcUrl = grpcUrl ?? process.env.BOT_GRPC_URL ?? 'localhost:5000';
-        this.grpcInsecure = grpcInsecure ?? this.parseBoolean(process.env.BOT_GRPC_INSECURE ?? 'true');
+        this.grpcUrl = grpcUrl || process.env.BOT_GRPC_URL || 'localhost:5000';
+        this.grpcInsecure = grpcInsecure ?? this.parseBoolean(process.env.BOT_GRPC_INSECURE || 'true');
         this.botSide = botSide ?? stringToSide((process.env.BOT_TEAM ?? '').toLowerCase());
         this.botNumber = botNumber ?? this.validateBotNumber(process.env.BOT_NUMBER ?? '');
         this.botToken = botToken ?? process.env.BOT_TOKEN ?? '';
@@ -54,7 +58,7 @@ export class Env implements IEnv {
 
     private validateBotNumber(botNumber: string): number {
         const number = parseInt(botNumber, 10);
-        if (isNaN(number) || number < 1 || number > SPECS.MAX_PLAYERS) {
+        if (!isValidPlayerNumber(number)) {
             throw new ErrBotInvalidNumber(botNumber);
         }
         return number;

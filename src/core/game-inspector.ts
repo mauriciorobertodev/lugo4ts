@@ -1,4 +1,5 @@
-import { AWAY_GOAL, HOME_GOAL, PlayerState, Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
+import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
+
 import type {
     IBall,
     IGameInspector,
@@ -12,7 +13,7 @@ import type {
     IVelocity,
 } from '@/interfaces.js';
 
-import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
+import { AWAY_GOAL, HOME_GOAL, PlayerState, Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
 
 import {
     ErrAwayTeamNotFound,
@@ -23,6 +24,8 @@ import {
     ErrMoveZeroDirection,
     ErrPlayerNotFound,
 } from '@/errors.js';
+
+import { toLugoVelocity } from '@/lugo.js';
 
 export class GameInspector implements IGameInspector {
     private me: IPlayer;
@@ -258,7 +261,7 @@ export class GameInspector implements IGameInspector {
 
         const vel = new Velocity(direction, speed);
 
-        const move = Move.create({ velocity: vel.toLugoVelocity() });
+        const move = Move.create({ velocity: toLugoVelocity(vel) });
 
         return Order.create({ action: { oneofKind: 'move', move } });
     }
@@ -268,7 +271,7 @@ export class GameInspector implements IGameInspector {
 
         const vel = new Velocity(direction, speed);
 
-        const kick = Kick.create({ velocity: vel.toLugoVelocity() });
+        const kick = Kick.create({ velocity: toLugoVelocity(vel) });
 
         return Order.create({ action: { oneofKind: 'kick', kick } });
     }
@@ -308,7 +311,7 @@ export class GameInspector implements IGameInspector {
         const upOrDown = direction.getY() > 0 ? new Vector2D(0, 1) : new Vector2D(0, -1);
         const vel = new Velocity(upOrDown, speed);
 
-        const jump = Jump.create({ velocity: vel.toLugoVelocity() });
+        const jump = Jump.create({ velocity: toLugoVelocity(vel) });
 
         return Order.create({ action: { oneofKind: 'jump', jump } });
     }
@@ -328,7 +331,7 @@ export class GameInspector implements IGameInspector {
 
         const vel = new Velocity(direction, speed);
 
-        const move = Move.create({ velocity: vel.toLugoVelocity() });
+        const move = Move.create({ velocity: toLugoVelocity(vel) });
 
         return Order.create({ action: { oneofKind: 'move', move } });
     }
@@ -338,7 +341,7 @@ export class GameInspector implements IGameInspector {
 
         const vel = new Velocity(direction, speed);
 
-        const kick = Kick.create({ velocity: vel.toLugoVelocity() });
+        const kick = Kick.create({ velocity: toLugoVelocity(vel) });
 
         return Order.create({ action: { oneofKind: 'kick', kick } });
     }
@@ -379,7 +382,7 @@ export class GameInspector implements IGameInspector {
         const upOrDown = direction.getY() > 0 ? new Vector2D(0, 1) : new Vector2D(0, -1);
         const vel = new Velocity(upOrDown, speed);
 
-        const jump = Jump.create({ velocity: vel.toLugoVelocity() });
+        const jump = Jump.create({ velocity: toLugoVelocity(vel) });
 
         return Order.create({ action: { oneofKind: 'jump', jump } });
     }

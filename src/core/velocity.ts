@@ -1,7 +1,6 @@
-import { Vector2D } from '@/core.js';
 import type { IVector2D, IVelocity } from '@/interfaces.js';
 
-import { Velocity as LugoVelocity } from '@/generated/physics.js';
+import { Vector2D } from '@/core/vector.js';
 
 export class Velocity implements IVelocity {
     constructor(
@@ -25,10 +24,6 @@ export class Velocity implements IVelocity {
     setSpeed(speed: number): this {
         this.speed = speed;
         return this;
-    }
-
-    toLugoVelocity(): LugoVelocity {
-        return LugoVelocity.create({ speed: this.speed, direction: this.direction.toLugoVector() });
     }
 
     toString(): string {

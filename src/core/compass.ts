@@ -1,4 +1,4 @@
-import { Vector2D } from '@/core.js';
+import { Vector2D } from '@/core/vector.js';
 
 export class Compass {
     /** 0° */
@@ -49,6 +49,11 @@ export class Compass {
     static readonly NWbN = Compass.vectorFromDeg(330);
     /** 345° */
     static readonly NbW = Compass.vectorFromDeg(345);
+
+    static randomDirection(): Vector2D {
+        const randomDeg = Math.floor(Math.random() * 360);
+        return Compass.vectorFromDeg(randomDeg);
+    }
 
     private static vectorFromDeg(deg: number): Vector2D {
         const rad = (deg * Math.PI) / 180;

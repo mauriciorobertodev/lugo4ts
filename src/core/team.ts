@@ -1,8 +1,10 @@
 import type { IFormation, IPlayer, ITeam } from '@/interfaces.js';
 
-import { Formation, Player, SPECS, Side } from '@/core.js';
+import { Player } from '@/core/player.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
-import { randomElement } from '@/utils.js';
+import { randomElement } from '@/utils/random.js';
 
 import { ErrPlayerNotFound } from '@/errors.js';
 
@@ -118,7 +120,7 @@ export class Team implements ITeam {
         return this;
     }
 
-    setPlayer(player: Player): this {
+    addPlayer(player: IPlayer): this {
         if (player.getTeamSide() !== this.side) {
             throw new Error(`Player side ${player.getTeamSide()} does not match team side ${this.side}`);
         }

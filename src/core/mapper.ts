@@ -1,8 +1,12 @@
 import type { IMapper, IPoint, IRegion } from '@/interfaces.js';
 
-import { Point, Region, SPECS, Side } from '@/core.js';
+import { Point } from '@/core/point.js';
+import { Region } from '@/core/region.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
-import { clamp, randomInt } from '@/utils.js';
+import { clamp } from '@/utils/math.js';
+import { randomInt } from '@/utils/random.js';
 
 import {
     ErrMapperColOutOfMapped,
@@ -59,8 +63,8 @@ export class Mapper implements IMapper {
     }
 
     getRegion(col: number, row: number): IRegion {
-        if (col < 0 || col >= this.cols) throw new ErrMapperColOutOfMapped(col, 0, this.cols - 1);
-        if (row < 0 || row >= this.rows) throw new ErrMapperRowOutOfMapped(row, 0, this.rows - 1);
+        if (col < 0 || col > this.cols) throw new ErrMapperColOutOfMapped(col, 0, this.cols);
+        if (row < 0 || row > this.rows) throw new ErrMapperRowOutOfMapped(row, 0, this.rows);
 
         col = clamp(col, 0, this.cols - 1);
         row = clamp(row, 0, this.rows - 1);

@@ -1,5 +1,7 @@
-import { SPECS, Side } from '@/core.js';
 import type { IShotClock } from '@/interfaces.js';
+
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
 export class ShotClock implements IShotClock {
     constructor(

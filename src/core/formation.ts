@@ -1,6 +1,8 @@
 import type { IFormation, IMapper, IPoint } from '@/interfaces.js';
 
-import { Mapper, Point, Side } from '@/core.js';
+import { Mapper } from '@/core/mapper.js';
+import { Point } from '@/core/point.js';
+import { Side } from '@/core/side.js';
 
 import { ErrFormationPlayerPositionNotDefined } from '@/errors.js';
 

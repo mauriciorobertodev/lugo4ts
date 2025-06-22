@@ -1,8 +1,13 @@
-import { Client, Environment, GameController } from '@/core.js';
-import { IClient, IGameController, IGameInspector, IGameSnapshot, IGymSession, IGymTrainer } from '@/interfaces.js';
-import { fromGameSnapshot, sleep } from '@/utils.js';
-
 import { Order } from '@/generated/server.js';
+
+import { IClient, IGameController, IGameInspector, IGameSnapshot, IGymSession, IGymTrainer } from '@/interfaces.js';
+
+import { Client } from '@/core/client.js';
+import { GameController } from '@/core/controller.js';
+import { Environment } from '@/core/environment.js';
+
+import { fromGameSnapshot } from '@/utils/game-inspector.js';
+import { sleep } from '@/utils/time.js';
 
 export class GymSession implements IGymSession {
     private trainer: IGymTrainer;

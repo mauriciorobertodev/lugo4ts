@@ -43,8 +43,8 @@ export function randomPointInField(): IPoint {
 }
 
 export function randomPointInSide(side: Side): IPoint {
-    const minX = side === Side.HOME ? 0 : SPECS.MAX_X_COORDINATE / 2 - 1;
-    const maxX = side === Side.HOME ? SPECS.MAX_X_COORDINATE / 2 : SPECS.MAX_X_COORDINATE;
+    const minX = side === Side.HOME ? 0 : SPECS.MAX_X_COORDINATE / 2;
+    const maxX = side === Side.HOME ? SPECS.MAX_X_COORDINATE / 2 - 1 : SPECS.MAX_X_COORDINATE;
     const randomX = randomInt(minX, maxX);
     const randomY = randomInt(0, SPECS.MAX_Y_COORDINATE);
     return new Point(randomX, randomY);

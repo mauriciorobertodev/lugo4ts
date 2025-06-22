@@ -1,4 +1,4 @@
-import { IBall, IGameSnapshot, ITeam, ServerState } from '@/interfaces.js';
+import { IBall, IGameSnapshot, IShotClock, ITeam, ServerState } from '@/interfaces.js';
 
 import { GameSnapshot, ShotClock, Side, Team } from '@/core.js';
 
@@ -16,7 +16,7 @@ export function createZeroedSnapshot(): IGameSnapshot {
     return new GameSnapshot(ServerState.WAITING, 0);
 }
 
-export function createRandomSnapshot({
+export function randomGameSnapshot({
     turn = 0,
     homeTeam,
     awayTeam,
@@ -26,10 +26,10 @@ export function createRandomSnapshot({
 }: {
     turn?: number;
     homeTeam?: ITeam;
-    awayTeam?: Team;
+    awayTeam?: ITeam;
     ball?: IBall;
     turnsBallInGoalZone?: number;
-    shotClock?: ShotClock;
+    shotClock?: IShotClock;
 } = {}): IGameSnapshot {
     return new GameSnapshot(
         ServerState.WAITING,

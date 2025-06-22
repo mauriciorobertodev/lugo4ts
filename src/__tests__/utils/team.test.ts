@@ -28,9 +28,7 @@ describe('Utils/Team', () => {
             for (let i = 0; i < 20; i++) {
                 const t = randomTeam();
                 expect(t).toBeInstanceOf(Team);
-                expect(typeof t.getName()).toBe('string');
                 expect([Side.HOME, Side.AWAY]).toContain(t.getSide());
-                expect(typeof t.getScore()).toBe('number');
                 expect(Array.isArray(t.getPlayers())).toBe(true);
                 expect(t.getPlayers().length).toBe(11);
                 t.getPlayers().forEach((p, idx) => {

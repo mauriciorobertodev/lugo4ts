@@ -1,6 +1,6 @@
-import type { IPoint, IPositionable, IVector2D } from '@/interfaces.js';
+import { IPoint, IPositionable, IVector2D } from '@/interfaces.js';
 
-import { pointToVector2D } from '@/utils.js';
+import { Vector2D } from '@/core/vector.js';
 
 export class Point implements IPoint {
     constructor(
@@ -146,7 +146,8 @@ export class Point implements IPoint {
     }
 
     directionTo(to: IPoint): IVector2D {
-        return pointToVector2D(to.subtracted(this).normalize());
+        const direction = to.subtracted(this).normalize();
+        return new Vector2D(direction.getX(), direction.getY());
     }
 
     distanceTo(to: IPoint): number {

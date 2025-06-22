@@ -1,4 +1,3 @@
-import { Ball, Player, Point, SPECS, ShotClock, Team, Vector2D, Velocity } from '@/core.js';
 import type {
     IBall,
     IGameSnapshot,
@@ -10,6 +9,8 @@ import type {
     IVelocity,
     ServerState,
 } from '@/interfaces.js';
+
+import { Ball, Player, Point, SPECS, ShotClock, Team, Vector2D, Velocity } from '@/core.js';
 
 export class GameSnapshot implements IGameSnapshot {
     constructor(

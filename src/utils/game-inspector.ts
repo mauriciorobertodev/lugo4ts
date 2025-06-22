@@ -4,6 +4,8 @@ import { GameInspector, PlayerState, SPECS, Side } from '@/core.js';
 
 import { randomBall, randomInt, randomPlayerState, randomShotClock, randomSide, randomTeam } from '@/utils.js';
 
+import { ErrGameInvalidPlayerState } from '@/errors.js';
+
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
@@ -159,7 +161,7 @@ export function randomGameInspectorInAsGoalKeeper({
         case PlayerState.SUPPORTING:
             return randomGameInspectorInOnSupporting({ playerNumber: SPECS.GOALKEEPER_NUMBER, playerSide });
         default:
-            throw new Error(`Unknown player state: ${playerState}`);
+            throw new ErrGameInvalidPlayerState(String(playerState));
     }
 }
 
@@ -188,6 +190,6 @@ export function randomGameInspector({
         case PlayerState.SUPPORTING:
             return randomGameInspectorInOnSupporting({ playerSide, playerNumber });
         default:
-            throw new Error(`Unknown player state: ${playerState}`);
+            throw new ErrGameInvalidPlayerState(String(playerState));
     }
 }

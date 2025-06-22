@@ -13,6 +13,8 @@ import {
     randomGameSnapshot,
 } from '@/utils.js';
 
+import { ErrGameInvalidPlayerState } from '@/errors.js';
+
 describe('Utils/GameInspector', () => {
     describe('Factories', () => {
         test('DEVE criar um GameInspector a partir de snapshot', () => {
@@ -28,7 +30,7 @@ describe('Utils/GameInspector', () => {
         });
 
         test('DEVE criar um GameInspector aleatório válido', () => {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 100; i++) {
                 const gi = randomGameInspector();
                 expect(gi).toBeInstanceOf(GameInspector);
                 expect([Side.HOME, Side.AWAY]).toContain(gi.getMyTeamSide());
@@ -37,6 +39,12 @@ describe('Utils/GameInspector', () => {
                 expect(gi.getOpponentTeam()).toBeInstanceOf(Team);
                 expect(gi.getBall()).toBeInstanceOf(Ball);
             }
+        });
+
+        test('DEVE lançar u erro ao gerar un GaneInspector com um player state inválido', () => {
+            expect(() => randomGameInspector({ playerState: 'Invalid' as PlayerState })).toThrow(
+                ErrGameInvalidPlayerState
+            );
         });
 
         test('DEVE criar um GameInspector em cada estado de jogador', () => {
@@ -60,6 +68,12 @@ describe('Utils/GameInspector', () => {
             );
             expect(randomGameInspectorInAsGoalKeeper({ playerState: PlayerState.SUPPORTING }).getMyState()).toBe(
                 PlayerState.SUPPORTING
+            );
+        });
+
+        test('DEVE lançar um erro ao criar GameInspector com estado de jogador inválido', () => {
+            expect(() => randomGameInspectorInAsGoalKeeper({ playerState: 'Invalid' as PlayerState })).toThrow(
+                ErrGameInvalidPlayerState
             );
         });
     });

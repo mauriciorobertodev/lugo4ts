@@ -198,3 +198,12 @@ export class ErrMathInterpolationFactor extends Error {
         Object.setPrototypeOf(this, ErrMathInterpolationFactor.prototype);
     }
 }
+
+// GAME SNAPSHOT/INSPECTOR
+export class ErrGameInvalidPlayerState extends Error {
+    constructor(playerState: string | number) {
+        super(`Estado de jogador inválido: '${playerState}'`);
+        this.name = 'ErrGameInvalidPlayerState';
+        Object.setPrototypeOf(this, ErrGameInvalidPlayerState.prototype);
+    }
+}

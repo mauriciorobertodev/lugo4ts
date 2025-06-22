@@ -17,13 +17,18 @@ export class Gym {
     private trainer: IGymTrainer | null = null;
     private serverAddress: string = 'localhost:5000';
 
+    withServerAddress(address: string): this {
+        this.serverAddress = address;
+        return this;
+    }
+
     withEnvironment(environment: () => Environment): this {
         this.environmentFactory = environment;
         return this;
     }
 
     withPlayerNumber(playerNumber: number): this {
-        if (isValidPlayerNumber(playerNumber)) {
+        if (!isValidPlayerNumber(playerNumber)) {
             throw new ErrBotInvalidNumber(String(playerNumber));
         }
         this.trainingPlayerNumber = playerNumber;

@@ -1,9 +1,14 @@
 import { Environment } from '../../../../src/core/environment.js';
-import { BallFactory } from '../../../../src/factories/ball.factory.js';
-import { PlayerFactory } from '../../../../src/factories/player.factory.js';
-import { TeamFactory } from '../../../../src/factories/team.factory.js';
-import { Side } from '../../../../src/index.js';
-import { PointUtils } from '../../../../src/utils/point.utils.js';
+import {
+    Side,
+    fieldCenterPoint,
+    randomBall,
+    randomInitialPosition,
+    randomPlayer,
+    randomTeam,
+    zeroedTeam,
+    zeroedVector,
+} from '../../../../src/index.js';
 import { DefaultFormation } from '../formations/default.js';
 
 export class EnvironmentOpponentHolder extends Environment {
@@ -13,13 +18,13 @@ export class EnvironmentOpponentHolder extends Environment {
 
         this.setHomeScore(0);
         this.setHomeTeam(
-            TeamFactory.zeroed({
+            randomTeam({
                 side: Side.HOME,
                 players: Array.from({ length: 11 }, (_, index) =>
-                    PlayerFactory.random({
+                    randomPlayer({
                         number: index + 1,
                         side: Side.HOME,
-                        position: PointUtils.createRandomInitialPosition(side),
+                        position: randomInitialPosition(side),
                     })
                 ),
             })
@@ -28,13 +33,13 @@ export class EnvironmentOpponentHolder extends Environment {
 
         this.setAwayScore(0);
         this.setAwayTeam(
-            TeamFactory.zeroed({
+            randomTeam({
                 side: Side.AWAY,
                 players: Array.from({ length: 11 }, (_, index) =>
-                    PlayerFactory.random({
+                    randomPlayer({
                         number: index + 1,
                         side: Side.AWAY,
-                        position: PointUtils.createRandomInitialPosition(side),
+                        position: randomInitialPosition(side),
                     })
                 ),
             })
@@ -43,6 +48,6 @@ export class EnvironmentOpponentHolder extends Environment {
 
         const opponent = side === Side.HOME ? this.getAwayTeam() : this.getHomeTeam();
         const holder = opponent?.getRandomPlayer() ?? null;
-        this.setBall(BallFactory.newZeroed({ holder }));
+        this.setBall(randomBall({ holder, position: fieldCenterPoint(), direction: zeroedVector(), speed: 0 }));
     }
 }

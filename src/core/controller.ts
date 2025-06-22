@@ -7,7 +7,7 @@ import { RemoteClient } from '@/generated/remote.client.js';
 import { GameProperties } from '@/generated/remote.js';
 import { GameSnapshot_State } from '@/generated/server.js';
 
-import { IFormation, IGameController } from '@/interfaces.js';
+import { IBall, IFormation, IGameController, IPlayer } from '@/interfaces.js';
 
 import {
     Ball,
@@ -133,7 +133,7 @@ export class GameController implements IGameController {
         return this.setBallPosition(new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y));
     }
 
-    async addPlayer(player: Player): Promise<GameSnapshot> {
+    async addPlayer(player: IPlayer): Promise<GameSnapshot> {
         return new Promise<GameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setPlayerProperties({
@@ -172,7 +172,7 @@ export class GameController implements IGameController {
                 const res = await this.remote.setPlayerProperties({
                     number: player.getNumber(),
                     side: sideToInt(player.getTeamSide()),
-                    velocity: velocity.toLugoVelocity(),
+                    velocity: toLugoVelocity(velocity),
                 });
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
@@ -200,7 +200,7 @@ export class GameController implements IGameController {
         });
     }
 
-    async setBall(ball: Ball): Promise<GameSnapshot> {
+    async setBall(ball: IBall): Promise<GameSnapshot> {
         return new Promise<GameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setBallProperties({
@@ -233,7 +233,7 @@ export class GameController implements IGameController {
     async setBallVelocity(velocity: Velocity): Promise<GameSnapshot> {
         return new Promise<GameSnapshot>(async (resolve, reject) => {
             try {
-                const res = await this.remote.setBallProperties({ velocity: velocity.toLugoVelocity() });
+                const res = await this.remote.setBallProperties({ velocity: toLugoVelocity(velocity) });
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {

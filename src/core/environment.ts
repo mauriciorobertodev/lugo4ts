@@ -74,7 +74,7 @@ export class Environment {
         return this;
     }
 
-    setHomeTeam(team: Team): this {
+    setHomeTeam(team: ITeam): this {
         if (team.getSide() !== Side.HOME) throw new Error('Home team must be on the HOME side');
         this.homeTeam = team;
         return this;

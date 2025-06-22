@@ -109,7 +109,7 @@ export function randomGameInspectorInOnDisputing({
 
     const ball = randomBall({ holder: null });
 
-    const shotClock = randomShotClock();
+    const shotClock = undefined;
 
     return new GameInspector(playerSide, playerNumber, homeTeam, awayTeam, ball, shotClock, 0);
 }

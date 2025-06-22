@@ -3,19 +3,19 @@ import { describe, expect, test } from 'vitest';
 import { Ball, GameInspector, PlayerState, Side, Team } from '@/core.js';
 
 import {
-    createRandomSnapshot,
     fromGameSnapshot,
     randomGameInspector,
     randomGameInspectorInOnDefending,
     randomGameInspectorInOnDisputing,
     randomGameInspectorInOnHolding,
     randomGameInspectorInOnSupporting,
+    randomGameSnapshot,
 } from '@/utils.js';
 
 describe('Utils/GameInspector', () => {
     describe('Factories', () => {
         test('DEVE criar um GameInspector a partir de snapshot', () => {
-            const snap = createRandomSnapshot();
+            const snap = randomGameSnapshot();
             const player = snap.getHomeTeam().getPlayer(1);
             const gi = fromGameSnapshot(Side.HOME, 1, snap);
             expect(gi).toBeInstanceOf(GameInspector);

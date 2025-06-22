@@ -4,7 +4,7 @@ import { ServerState } from '@/interfaces.js';
 
 import { Ball, GameSnapshot, Side, Team } from '@/core.js';
 
-import { createRandomSnapshot, createZeroedSnapshot } from '@/utils/game-snapshot.js';
+import { createZeroedSnapshot, randomGameSnapshot } from '@/utils/game-snapshot.js';
 
 describe('Utils/GameSnapshot', () => {
     describe('Factories', () => {
@@ -17,7 +17,7 @@ describe('Utils/GameSnapshot', () => {
 
         test('DEVE criar um snapshot aleatório válido', () => {
             for (let i = 0; i < 10; i++) {
-                const snap = createRandomSnapshot();
+                const snap = randomGameSnapshot();
                 expect(snap).toBeInstanceOf(GameSnapshot);
                 expect(snap.getHomeTeam()).toBeInstanceOf(Team);
                 expect(snap.getAwayTeam()).toBeInstanceOf(Team);
@@ -29,7 +29,7 @@ describe('Utils/GameSnapshot', () => {
         });
 
         test('DEVE criar um snapshot com parâmetros definidos', () => {
-            const snap = createRandomSnapshot({ turn: 42 });
+            const snap = randomGameSnapshot({ turn: 42 });
             expect(snap.getTurn()).toBe(42);
         });
     });

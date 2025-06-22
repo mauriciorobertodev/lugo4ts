@@ -37,7 +37,7 @@ import {
     zeroedBall,
 } from '@/utils.js';
 
-import { ErrMoveZeroDirection, ErrPlayerNotFound } from '@/errors.js';
+import { ErrJumpZeroDirection, ErrKickZeroDirection, ErrMoveZeroDirection, ErrPlayerNotFound } from '@/errors.js';
 
 import { toLugoVector } from '@/lugo.js';
 
@@ -122,11 +122,12 @@ describe('Core/GameInspector', () => {
     });
 
     test('DEVE retornar null quando o método contém "try" e não foi possível executar a ação', function () {
+        const me = randomPlayer({ side: Side.HOME, number: 2 });
         const inspector = fromGameSnapshot(
             Side.HOME,
-            10,
+            2,
             randomGameSnapshot({
-                homeTeam: randomTeam({ side: Side.HOME, populate: 0 }),
+                homeTeam: randomTeam({ side: Side.HOME, populate: 0, players: [me] }),
                 awayTeam: randomTeam({ side: Side.AWAY, populate: 0 }),
             })
         );
@@ -148,7 +149,7 @@ describe('Core/GameInspector', () => {
         expect(order.action.oneofKind).toBe('move');
         if (order.action.oneofKind === 'move') {
             expect(order).toBeTypeOf(typeof Order);
-            expect(order.action.oneofKind).toBeInstanceOf(Move);
+            expect(order.action.move).toBeTypeOf(typeof Move);
             expect(order.action.move.velocity?.direction).toEqual(toLugoVector(me.getPosition().directionTo(point)));
             expect(order.action.move.velocity?.speed).toEqual(SPECS.PLAYER_MAX_SPEED);
         }
@@ -171,7 +172,7 @@ describe('Core/GameInspector', () => {
         expect(order.action.oneofKind).toBe('kick');
         if (order.action.oneofKind === 'kick') {
             expect(order).toBeTypeOf(typeof Order);
-            expect(order.action.kick).toBeInstanceOf(typeof Kick);
+            expect(order.action.kick).toBeTypeOf(typeof Kick);
             expect(order.action.kick.velocity?.direction).toEqual(
                 toLugoVector(inspector.getBall().getPosition().directionTo(point))
             );
@@ -183,7 +184,7 @@ describe('Core/GameInspector', () => {
         if (order.action.oneofKind === 'kick') {
             expect(order.action.kick.velocity?.speed).toEqual(30);
 
-            expect(() => inspector.makeOrderKickToPoint(inspector.getBallPosition())).toThrow(ErrMoveZeroDirection);
+            expect(() => inspector.makeOrderKickToPoint(inspector.getBallPosition())).toThrow(ErrKickZeroDirection);
         }
     });
 
@@ -221,7 +222,7 @@ describe('Core/GameInspector', () => {
         expect(order.action.oneofKind).toBe('kick');
         if (order.action.oneofKind === 'kick') {
             expect(order).toBeTypeOf(typeof Order);
-            expect(order.action.kick).toBeInstanceOf(typeof Kick);
+            expect(order.action.kick).toBeTypeOf(typeof Kick);
             expect(order.action.kick.velocity?.direction).toEqual(toLugoVector(direction));
             expect(order.action.kick.velocity?.speed).toEqual(SPECS.BALL_MAX_SPEED);
         }
@@ -230,7 +231,7 @@ describe('Core/GameInspector', () => {
         expect(order.action.oneofKind).toBe('kick');
         if (order.action.oneofKind === 'kick') {
             expect(order.action.kick.velocity?.speed).toEqual(30);
-            expect(() => inspector.makeOrderKickToDirection(new Vector2D(0, 0))).toThrow(ErrMoveZeroDirection);
+            expect(() => inspector.makeOrderKickToDirection(new Vector2D(0, 0))).toThrow(ErrKickZeroDirection);
         }
     });
 
@@ -272,7 +273,7 @@ describe('Core/GameInspector', () => {
         expect(order).toBeTypeOf(typeof Order);
         expect(order.action.oneofKind).toBe('kick');
         if (order.action.oneofKind === 'kick') {
-            expect(order.action.kick).toBeInstanceOf(typeof Kick);
+            expect(order.action.kick).toBeTypeOf(typeof Kick);
             expect(order.action.kick.velocity?.direction).toEqual(
                 toLugoVector(inspector.getBallPosition().directionTo(region.getCenter()))
             );
@@ -286,7 +287,7 @@ describe('Core/GameInspector', () => {
             region = new Region(0, 0, Side.HOME, inspector.getBallPosition(), mapper);
             expect(() =>
                 inspector.makeOrderKickToRegion(new Region(0, 0, Side.HOME, inspector.getBallPosition(), mapper))
-            ).toThrow(ErrMoveZeroDirection);
+            ).toThrow(ErrKickZeroDirection);
         }
     });
 
@@ -312,7 +313,7 @@ describe('Core/GameInspector', () => {
         if (order.action.oneofKind === 'move') {
             expect(order.action.move.velocity?.speed).toEqual(30);
             otherPlayer = randomPlayer({ position: inspector.getMyPosition() });
-            expect(() => inspector.makeOrderMoveToPlayer(otherPlayer)).toThrow(ErrPlayerNotFound);
+            expect(() => inspector.makeOrderMoveToPlayer(otherPlayer)).toThrow(ErrMoveZeroDirection);
         }
     });
 
@@ -326,7 +327,7 @@ describe('Core/GameInspector', () => {
         expect(order).toBeTypeOf(typeof Order);
         expect(order.action.oneofKind).toBe('kick');
         if (order.action.oneofKind === 'kick') {
-            expect(order.action.kick).toBeInstanceOf(typeof Kick);
+            expect(order.action.kick).toBeTypeOf(typeof Kick);
             expect(order.action.kick.velocity?.direction).toEqual(
                 toLugoVector(inspector.getBallPosition().directionTo(otherPlayer.getPosition()))
             );
@@ -338,7 +339,7 @@ describe('Core/GameInspector', () => {
         if (order.action.oneofKind === 'kick') {
             expect(order.action.kick.velocity?.speed).toEqual(30);
             otherPlayer = randomPlayer({ position: inspector.getBallPosition() });
-            expect(() => inspector.makeOrderKickToPlayer(otherPlayer)).toThrow(ErrPlayerNotFound);
+            expect(() => inspector.makeOrderKickToPlayer(otherPlayer)).toThrow(ErrKickZeroDirection);
         }
     });
 
@@ -363,7 +364,7 @@ describe('Core/GameInspector', () => {
         expect(order.action.oneofKind).toBe('jump');
         if (order.action.oneofKind === 'jump') {
             expect(order.action.jump.velocity?.speed).toEqual(30);
-            expect(() => inspector.makeOrderJumpToPoint(inspector.getMyPosition())).toThrow(ErrMoveZeroDirection);
+            expect(() => inspector.makeOrderJumpToPoint(inspector.getMyPosition())).toThrow(ErrJumpZeroDirection);
         }
     });
 
@@ -435,7 +436,7 @@ describe('Core/GameInspector', () => {
         expect(order).toBeTypeOf(typeof Order);
         expect(order.action.oneofKind).toBe('catch');
         if (order.action.oneofKind === 'catch') {
-            expect(order.action.catch).toBeInstanceOf(Catch);
+            expect(order.action.catch).toBeTypeOf(typeof Catch);
         }
     });
 
@@ -492,7 +493,7 @@ describe('Core/GameInspector', () => {
         expect(order).toBeTypeOf(typeof Order);
         expect(order?.action.oneofKind).toBe('kick');
         if (order?.action.oneofKind === 'kick') {
-            expect(order.action.kick).toBeInstanceOf(typeof Kick);
+            expect(order.action.kick).toBeTypeOf(typeof Kick);
             expect(order.action.kick.velocity?.direction).toEqual(
                 toLugoVector(inspector.getBallPosition().directionTo(point))
             );
@@ -539,7 +540,7 @@ describe('Core/GameInspector', () => {
         expect(order).toBeTypeOf(typeof Order);
         expect(order?.action.oneofKind).toBe('kick');
         if (order?.action.oneofKind === 'kick') {
-            expect(order.action.kick).toBeInstanceOf(typeof Kick);
+            expect(order.action.kick).toBeTypeOf(typeof Kick);
             expect(order.action.kick.velocity?.direction).toEqual(toLugoVector(direction));
             expect(order.action.kick.velocity?.speed).toEqual(SPECS.BALL_MAX_SPEED);
         }
@@ -597,7 +598,7 @@ describe('Core/GameInspector', () => {
         expect(order).toBeTypeOf(typeof Order);
         expect(order?.action.oneofKind).toBe('kick');
         if (order?.action.oneofKind === 'kick') {
-            expect(order.action.kick).toBeInstanceOf(typeof Kick);
+            expect(order.action.kick).toBeTypeOf(typeof Kick);
             expect(order.action.kick.velocity?.direction).toEqual(
                 toLugoVector(inspector.getBallPosition().directionTo(region.getCenter()))
             );
@@ -650,7 +651,7 @@ describe('Core/GameInspector', () => {
         expect(order).toBeTypeOf(typeof Order);
         expect(order?.action.oneofKind).toBe('kick');
         if (order?.action.oneofKind === 'kick') {
-            expect(order.action.kick).toBeInstanceOf(typeof Kick);
+            expect(order.action.kick).toBeTypeOf(typeof Kick);
             expect(order.action.kick.velocity?.direction).toEqual(
                 toLugoVector(inspector.getBallPosition().directionTo(otherPlayer.getPosition()))
             );
@@ -682,13 +683,14 @@ describe('Core/GameInspector', () => {
             expect(order.action.jump.velocity?.direction).toEqual(toLugoVector(upOrDown));
             expect(order.action.jump.velocity?.speed).toEqual(SPECS.GOALKEEPER_JUMP_MAX_SPEED);
         }
+
         expect(inspector.tryMakeOrderJumpToPoint(inspector.getMyPosition())).toBeNull();
 
         order = inspector.tryMakeOrderJumpToPoint(point, 30);
         expect(order?.action.oneofKind).toBe('jump');
         if (order?.action.oneofKind === 'jump') {
             expect(order.action.jump.velocity?.speed).toEqual(30);
-            expect(() => inspector.tryMakeOrderJumpToPoint(inspector.getMyPosition())).toBeNull();
+            expect(inspector.tryMakeOrderJumpToPoint(inspector.getMyPosition())).toBeNull();
         }
     });
 

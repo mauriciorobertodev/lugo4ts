@@ -1,5 +1,6 @@
-import { randomElement, randomFloat, randomInt } from '@/utils.js';
 import { describe, expect, test } from 'vitest';
+
+import { randomElement, randomFloat, randomInt, zeroedPoint } from '@/utils.js';
 
 describe('Utils/Random', () => {
     test('DEVE gerar um número aleatório entre dois valores', () => {
@@ -22,5 +23,10 @@ describe('Utils/Random', () => {
         const array = [1, 2, 3, 4, 5];
         const random = randomElement(array);
         expect(array).toContain(random);
+    });
+
+    test('DEVE lançar erro ao tentar selecionar um elemento de um array vazio', () => {
+        const emptyArray: number[] = [];
+        expect(() => randomElement(emptyArray)).toThrowError('Array cannot be empty');
     });
 });

@@ -9,6 +9,8 @@ export default defineConfig({
         environment: 'node',
         coverage: {
             reporter: ['text', 'json', 'html'],
+            include: ['src/**/*.ts'],
+            exclude: ['src/generated/**'],
         },
     },
 });

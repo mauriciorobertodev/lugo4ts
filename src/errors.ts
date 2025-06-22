@@ -172,3 +172,29 @@ export class ErrPlayerInvalidState extends Error {
         Object.setPrototypeOf(this, ErrPlayerInvalidState.prototype);
     }
 }
+
+// TEAM
+export class ErrTeamInvalidSide extends Error {
+    constructor(player: number, side: Side) {
+        super(`Jogador ${player} não pertence ao time do lado ${side.toString()}`);
+        this.name = 'ErrTeamInvalidSide';
+        Object.setPrototypeOf(this, ErrTeamInvalidSide.prototype);
+    }
+}
+
+export class ErrTeamDuplicatePlayer extends Error {
+    constructor(playerNumber: number) {
+        super(`Jogador ${playerNumber} já existe no time.`);
+        this.name = 'ErrTeamDuplicatePlayer';
+        Object.setPrototypeOf(this, ErrTeamDuplicatePlayer.prototype);
+    }
+}
+
+// MATH
+export class ErrMathInterpolationFactor extends Error {
+    constructor(factor: number) {
+        super('O fator de interpolação deve estar entre 0 e 1, recebido: ' + factor);
+        this.name = 'ErrMathInterpolationFactor';
+        Object.setPrototypeOf(this, ErrMathInterpolationFactor.prototype);
+    }
+}

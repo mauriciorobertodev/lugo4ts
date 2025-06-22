@@ -10,7 +10,9 @@ import {
     randomPoint,
     randomPointBetween,
     randomPointBetweenGoalPoles,
+    randomPointInField,
     randomPointInSide,
+    zeroedPoint,
 } from '@/utils.js';
 
 describe('Utils/Point', () => {
@@ -26,6 +28,12 @@ describe('Utils/Point', () => {
     });
 
     describe('Factories', () => {
+        test('DEVE gerar um point zerado', () => {
+            const p = zeroedPoint();
+            expect(p.getX()).toBe(0);
+            expect(p.getY()).toBe(0);
+        });
+
         test('DEVE criar um novo Point aleatório', () => {
             for (let i = 0; i < 100; i++) {
                 const minX = -1000;
@@ -41,9 +49,24 @@ describe('Utils/Point', () => {
             }
         });
 
+        test('DEVE criar um novo Point aleatório', () => {
+            for (let i = 0; i < 100; i++) {
+                const minX = -100;
+                const minY = -100;
+                const maxX = 100;
+                const maxY = 100;
+                const p = randomPoint({ minX, minY, maxX, maxY });
+
+                expect(p.getX()).toBeGreaterThanOrEqual(minX);
+                expect(p.getX()).toBeLessThanOrEqual(maxX);
+                expect(p.getY()).toBeGreaterThanOrEqual(minY);
+                expect(p.getY()).toBeLessThanOrEqual(maxY);
+            }
+        });
+
         test('DEVE criar um novo Point aleatório dentro do campo', () => {
             for (let i = 0; i < 100; i++) {
-                const p = randomPoint();
+                const p = randomPointInField();
 
                 expect(p.getX()).toBeGreaterThanOrEqual(0);
                 expect(p.getX()).toBeLessThanOrEqual(SPECS.MAX_X_COORDINATE);

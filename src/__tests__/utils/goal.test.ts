@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
 
-import { AWAY_GOAL, HOME_GOAL, SPECS, Side } from '@/core.js';
+import { AWAY_GOAL, Goal, HOME_GOAL, SPECS, Side } from '@/core.js';
 
-import { goalFromSide } from '@/utils.js';
+import { goalFromSide, randomGoal } from '@/utils.js';
 
 describe('Utils/Goal', () => {
     test('DEVE criar um novo gol de ambas as sides', () => {
@@ -37,5 +37,13 @@ describe('Utils/Goal', () => {
 
         expect(homeGoal.getSide()).toBe(Side.HOME);
         expect(awayGoal.getSide()).toBe(Side.AWAY);
+    });
+
+    test('DEVE retornar um gol de uma side aleatória', () => {
+        const goal = randomGoal();
+
+        expect(goal).toBeDefined();
+        expect(goal).instanceOf(Goal);
+        expect(goal.getSide()).toBeOneOf([Side.HOME, Side.AWAY]);
     });
 });

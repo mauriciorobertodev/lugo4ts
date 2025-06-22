@@ -4,6 +4,8 @@ import { Side, Team } from '@/core.js';
 
 import { randomInt, randomPlayer, randomSide } from '@/utils.js';
 
+import { ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from '@/errors.js';
+
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
@@ -30,13 +32,13 @@ export function randomTeam({
     players?: IPlayer[];
 } = {}): ITeam {
     players.forEach((p) => {
-        if (p.getTeamSide() !== side) throw new Error(`Player ${p.getNumber()} does not match team side ${side}`);
+        if (p.getTeamSide() !== side) throw new ErrTeamInvalidSide(p.getNumber(), side);
     });
 
     const takenNumbers = new Set<number>();
     for (const p of players) {
         if (takenNumbers.has(p.getNumber())) {
-            throw new Error(`Duplicated player number ${p.getNumber()} in players array`);
+            throw new ErrTeamDuplicatePlayer(p.getNumber());
         }
         takenNumbers.add(p.getNumber());
     }

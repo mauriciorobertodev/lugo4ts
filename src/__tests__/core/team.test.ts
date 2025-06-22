@@ -6,10 +6,12 @@ import { Point } from '@/core/point.js';
 
 import { randomPlayer, randomTeam } from '@/utils.js';
 
+import { ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from '@/errors.js';
+
 describe('Core/Team', () => {
     test('DEVE criar uma instância de Team corretamente', function () {
         const side = Side.HOME;
-        const players = [randomPlayer(), randomPlayer()];
+        const players = [randomPlayer({ number: 1, side }), randomPlayer({ number: 2, side })];
         const team = new Team('TeamName', 3, side, players);
 
         expect(team.getName()).toBe('TeamName');
@@ -49,5 +51,23 @@ describe('Core/Team', () => {
         expect(team.getPlayers()).toHaveLength(1);
         expect(team.hasPlayer(p1.getNumber())).toBe(true);
         expect(team.hasPlayer(p2.getNumber())).toBe(false);
+    });
+
+    test('DEVE retornar um erro ao tentar adicionar um jogador com a side de outro time', function () {
+        const side = Side.HOME;
+        const p1 = randomPlayer({ number: 1, side });
+        const p2 = randomPlayer({ number: 1, side: Side.AWAY });
+
+        expect(() => new Team('TeamName', 0, side, [p1]).addPlayer(p2)).toThrow(ErrTeamInvalidSide);
+        expect(() => randomTeam({ players: [p1, p2] })).toThrow(ErrTeamInvalidSide);
+    });
+
+    test('DEVE lançar erro ao tentar adicionar jogador com número duplicado', function () {
+        const side = Side.HOME;
+        const p1 = randomPlayer({ number: 1, side });
+        const p2 = randomPlayer({ number: 1, side });
+
+        expect(() => new Team('TeamName', 0, side, [p1, p2])).toThrow(ErrTeamDuplicatePlayer);
+        expect(() => randomTeam({ side: Side.HOME, players: [p1, p2] })).toThrow(ErrTeamDuplicatePlayer);
     });
 });

@@ -2,7 +2,9 @@ import { describe, expect, test } from 'vitest';
 
 import { Point } from '@/core.js';
 
-import { lerp2D } from '@/utils.js';
+import { isBetween, lerp2D, randomInt } from '@/utils.js';
+
+import { ErrMathInterpolationFactor } from '@/errors.js';
 
 describe('Utils/Math', () => {
     test('DEVE retornar um ponto deslocado entre dois pontos', () => {
@@ -16,5 +18,20 @@ describe('Utils/Math', () => {
             expect(p2.getX()).toBeCloseTo(t * 100);
             expect(p2.getY()).toBeCloseTo(t * 100);
         });
+    });
+
+    test('DEVE lançar um erro se o fator de interpolação não estiver entre 0 e 1', () => {
+        expect(() => lerp2D(new Point(0, 0), new Point(100, 100), -0.1)).toThrow(ErrMathInterpolationFactor);
+        expect(() => lerp2D(new Point(0, 0), new Point(100, 100), 1.1)).toThrow(ErrMathInterpolationFactor);
+    });
+
+    test('DEVE retornar se um número está dentre outros dois', () => {
+        for (let i = 0; i < 100; i++) {
+            const min = randomInt(1, 1000);
+            const max = randomInt(1, 1000);
+            const number = randomInt(min, max);
+            const is = isBetween(number, min, max);
+            expect(is).toBe(true);
+        }
     });
 });

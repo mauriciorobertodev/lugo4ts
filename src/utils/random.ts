@@ -1,5 +1,5 @@
 export function randomInt(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (Math.max(min, max) - Math.min(min, max) + 1)) + Math.min(min, max);
 }
 
 export function randomFloat(min: number, max: number): number {

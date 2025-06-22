@@ -2,6 +2,8 @@ import { IPoint } from '@/interfaces.js';
 
 import { Point } from '@/core.js';
 
+import { ErrMathInterpolationFactor } from '@/errors.js';
+
 export function clamp(value: number, min: number, max: number): number {
     return Math.max(min, Math.min(max, value));
 }
@@ -25,10 +27,10 @@ export function lerp(start: number, end: number, t: number): number {
  *  @see {@link https://en.wikipedia.org/wiki/Linear_interpolation}
  */
 export function lerp2D(a: IPoint, b: IPoint, t: number): IPoint {
-    if (t < 0 || t > 1) throw new Error('Interpolation factor t must be between 0 and 1');
+    if (t < 0 || t > 1) throw new ErrMathInterpolationFactor(t);
     return new Point(lerp(a.getX(), b.getX(), t), lerp(a.getY(), b.getY(), t));
 }
 
 export function isBetween(value: number, min: number, max: number): boolean {
-    return value >= min && value <= max;
+    return value >= Math.min(min, max) && value <= Math.max(min, max);
 }

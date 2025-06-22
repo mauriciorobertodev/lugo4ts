@@ -5,6 +5,7 @@ import { Ball, GameInspector, PlayerState, Side, Team } from '@/core.js';
 import {
     fromGameSnapshot,
     randomGameInspector,
+    randomGameInspectorInAsGoalKeeper,
     randomGameInspectorInOnDefending,
     randomGameInspectorInOnDisputing,
     randomGameInspectorInOnHolding,
@@ -47,6 +48,19 @@ describe('Utils/GameInspector', () => {
             expect(disputing.getMyState()).toBe(PlayerState.DISPUTING);
             const supporting = randomGameInspectorInOnSupporting({});
             expect(supporting.getMyState()).toBe(PlayerState.SUPPORTING);
+
+            expect(randomGameInspectorInAsGoalKeeper({ playerState: PlayerState.HOLDING }).getMyState()).toBe(
+                PlayerState.HOLDING
+            );
+            expect(randomGameInspectorInAsGoalKeeper({ playerState: PlayerState.DEFENDING }).getMyState()).toBe(
+                PlayerState.DEFENDING
+            );
+            expect(randomGameInspectorInAsGoalKeeper({ playerState: PlayerState.DISPUTING }).getMyState()).toBe(
+                PlayerState.DISPUTING
+            );
+            expect(randomGameInspectorInAsGoalKeeper({ playerState: PlayerState.SUPPORTING }).getMyState()).toBe(
+                PlayerState.SUPPORTING
+            );
         });
     });
 });

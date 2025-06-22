@@ -6,7 +6,7 @@ import { SPECS } from '@/core/specs.js';
 
 import { randomElement } from '@/utils/random.js';
 
-import { ErrPlayerNotFound } from '@/errors.js';
+import { ErrPlayerNotFound, ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from '@/errors.js';
 
 export class Team implements ITeam {
     constructor(
@@ -14,7 +14,25 @@ export class Team implements ITeam {
         private score: number,
         private side: Side,
         private players: IPlayer[]
-    ) {}
+    ) {
+        if (this.score < 0) {
+            throw new Error(`Score cannot be negative: ${this.score}`);
+        }
+
+        this.players.forEach((player) => {
+            if (player.getTeamSide() !== this.side) {
+                throw new ErrTeamInvalidSide(player.getNumber(), this.side);
+            }
+        });
+
+        const takenNumbers = new Set<number>();
+        for (const player of this.players) {
+            if (takenNumbers.has(player.getNumber())) {
+                throw new ErrTeamDuplicatePlayer(player.getNumber());
+            }
+            takenNumbers.add(player.getNumber());
+        }
+    }
 
     setName(name: string): this {
         this.name = name;
@@ -122,7 +140,7 @@ export class Team implements ITeam {
 
     addPlayer(player: IPlayer): this {
         if (player.getTeamSide() !== this.side) {
-            throw new Error(`Player side ${player.getTeamSide()} does not match team side ${this.side}`);
+            throw new ErrTeamInvalidSide(player.getNumber(), this.side);
         }
         this.players = this.players.filter((p) => p.getNumber() !== player.getNumber());
         this.players.push(player);

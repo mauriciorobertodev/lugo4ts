@@ -6,9 +6,50 @@ import { Point } from '@/core/point.js';
 
 import { randomPlayer, randomTeam } from '@/utils.js';
 
-import { ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from '@/errors.js';
+import {
+    ErrPlayerNotFound,
+    ErrTeamDuplicatePlayer,
+    ErrTeamEmpty,
+    ErrTeamInvalidScore,
+    ErrTeamInvalidSide,
+} from '@/errors.js';
 
 describe('Core/Team', () => {
+    test('Getters e Setters', () => {
+        const team = new Team('Test Team', 0, Side.HOME, []);
+        expect(team.getName()).toBe('Test Team');
+        expect(team.getScore()).toBe(0);
+        expect(team.getSide()).toBe(Side.HOME);
+        expect(team.getPlayers()).toEqual([]);
+
+        team.setName('New Team Name');
+        expect(team.getName()).toBe('New Team Name');
+
+        team.incrementScore();
+        expect(team.getScore()).toBe(1);
+
+        team.decrementScore();
+        expect(team.getScore()).toBe(0);
+
+        team.setScore(5);
+        expect(team.getScore()).toBe(5);
+
+        team.resetScore();
+        expect(team.getScore()).toBe(0);
+
+        team.setSide(Side.AWAY);
+        expect(team.getSide()).toBe(Side.AWAY);
+
+        const player1 = randomPlayer({ number: 1, side: Side.AWAY });
+        const player2 = randomPlayer({ number: 2, side: Side.AWAY });
+        team.addPlayer(player1);
+        team.addPlayer(player2);
+        expect(team.getPlayers()).toEqual([player1, player2]);
+        expect(team.getPlayersCount()).toBe(2);
+
+        expect(() => team.setScore(-1)).toThrow(ErrTeamInvalidScore);
+    });
+
     test('DEVE criar uma instância de Team corretamente', function () {
         const side = Side.HOME;
         const players = [randomPlayer({ number: 1, side }), randomPlayer({ number: 2, side })];
@@ -18,6 +59,23 @@ describe('Core/Team', () => {
         expect(team.getScore()).toBe(3);
         expect(team.getSide()).toBe(side);
         expect(team.getPlayers()).toBe(players);
+    });
+
+    test('DEVE lançar um erro se a pontuação for negativa', function () {
+        expect(() => new Team('TeamName', -1, Side.HOME, [])).toThrow(ErrTeamInvalidScore);
+    });
+
+    test('DEVE lançar um erro se um jogador tiver a side diferente do time', function () {
+        const side = Side.HOME;
+        const player = randomPlayer({ number: 1, side: Side.AWAY });
+        expect(() => new Team('TeamName', 0, side, [player])).toThrow(ErrTeamInvalidSide);
+    });
+
+    test('DEVE lançar um erro se houver jogadores com números duplicados', function () {
+        const side = Side.HOME;
+        const player1 = randomPlayer({ number: 1, side });
+        const player2 = randomPlayer({ number: 1, side });
+        expect(() => new Team('TeamName', 0, side, [player1, player2])).toThrow(ErrTeamDuplicatePlayer);
     });
 
     test('DEVE retornar o nome do time', function () {
@@ -36,7 +94,7 @@ describe('Core/Team', () => {
     });
 
     test('DEVE retornar os jogadores do time', function () {
-        const players = [randomPlayer(), randomPlayer()];
+        const players = [randomPlayer({ number: 1, side: Side.HOME }), randomPlayer({ number: 2, side: Side.HOME })];
         const team = new Team('TeamName', 0, Side.HOME, players);
         expect(team.getPlayers()).toBe(players);
     });
@@ -69,5 +127,36 @@ describe('Core/Team', () => {
 
         expect(() => new Team('TeamName', 0, side, [p1, p2])).toThrow(ErrTeamDuplicatePlayer);
         expect(() => randomTeam({ side: Side.HOME, players: [p1, p2] })).toThrow(ErrTeamDuplicatePlayer);
+    });
+
+    test('DEVE retornar um jogador aleatório do time', function () {
+        const side = Side.HOME;
+        const players = [
+            randomPlayer({ number: 1, side }),
+            randomPlayer({ number: 2, side }),
+            randomPlayer({ number: 3, side }),
+        ];
+        const team = new Team('TeamName', 0, side, players);
+
+        expect(team.getRandomPlayer()).toBeInstanceOf(Player);
+        expect(players).toContain(team.getRandomPlayer());
+
+        const team2 = new Team('TeamName', 0, side, []);
+
+        expect(team2.tryGetRandomPlayer()).toBeNull();
+        expect(() => team2.getRandomPlayer()).toThrow(ErrTeamEmpty);
+    });
+
+    test('DEVE retornar o goleiro do time', function () {
+        const side = Side.HOME;
+        const goalkeeper = randomPlayer({ number: SPECS.GOALKEEPER_NUMBER, side });
+        const players = [goalkeeper, randomPlayer({ number: 2, side }), randomPlayer({ number: 3, side })];
+        const team = new Team('TeamName', 0, side, players);
+
+        expect(team.getGoalkeeper()).toBe(goalkeeper);
+
+        const team2 = new Team('TeamName', 0, side, []);
+        expect(() => team2.getGoalkeeper()).toThrow(ErrPlayerNotFound);
+        expect(team2.tryGetGoalkeeper()).toBeNull();
     });
 });

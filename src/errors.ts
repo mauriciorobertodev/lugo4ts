@@ -190,6 +190,22 @@ export class ErrTeamDuplicatePlayer extends Error {
     }
 }
 
+export class ErrTeamInvalidScore extends Error {
+    constructor(score: number) {
+        super(`Pontuação inválida: ${score}. A pontuação não pode ser negativa.`);
+        this.name = 'ErrTeamInvalidScore';
+        Object.setPrototypeOf(this, ErrTeamInvalidScore.prototype);
+    }
+}
+
+export class ErrTeamEmpty extends Error {
+    constructor() {
+        super('O time não tem nenhum jogador.');
+        this.name = 'ErrTeamEmpty';
+        Object.setPrototypeOf(this, ErrTeamEmpty.prototype);
+    }
+}
+
 // MATH
 export class ErrMathInterpolationFactor extends Error {
     constructor(factor: number) {

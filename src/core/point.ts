@@ -181,8 +181,4 @@ export class Point implements IPoint {
     eq(positionable: IPoint): boolean {
         return this.is(positionable);
     }
-
-    copy(): Point {
-        return new Point(this.getX(), this.getY());
-    }
 }

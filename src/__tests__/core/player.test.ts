@@ -5,6 +5,28 @@ import { Mapper, Player, Point, SPECS, Side, Vector2D, Velocity } from '@/core.j
 import { randomPlayer, randomPoint, randomVelocity } from '@/utils.js';
 
 describe('Core/Player', () => {
+    test('Getter e Setter', () => {
+        const player = new Player(
+            1,
+            true,
+            Side.HOME,
+            new Point(0, 0),
+            new Point(0, 0),
+            new Velocity(new Vector2D(0, 0), 0)
+        );
+        expect(player.getNumber()).toBe(1);
+        expect(player.getSpeed()).toBe(0);
+        expect(player.getDirection()).toEqual(new Vector2D(0, 0));
+        expect(player.getPosition()).toEqual(new Point(0, 0));
+        expect(player.getVelocity()).toEqual(new Velocity(new Vector2D(0, 0), 0));
+        expect(player.getTeamSide()).toBe(Side.HOME);
+        expect(player.getInitPosition()).toEqual(new Point(0, 0));
+        expect(player.getIsJumping()).toBe(true);
+
+        expect(player.setPosition(new Point(10, 20))).toBe(player);
+        expect(player.getPosition()).toEqual(new Point(10, 20));
+    });
+
     test('DEVE criar um Player com os atributos corretos', function () {
         const side = Side.HOME;
         const position = new Point(10, 20); // Supondo que Point aceita esses valores

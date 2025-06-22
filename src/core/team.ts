@@ -6,7 +6,13 @@ import { SPECS } from '@/core/specs.js';
 
 import { randomElement } from '@/utils/random.js';
 
-import { ErrPlayerNotFound, ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from '@/errors.js';
+import {
+    ErrPlayerNotFound,
+    ErrTeamDuplicatePlayer,
+    ErrTeamEmpty,
+    ErrTeamInvalidScore,
+    ErrTeamInvalidSide,
+} from '@/errors.js';
 
 export class Team implements ITeam {
     constructor(
@@ -16,7 +22,7 @@ export class Team implements ITeam {
         private players: IPlayer[]
     ) {
         if (this.score < 0) {
-            throw new Error(`Score cannot be negative: ${this.score}`);
+            throw new ErrTeamInvalidScore(this.score);
         }
 
         this.players.forEach((player) => {
@@ -65,7 +71,7 @@ export class Team implements ITeam {
 
     setScore(score: number): this {
         if (score < 0) {
-            throw new Error(`Score cannot be negative: ${score}`);
+            throw new ErrTeamInvalidScore(this.score);
         }
         this.score = score;
         return this;
@@ -73,7 +79,7 @@ export class Team implements ITeam {
 
     getRandomPlayer(ignore: number[] = []): IPlayer {
         const players = this.players.filter((p) => !ignore.includes(p.getNumber()));
-        if (players.length === 0) throw new Error('No players available.');
+        if (players.length === 0) throw new ErrTeamEmpty();
         return randomElement(players);
     }
 
@@ -86,9 +92,7 @@ export class Team implements ITeam {
     }
 
     getGoalkeeper(): IPlayer {
-        const player = this.players.find((p) => p.getNumber() === SPECS.GOALKEEPER_NUMBER);
-        if (!player) throw new Error('Goalkeeper not found.');
-        return player;
+        return this.getPlayer(SPECS.GOALKEEPER_NUMBER);
     }
 
     tryGetGoalkeeper(): IPlayer | null {

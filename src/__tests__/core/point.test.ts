@@ -70,7 +70,7 @@ describe('Core/Point', () => {
         expect(pos).toBe(result);
     });
 
-    test('DEVE retornar um clone adicionado, subtraído, escalonado e dividido em ambos os eixos, usando um outro Positionable', () => {
+    test('DEVE retornar um clone adicionado, subtraído, escalonado, normalizado e dividido em ambos os eixos, usando um outro Positionable', () => {
         const pos = new Point(3, 4);
         expect(pos.getX()).toEqual(3);
         expect(pos.getY()).toEqual(4);
@@ -88,6 +88,11 @@ describe('Core/Point', () => {
         result = pos.scaled(new Point(2, 4));
         expect(result.getX()).toEqual(6);
         expect(result.getY()).toEqual(16);
+        expect(pos).not.toBe(result);
+
+        result = pos.normalized();
+        expect(result.getX()).toBeCloseTo(0.6);
+        expect(result.getY()).toBeCloseTo(0.8);
         expect(pos).not.toBe(result);
 
         result = pos.divided(new Point(8, 16));

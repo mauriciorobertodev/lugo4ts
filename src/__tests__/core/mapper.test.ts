@@ -10,6 +10,23 @@ import {
 } from '@/errors.js';
 
 describe('Core/Mapper', () => {
+    test('Getters e Setters', () => {
+        const mapper = new Mapper(10, 8, Side.HOME);
+
+        expect(mapper.getCols()).toEqual(10);
+        expect(mapper.getRows()).toEqual(8);
+        expect(mapper.getSide()).toEqual(Side.HOME);
+
+        expect(mapper.setSide(Side.AWAY)).toEqual(mapper);
+        expect(mapper.getSide()).toEqual(Side.AWAY);
+
+        expect(mapper.setCols(12)).toEqual(mapper);
+        expect(mapper.getCols()).toEqual(12);
+
+        expect(mapper.setRows(15)).toEqual(mapper);
+        expect(mapper.getRows()).toEqual(15);
+    });
+
     test('DEVE definir e retornar as colunas e linhas corretamente', () => {
         const mapper = new Mapper(10, 8, Side.HOME);
 

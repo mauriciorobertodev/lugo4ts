@@ -102,6 +102,14 @@ export class Formation implements IFormation {
         }
         return this.mapper;
     }
+
+    getPositions(): Record<number, IPoint> {
+        return this.positions;
+    }
+
+    countPositions(): number {
+        return Object.keys(this.positions).length;
+    }
 }
 
 export enum FormationType {

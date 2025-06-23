@@ -25,9 +25,9 @@ export function randomGameSnapshot({
     shotClock,
 }: {
     turn?: number;
-    homeTeam?: ITeam;
-    awayTeam?: ITeam;
-    ball?: IBall;
+    homeTeam?: ITeam | null;
+    awayTeam?: ITeam | null;
+    ball?: IBall | null;
     turnsBallInGoalZone?: number;
     shotClock?: IShotClock;
 } = {}): IGameSnapshot {

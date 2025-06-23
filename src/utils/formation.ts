@@ -1,4 +1,4 @@
-import { FormationObject, IFormation } from '@/interfaces.js';
+import { FormationObject, IFormation, IMapper } from '@/interfaces.js';
 
 import { Formation, FormationType, SPECS, Side } from '@/core.js';
 
@@ -7,7 +7,7 @@ import { createMapperFromObject, isValidPlayerNumber, randomInitialPosition, ran
 import { ErrFormationInvalidPlayerNumber } from '@/errors.js';
 
 // ------------------------------------------------------------
-// Factories
+// Converters
 // ------------------------------------------------------------
 
 export function fromFormationObject({ name, side, positions, type, mapper }: FormationObject): Formation {
@@ -46,6 +46,7 @@ export function randomFormation({
     maxPlayers = SPECS.MAX_PLAYERS,
     minPlayers = SPECS.MAX_PLAYERS,
     type = FormationType.POINTS,
+    mapper = undefined,
 }: {
     side?: Side;
     positions?: Record<number, [number, number]>;
@@ -56,12 +57,9 @@ export function randomFormation({
     maxPlayers?: number;
     minPlayers?: number;
     type?: FormationType;
+    mapper?: IMapper | null;
 } = {}): IFormation {
-    if (minX > maxX || minY > maxY) {
-        throw new Error('O mínimo deve ser menor ou igual ao máximo para X e Y.');
-    }
-
-    const formation = new Formation(undefined, undefined, side, undefined);
+    const formation = new Formation(undefined, undefined, side, type, mapper);
 
     const playerCount = randomInt(minPlayers, maxPlayers);
 

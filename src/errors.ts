@@ -19,19 +19,11 @@ export class ErrBallNotFound extends Error {
     }
 }
 
-export class ErrHomeTeamNotFound extends Error {
-    constructor() {
-        super('Home team not found');
-        this.name = 'ErrHomeTeamNotFound';
-        Object.setPrototypeOf(this, ErrHomeTeamNotFound.prototype);
-    }
-}
-
-export class ErrAwayTeamNotFound extends Error {
-    constructor() {
-        super('Away team not found');
-        this.name = 'ErrAwayTeamNotFound';
-        Object.setPrototypeOf(this, ErrAwayTeamNotFound.prototype);
+export class ErrTeamNotFound extends Error {
+    constructor(side: Side) {
+        super(`Time não encontrado para o lado ${side.toString()}`);
+        this.name = 'ErrTeamNotFound';
+        Object.setPrototypeOf(this, ErrTeamNotFound.prototype);
     }
 }
 

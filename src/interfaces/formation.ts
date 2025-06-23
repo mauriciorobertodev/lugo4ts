@@ -22,6 +22,9 @@ export interface IFormation {
     setPositionOf(playerNumber: number, position: IPoint): this;
     definePositionOf(playerNumber: number, x: number, y: number): this;
 
+    countPositions(): number;
+    getPositions(): Record<number, IPoint>;
+
     toArray(): IPoint[];
 }
 

@@ -10,7 +10,7 @@ export default defineConfig({
         coverage: {
             reporter: ['text', 'json', 'html'],
             include: ['src/**/*.ts'],
-            exclude: ['src/generated/**'],
+            exclude: ['src/generated/**', 'src/playground/**'],
         },
     },
 });

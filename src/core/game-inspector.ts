@@ -16,13 +16,12 @@ import type {
 import { AWAY_GOAL, HOME_GOAL, PlayerState, Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
 
 import {
-    ErrAwayTeamNotFound,
     ErrBallNotFound,
-    ErrHomeTeamNotFound,
     ErrJumpZeroDirection,
     ErrKickZeroDirection,
     ErrMoveZeroDirection,
     ErrPlayerNotFound,
+    ErrTeamNotFound,
 } from '@/errors.js';
 
 import { toLugoVelocity } from '@/lugo.js';
@@ -81,21 +80,17 @@ export class GameInspector implements IGameInspector {
     getTeam(side: Side): ITeam {
         if (side === Side.HOME) {
             if (!this.homeTeam) {
-                throw new ErrHomeTeamNotFound();
+                throw new ErrTeamNotFound(Side.HOME);
             }
 
             return this.homeTeam;
         }
 
         if (!this.awayTeam) {
-            throw new ErrAwayTeamNotFound();
+            throw new ErrTeamNotFound(Side.AWAY);
         }
 
         return this.awayTeam;
-    }
-
-    getFieldCenter(): IPoint {
-        return new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y);
     }
 
     hasShotClock(): boolean {
@@ -115,7 +110,6 @@ export class GameInspector implements IGameInspector {
     getBallHolder(): IPlayer | null {
         return this.getBall().getHolder();
     }
-
     getBallHasHolder(): boolean {
         return this.getBall().hasHolder();
     }

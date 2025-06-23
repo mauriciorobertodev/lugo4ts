@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, test } from 'vitest';
 
 import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
 
+import { ServerState } from '@/interfaces.js';
+
 import {
     AWAY_GOAL,
     Ball,
@@ -15,6 +17,7 @@ import {
     Point,
     Region,
     SPECS,
+    ShotClock,
     Side,
     Vector2D,
     Velocity,
@@ -37,7 +40,13 @@ import {
     zeroedBall,
 } from '@/utils.js';
 
-import { ErrJumpZeroDirection, ErrKickZeroDirection, ErrMoveZeroDirection, ErrPlayerNotFound } from '@/errors.js';
+import {
+    ErrJumpZeroDirection,
+    ErrKickZeroDirection,
+    ErrMoveZeroDirection,
+    ErrPlayerNotFound,
+    ErrTeamNotFound,
+} from '@/errors.js';
 
 import { toLugoVector } from '@/lugo.js';
 
@@ -100,6 +109,7 @@ describe('Core/GameInspector', () => {
         expect(inspector.getBallPosition()).toEqual(snapshot.getBall().getPosition());
         expect(inspector.getBallDirection()).toEqual(snapshot.getBall().getVelocity().getDirection().normalize());
         expect(inspector.getBallSpeed()).toEqual(snapshot.getBall().getVelocity().getSpeed());
+        expect(inspector.getBallHolder()).toEqual(snapshot.getBall().getHolder());
         expect(inspector.getBallHasHolder()).toEqual(!!snapshot.getBall().getHolder());
         expect(inspector.getBallTurnsInGoalZone()).toEqual(snapshot.getBallTurnsInGoalZone());
         expect(inspector.getBallRemainingTurnsInGoalZone()).toEqual(
@@ -107,18 +117,24 @@ describe('Core/GameInspector', () => {
         );
 
         expect(inspector.hasShotClock()).toEqual(!!snapshot.getShotClock());
+        expect(inspector.getShotClock()).toEqual(snapshot.getShotClock());
 
         // Alguem tem a bola
         const inspector2 = randomGameInspectorInOnHolding({ playerSide: Side.HOME, playerNumber: 7 });
         expect(inspector2.hasShotClock()).toEqual(true);
+        expect(inspector.getShotClock()).toBeDefined();
+        expect(inspector2.getShotClock()).toBeInstanceOf(ShotClock);
 
         // Alguem tem a bola
         const inspector3 = randomGameInspectorInOnDefending({ playerSide: Side.HOME, playerNumber: 7 });
         expect(inspector3.hasShotClock()).toEqual(true);
+        expect(inspector.getShotClock()).toBeDefined();
+        expect(inspector2.getShotClock()).toBeInstanceOf(ShotClock);
 
         // Ninguem tem a bola
         const inspector4 = randomGameInspectorInOnDisputing({ playerSide: Side.HOME, playerNumber: 7 });
         expect(inspector4.hasShotClock()).toEqual(false);
+        expect(inspector.getShotClock()).toBeNull();
     });
 
     test('DEVE retornar null quando o método contém "try" e não foi possível executar a ação', function () {
@@ -729,5 +745,11 @@ describe('Core/GameInspector', () => {
         }
 
         expect(inspector.tryMakeOrderLookAtDirection(new Vector2D(0, 0))).toBeNull();
+    });
+
+    test('DEVE lançar um erro quando tentar pegar um team que não existe', function () {
+        const snapshot = new GameSnapshot(ServerState.LISTENING, 0);
+        expect(() => fromGameSnapshot(Side.HOME, 11, snapshot)).toThrow(ErrTeamNotFound);
+        expect(() => fromGameSnapshot(Side.AWAY, 11, snapshot)).toThrow(ErrTeamNotFound);
     });
 });

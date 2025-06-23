@@ -4,7 +4,7 @@ import { Mapper } from '@/core/mapper.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 
-import { ErrFormationPlayerPositionNotDefined } from '@/errors.js';
+import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } from '@/errors.js';
 
 type Positions = Record<number, IPoint>;
 
@@ -51,9 +51,7 @@ export class Formation implements IFormation {
 
     setSide(side: Side): this {
         this.side = side;
-        if (this.mapper) {
-            this.mapper = new Mapper(this.mapper.getCols(), this.mapper.getRows(), side);
-        }
+        if (this.mapper) this.mapper.setSide(side);
         return this;
     }
 
@@ -84,10 +82,6 @@ export class Formation implements IFormation {
         return this;
     }
 
-    toObject(): Record<number, IPoint> {
-        return this.positions;
-    }
-
     toArray(): IPoint[] {
         return Object.values(this.positions);
     }
@@ -97,9 +91,7 @@ export class Formation implements IFormation {
     }
 
     getMapper(): IMapper {
-        if (!this.mapper) {
-            throw new Error('Mapper is not defined for this formation');
-        }
+        if (!this.mapper) throw new ErrFormationMapperNotDefined();
         return this.mapper;
     }
 

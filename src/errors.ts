@@ -71,6 +71,8 @@ export class ErrEnvNeedToken extends Error {
     }
 }
 
+// FORMATION
+
 export class ErrFormationPlayerPositionNotDefined extends Error {
     constructor(playerNumber: number) {
         super(`A posição do jogador ${playerNumber} não foi definida`);
@@ -108,6 +110,14 @@ export class ErrFormationInvalidType extends Error {
         super(`Tipo inválido para a formação: ${type}`);
         this.name = 'ErrFormationInvalidType';
         Object.setPrototypeOf(this, ErrFormationInvalidType.prototype);
+    }
+}
+
+export class ErrFormationMapperNotDefined extends Error {
+    constructor() {
+        super('Mapper não definido para a formação');
+        this.name = 'ErrFormationMapperNotDefined';
+        Object.setPrototypeOf(this, ErrFormationMapperNotDefined.prototype);
     }
 }
 

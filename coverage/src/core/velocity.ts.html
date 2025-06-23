@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>24/24</span>
+                <span class='fraction'>12/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>1/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>24/24</span>
+                <span class='fraction'>12/24</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -101,31 +101,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4644x</span>
-<span class="cline-any cline-yes">4644x</span>
-<span class="cline-any cline-yes">4644x</span>
+<span class="cline-any cline-yes">322x</span>
+<span class="cline-any cline-yes">322x</span>
+<span class="cline-any cline-yes">322x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">170x</span>
-<span class="cline-any cline-yes">170x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">409x</span>
-<span class="cline-any cline-yes">409x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { IVector2D, IVelocity } from '@/interfaces.js';
 &nbsp;
@@ -137,27 +137,27 @@ export class Velocity implements IVelocity {
         private speed: number = 0
     ) {}
 &nbsp;
-    getDirection(): IVector2D {
-        return this.direction;
-    }
+<span class="fstat-no" title="function not covered" >    getDirection(): IVector2D {</span>
+<span class="cstat-no" title="statement not covered" >        return this.direction;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-    setDirection(direction: IVector2D): this {
-        this.direction = direction;
-        return this;
-    }
+<span class="fstat-no" title="function not covered" >    setDirection(direction: IVector2D): this {</span>
+<span class="cstat-no" title="statement not covered" >        this.direction = direction;</span>
+<span class="cstat-no" title="statement not covered" >        return this;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-    getSpeed(): number {
-        return this.speed;
-    }
+<span class="fstat-no" title="function not covered" >    getSpeed(): number {</span>
+<span class="cstat-no" title="statement not covered" >        return this.speed;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-    setSpeed(speed: number): this {
-        this.speed = speed;
-        return this;
-    }
+<span class="fstat-no" title="function not covered" >    setSpeed(speed: number): this {</span>
+<span class="cstat-no" title="statement not covered" >        this.speed = speed;</span>
+<span class="cstat-no" title="statement not covered" >        return this;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-    toString(): string {
-        return `[${this.direction.getX()}, ${this.direction.getY()}, ${this.speed}]`;
-    }
+<span class="fstat-no" title="function not covered" >    toString(): string {</span>
+<span class="cstat-no" title="statement not covered" >        return `[${this.direction.getX()}, ${this.direction.getY()}, ${this.speed}]`;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -166,7 +166,7 @@ export class Velocity implements IVelocity {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-23T22:35:01.620Z
+                at 2025-06-23T23:13:12.236Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

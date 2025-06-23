@@ -12,7 +12,7 @@ import { BotPerformanceTester } from '@/core/stress.js';
 const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 const consoleTableSpy = vi.spyOn(console, 'table').mockImplementation(() => {});
 
-describe('BotPerformanceTester', () => {
+describe('Core/Stress', () => {
     let mockBot: IBot;
     let tester: BotPerformanceTester;
 

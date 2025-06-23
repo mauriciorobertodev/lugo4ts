@@ -11,7 +11,7 @@ import {
     ErrFormationPlayerPositionNotDefined,
 } from '@/errors.js';
 
-describe('Core/Env', () => {
+describe('Core/Formation', () => {
     test('Getters e Setters', () => {
         const f = new Formation();
 

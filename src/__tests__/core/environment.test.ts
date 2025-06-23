@@ -5,7 +5,7 @@ import { Environment } from '@/core/environment.js';
 
 import { randomPlayer, randomTeam, zeroedBall } from '@/utils.js';
 
-describe('Environment', () => {
+describe('Core/Environment', () => {
     let env: Environment;
     beforeEach(() => {
         env = new Environment();

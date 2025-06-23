@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">44.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>8/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>1/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">44.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>8/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -89,45 +89,45 @@
 <a name='L24'></a><a href='#L24'>24</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">338x</span>
-<span class="cline-any cline-yes">338x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Side } from '@/core.js';
 &nbsp;
-export function intToSide(side: number): Side {
-    return side === 0 ? Side.HOME : Side.AWAY;
-}
+export <span class="fstat-no" title="function not covered" >function intToSide(side: number): Side {</span>
+<span class="cstat-no" title="statement not covered" >    return side === 0 ? Side.HOME : Side.AWAY;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-export function stringToSide(side: string): Side {
-    if (side.toLowerCase() === 'home') return Side.HOME;
-    if (side.toLowerCase() === 'away') return Side.AWAY;
-    throw new Error(`Invalid side: ${side}`);
-}
+export <span class="fstat-no" title="function not covered" >function stringToSide(side: string): Side {</span>
+<span class="cstat-no" title="statement not covered" >    if (side.toLowerCase() === 'home') return Side.HOME;</span>
+<span class="cstat-no" title="statement not covered" >    if (side.toLowerCase() === 'away') return Side.AWAY;</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error(`Invalid side: ${side}`);</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-export function flipSide(side: Side): Side {
-    return side === Side.HOME ? Side.AWAY : Side.HOME;
-}
+export <span class="fstat-no" title="function not covered" >function flipSide(side: Side): Side {</span>
+<span class="cstat-no" title="statement not covered" >    return side === Side.HOME ? Side.AWAY : Side.HOME;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-export function sideToInt(side: Side): number {
-    return side === Side.HOME ? 0 : 1;
-}
+export <span class="fstat-no" title="function not covered" >function sideToInt(side: Side): number {</span>
+<span class="cstat-no" title="statement not covered" >    return side === Side.HOME ? 0 : 1;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 export function randomSide(): Side {
     return Math.random() &lt; 0.5 ? Side.HOME : Side.AWAY;
@@ -139,7 +139,7 @@ export function randomSide(): Side {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-23T22:35:01.620Z
+                at 2025-06-23T23:13:12.236Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

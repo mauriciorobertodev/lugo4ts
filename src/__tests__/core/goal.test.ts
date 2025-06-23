@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import { Goal, Point, Side } from '@/core.js';
 
-describe('Core/Env', () => {
+describe('Core/Goal', () => {
     test('DEVE construir um gol customizado', function () {
         const center = new Point(10, 20);
         const topPole = new Point(10, 30);

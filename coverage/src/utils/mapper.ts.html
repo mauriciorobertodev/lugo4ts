@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">27.77% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>5/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">27.77% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>5/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -111,32 +111,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { IMapper, MapperObject } from '@/interfaces.js';
 &nbsp;
 import { Mapper, Side } from '@/core.js';
@@ -147,33 +147,33 @@ import { randomInt } from '@/utils.js';
 // Converters
 // ------------------------------------------------------------
 &nbsp;
-export function createMapperFromObject({ cols, rows, side }: MapperObject): IMapper {
-    return new Mapper(cols, rows, side);
-}
+export <span class="fstat-no" title="function not covered" >function createMapperFromObject({ cols, rows, side }: MapperObject): IMapper {</span>
+<span class="cstat-no" title="statement not covered" >    return new Mapper(cols, rows, side);</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------
 &nbsp;
-export function zeroedMapper(): IMapper {
-    return new Mapper(4, 2, Side.HOME);
-}
+export <span class="fstat-no" title="function not covered" >function zeroedMapper(): IMapper {</span>
+<span class="cstat-no" title="statement not covered" >    return new Mapper(4, 2, Side.HOME);</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-export function randomMapper({
-    minCols = 4,
-    maxCols = 200,
-    minRows = 2,
-    maxRows = 100,
-    side = Side.HOME,
-}: {
+export <span class="fstat-no" title="function not covered" >function randomMapper({</span>
+<span class="cstat-no" title="statement not covered" >    minCols = 4,</span>
+<span class="cstat-no" title="statement not covered" >    maxCols = 200,</span>
+<span class="cstat-no" title="statement not covered" >    minRows = 2,</span>
+<span class="cstat-no" title="statement not covered" >    maxRows = 100,</span>
+<span class="cstat-no" title="statement not covered" >    side = Side.HOME,</span>
+<span class="cstat-no" title="statement not covered" >}: {</span>
     minCols?: number;
     maxCols?: number;
     minRows?: number;
     maxRows?: number;
     side?: Side;
-} = {}): IMapper {
-    return new Mapper(randomInt(minCols, maxCols), randomInt(minRows, maxRows), side);
-}
+<span class="cstat-no" title="statement not covered" >} = {}): IMapper {</span>
+<span class="cstat-no" title="statement not covered" >    return new Mapper(randomInt(minCols, maxCols), randomInt(minRows, maxRows), side);</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -181,7 +181,7 @@ export function randomMapper({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-23T22:35:01.620Z
+                at 2025-06-23T23:13:12.236Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

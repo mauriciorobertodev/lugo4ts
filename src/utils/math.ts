@@ -34,3 +34,11 @@ export function lerp2D(a: IPoint, b: IPoint, t: number): IPoint {
 export function isBetween(value: number, min: number, max: number): boolean {
     return value >= Math.min(min, max) && value <= Math.max(min, max);
 }
+
+export function radiansToDegrees(radians: number): number {
+    return radians * (180 / Math.PI);
+}
+
+export function degreesToRadians(degrees: number): number {
+    return degrees * (Math.PI / 180);
+}

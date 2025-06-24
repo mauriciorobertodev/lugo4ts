@@ -43,6 +43,9 @@ export interface IVector2D extends IPositionable {
     subtracted(value: IPositionable | number): IVector2D;
     divided(value: IPositionable | number): IVector2D;
     scaled(value: IPositionable | number): IVector2D;
+
+    angleInRadians(): number;
+    angleInDegrees(): number;
 }
 
 export interface IPoint extends IPositionable {

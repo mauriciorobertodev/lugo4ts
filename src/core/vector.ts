@@ -152,4 +152,12 @@ export class Vector2D implements IVector2D {
     eq(positionable: IVector2D): boolean {
         return this.is(positionable);
     }
+
+    angleInRadians(): number {
+        return Math.atan2(this.getY(), this.getX());
+    }
+
+    angleInDegrees(): number {
+        return this.angleInRadians() * (180 / Math.PI);
+    }
 }

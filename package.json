@@ -1,6 +1,6 @@
 {
     "name": "@mauricioroberto/lugo4ts",
-    "version": "0.0.5-beta",
+    "version": "0.0.6-beta",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "module",
@@ -16,7 +16,8 @@
     },
     "scripts": {
         "dev": "tsx src/index.ts",
-        "build": "tsc",
+        "build": "tsc && tsc-alias",
+        "build:watch": "tsc --watch",
         "test": "vitest",
         "test:ui": "vitest --ui",
         "test:coverage": "vitest --coverage",
@@ -62,6 +63,7 @@
         "seedrandom": "^3.0.5",
         "ts-proto": "^2.7.2",
         "ts-protoc-gen": "^0.15.1-pre.a71b34e",
+        "tsc-alias": "^1.8.16",
         "tsx": "^4.19.4",
         "typescript": "^5.8.3",
         "vite-tsconfig-paths": "^5.1.4",

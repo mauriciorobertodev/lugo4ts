@@ -1,6 +1,6 @@
 import { IPoint, IVector2D } from '@/interfaces.js';
 
-import { Vector2D } from '@/core.js';
+import { Point, Vector2D } from '@/core.js';
 
 import { randomFloat } from '@/utils.js';
 
@@ -9,7 +9,7 @@ import { randomFloat } from '@/utils.js';
 // ------------------------------------------------------------
 
 export function vector2DToPoint(vector: IVector2D): IPoint {
-    return new Vector2D(vector.getX(), vector.getY());
+    return new Point(vector.getX(), vector.getY());
 }
 
 // ------------------------------------------------------------

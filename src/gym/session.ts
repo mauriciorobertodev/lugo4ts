@@ -1,9 +1,15 @@
+import { Client } from '@/runtime/client.js';
+import { GameController } from '@/runtime/controller.js';
+
 import { Order } from '@/generated/server.js';
 
-import { IClient, IGameController, IGameInspector, IGameSnapshot, IGymSession, IGymTrainer } from '@/interfaces.js';
+import { IClient } from '@/interfaces/client.js';
+import { IGameController } from '@/interfaces/controller.js';
+import { IGameInspector } from '@/interfaces/game-inspector.js';
+import { IGameSnapshot } from '@/interfaces/game-snapshot.js';
+import { IGymSession } from '@/interfaces/gym-session.js';
+import { IGymTrainer } from '@/interfaces/gym-trainer.js';
 
-import { Client } from '@/core/client.js';
-import { GameController } from '@/core/controller.js';
 import { Environment } from '@/core/environment.js';
 
 import { fromGameSnapshot } from '@/utils/game-inspector.js';

@@ -1,6 +1,6 @@
-import { IPoint } from '@/interfaces.js';
+import { IPoint } from '@/interfaces/positionable.js';
 
-import { Point } from '@/core.js';
+import { Point } from '@/core/point.js';
 
 import { ErrMathInterpolationFactor } from '@/errors.js';
 

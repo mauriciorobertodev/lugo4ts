@@ -1,12 +1,12 @@
-import { IMapper, MapperObject } from '@/interfaces.js';
-
-import { Mapper, Side } from '@/core.js';
-
-import { randomInt } from '@/utils.js';
-
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
+import { IMapper, MapperObject } from '@/interfaces/mapper.js';
+
+import { Mapper } from '@/core/mapper.js';
+import { Side } from '@/core/side.js';
+
+import { randomInt } from '@/utils/random.js';
 
 export function createMapperFromObject({ cols, rows, side }: MapperObject): IMapper {
     return new Mapper(cols, rows, side);

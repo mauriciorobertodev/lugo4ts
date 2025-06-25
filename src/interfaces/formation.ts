@@ -1,6 +1,8 @@
-import type { IMapper, IPoint, MapperObject } from '@/interfaces.js';
+import type { IMapper, MapperObject } from '@/interfaces/mapper.js';
+import type { IPoint } from '@/interfaces/positionable.js';
 
-import type { FormationType, Side } from '@/core.js';
+import type { FormationType } from '@/core/formation.js';
+import type { Side } from '@/core/side.js';
 
 export interface IFormation {
     getName(): string;

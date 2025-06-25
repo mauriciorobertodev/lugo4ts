@@ -1,6 +1,8 @@
-import type { IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
+import type { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import type { IRegion } from '@/interfaces/region.js';
+import type { IVelocity } from '@/interfaces/velocity.js';
 
-import type { Side } from '@/core.js';
+import type { Side } from '@/core/side.js';
 
 export interface IPlayer {
     getNumber(): number;

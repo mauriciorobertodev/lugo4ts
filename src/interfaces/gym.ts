@@ -1,6 +1,8 @@
-import { IBot, IGymTrainer } from '@/interfaces.js';
+import type { IBot } from '@/interfaces/bot.js';
+import type { IGymTrainer } from '@/interfaces/gym-trainer.js';
 
-import { Environment, Side } from '@/core.js';
+import type { Environment } from '@/core/environment.js';
+import type { Side } from '@/core/side.js';
 
 export type BotFactory = (number: number, side: Side) => IBot;
 

@@ -1,4 +1,5 @@
-import { SPECS, type Side } from '@/core.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
 export class ErrPlayerNotFound extends Error {
     constructor(

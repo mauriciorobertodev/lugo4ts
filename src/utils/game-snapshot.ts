@@ -1,12 +1,16 @@
-import { IBall, IGameSnapshot, IShotClock, ITeam, ServerState } from '@/interfaces.js';
-
-import { GameSnapshot, ShotClock, Side, Team } from '@/core.js';
-
-import { randomBall, randomTeam } from '@/utils.js';
-
 // ------------------------------------------------------------
 // Converters
 // ---------------------------------------------------------
+import { IBall } from '@/interfaces/ball.js';
+import { IGameSnapshot, ServerState } from '@/interfaces/game-snapshot.js';
+import { IShotClock } from '@/interfaces/shot-clock.js';
+import { ITeam } from '@/interfaces/team.js';
+
+import { GameSnapshot } from '@/core/game-snapshot.js';
+import { Side } from '@/core/side.js';
+
+import { randomBall } from '@/utils/ball.js';
+import { randomTeam } from '@/utils/team.js';
 
 // ------------------------------------------------------------
 // Factories

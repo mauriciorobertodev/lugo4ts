@@ -1,10 +1,10 @@
-import { IGoal } from '@/interfaces.js';
-
-import { AWAY_GOAL, HOME_GOAL, Side } from '@/core.js';
-
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------
+import { IGoal } from '@/interfaces/goal.js';
+
+import { AWAY_GOAL, HOME_GOAL } from '@/core/goal.js';
+import { Side } from '@/core/side.js';
 
 export function randomGoal(): IGoal {
     const side = Math.random() < 0.5 ? Side.HOME : Side.AWAY;

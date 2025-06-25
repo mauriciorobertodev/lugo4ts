@@ -1,8 +1,17 @@
-import { IGameInspector, IGameSnapshot } from '@/interfaces.js';
+import { IGameInspector } from '@/interfaces/game-inspector.js';
+import { IGameSnapshot } from '@/interfaces/game-snapshot.js';
 
-import { GameInspector, PlayerState, SPECS, Side } from '@/core.js';
+import { GameInspector } from '@/core/game-inspector.js';
+import { PlayerState } from '@/core/player.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
-import { randomBall, randomInt, randomPlayerState, randomShotClock, randomSide, randomTeam } from '@/utils.js';
+import { randomBall } from '@/utils/ball.js';
+import { randomPlayerState } from '@/utils/player.js';
+import { randomInt } from '@/utils/random.js';
+import { randomShotClock } from '@/utils/shot-clock.js';
+import { randomSide } from '@/utils/side.js';
+import { randomTeam } from '@/utils/team.js';
 
 import { ErrGameInvalidPlayerState } from '@/errors.js';
 

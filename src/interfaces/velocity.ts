@@ -1,4 +1,4 @@
-import type { IVector2D } from '@/interfaces.js';
+import type { IVector2D } from './positionable.js';
 
 export interface IVelocity {
     getDirection(): IVector2D;

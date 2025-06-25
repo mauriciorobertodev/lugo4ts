@@ -1,6 +1,12 @@
-import type { IBall, IFormation, IGameSnapshot, IPlayer, IPoint, IVelocity } from '@/interfaces.js';
+import type { IBall } from '@/interfaces/ball.js';
+import type { IFormation } from '@/interfaces/formation.js';
+import type { IGameSnapshot } from '@/interfaces/game-snapshot.js';
+import type { IPlayer } from '@/interfaces/player.js';
+import type { IPoint } from '@/interfaces/positionable.js';
+import type { IVelocity } from '@/interfaces/velocity.js';
 
-import type { Environment, Side } from '@/core.js';
+import type { Environment } from '@/core/environment.js';
+import type { Side } from '@/core/side.js';
 
 export interface IGameController {
     nextTurn(): Promise<void>;

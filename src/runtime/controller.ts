@@ -1,3 +1,4 @@
+import { Event, EventData, GenericEventListener } from '@/runtime/events.js';
 import { credentials } from '@grpc/grpc-js';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 
@@ -5,25 +6,22 @@ import { BroadcastClient } from '@/generated/broadcast.client.js';
 import { GameEvent, GameSetup } from '@/generated/broadcast.js';
 import { RemoteClient } from '@/generated/remote.client.js';
 import { GameProperties } from '@/generated/remote.js';
-import { GameSnapshot_State } from '@/generated/server.js';
+import { GameSnapshot, GameSnapshot_State } from '@/generated/server.js';
 
-import { IBall, IFormation, IGameController, IPlayer } from '@/interfaces.js';
+import { IBall } from '@/interfaces/ball.js';
+import { IGameController } from '@/interfaces/controller.js';
+import { IFormation } from '@/interfaces/formation.js';
+import { IGameSnapshot } from '@/interfaces/game-snapshot.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint } from '@/interfaces/positionable.js';
+import { IVelocity } from '@/interfaces/velocity.js';
 
-import {
-    Ball,
-    Environment,
-    Event,
-    EventData,
-    GameSnapshot,
-    GenericEventListener,
-    Player,
-    Point,
-    SPECS,
-    Side,
-    Velocity,
-} from '@/core.js';
+import { Environment } from '@/core/environment.js';
+import { Point } from '@/core/point.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
-import { intToSide, sideToInt } from '@/utils.js';
+import { intToSide, sideToInt } from '@/utils/side.js';
 
 import {
     fromLugoGameSnapshot,
@@ -102,8 +100,8 @@ export class GameController implements IGameController {
         return this.play();
     }
 
-    async getGameSnapshot(): Promise<GameSnapshot | null> {
-        return new Promise<GameSnapshot | null>(async (resolve, reject) => {
+    async getGameSnapshot(): Promise<IGameSnapshot | null> {
+        return new Promise<IGameSnapshot | null>(async (resolve, reject) => {
             try {
                 const call = await this.remote.getGameSnapshot({});
                 const lugoSnapshot = call.response.gameSnapshot;
@@ -115,8 +113,8 @@ export class GameController implements IGameController {
         });
     }
 
-    async resetPlayerPositions(): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async resetPlayerPositions(): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.resetPlayerPositions({});
                 const lugoSnapshot = res.response.gameSnapshot;
@@ -129,12 +127,12 @@ export class GameController implements IGameController {
         });
     }
 
-    async resetBallPosition(): Promise<GameSnapshot> {
+    async resetBallPosition(): Promise<IGameSnapshot> {
         return this.setBallPosition(new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y));
     }
 
-    async addPlayer(player: IPlayer): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async addPlayer(player: IPlayer): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setPlayerProperties({
                     number: player.getNumber(),
@@ -151,8 +149,8 @@ export class GameController implements IGameController {
         });
     }
 
-    async setPlayerPosition(player: Player, position: Point): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async setPlayerPosition(player: IPlayer, position: Point): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 await this.remote.setPlayerProperties({
                     number: player.getNumber(),
@@ -166,8 +164,8 @@ export class GameController implements IGameController {
         });
     }
 
-    async setPlayerVelocity(player: Player, velocity: Velocity): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async setPlayerVelocity(player: IPlayer, velocity: IVelocity): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setPlayerProperties({
                     number: player.getNumber(),
@@ -183,8 +181,8 @@ export class GameController implements IGameController {
         });
     }
 
-    async setPlayerSpeed(player: Player, speed: number): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async setPlayerSpeed(player: IPlayer, speed: number): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setPlayerProperties({
                     number: player.getNumber(),
@@ -200,8 +198,8 @@ export class GameController implements IGameController {
         });
     }
 
-    async setBall(ball: IBall): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async setBall(ball: IBall): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setBallProperties({
                     position: toLugoPoint(ball.getPosition()),
@@ -217,8 +215,8 @@ export class GameController implements IGameController {
         });
     }
 
-    async setBallPosition(position: Point): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async setBallPosition(position: IPoint): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setBallProperties({ position: toLugoPoint(position) });
                 const lugoSnapshot = res.response.gameSnapshot;
@@ -230,8 +228,8 @@ export class GameController implements IGameController {
         });
     }
 
-    async setBallVelocity(velocity: Velocity): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async setBallVelocity(velocity: IVelocity): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setBallProperties({ velocity: toLugoVelocity(velocity) });
                 const lugoSnapshot = res.response.gameSnapshot;
@@ -243,8 +241,8 @@ export class GameController implements IGameController {
         });
     }
 
-    async setBallSpeed(speed: number): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    async setBallSpeed(speed: number): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const res = await this.remote.setBallProperties({ velocity: { speed } });
                 const lugoSnapshot = res.response.gameSnapshot;
@@ -371,8 +369,8 @@ export class GameController implements IGameController {
         this.listeners[event]!.push(callback);
     }
 
-    public applyEnvironment(environment: Environment): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    public applyEnvironment(environment: Environment): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 console.log('[CONTROLLER] Aplicando ambiente:', environment.getName());
 
@@ -427,8 +425,8 @@ export class GameController implements IGameController {
         });
     }
 
-    setTurn(turn: number): Promise<GameSnapshot> {
-        return new Promise<GameSnapshot>(async (resolve, reject) => {
+    setTurn(turn: number): Promise<IGameSnapshot> {
+        return new Promise<IGameSnapshot>(async (resolve, reject) => {
             try {
                 const properties = GameProperties.create();
                 const res = await this.remote.setGameProperties({ ...properties, turn });

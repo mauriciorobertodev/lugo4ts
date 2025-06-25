@@ -1,4 +1,6 @@
-import type { IMapper, IPoint, IRegion } from '@/interfaces.js';
+import { IMapper } from '@/interfaces/mapper.js';
+import { IPoint } from '@/interfaces/positionable.js';
+import { IRegion } from '@/interfaces/region.js';
 
 import { Point } from '@/core/point.js';
 import { Region } from '@/core/region.js';

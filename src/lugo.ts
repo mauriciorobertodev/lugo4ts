@@ -9,21 +9,27 @@ import {
     Team_Side,
 } from '@/generated/server.js';
 
-import {
-    IBall,
-    IGameSnapshot,
-    IPlayer,
-    IPoint,
-    IShotClock,
-    ITeam,
-    IVector2D,
-    IVelocity,
-    ServerState,
-} from '@/interfaces.js';
+import { IBall } from '@/interfaces/ball.js';
+import { IGameSnapshot, ServerState } from '@/interfaces/game-snapshot.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import { IShotClock } from '@/interfaces/shot-clock.js';
+import { ITeam } from '@/interfaces/team.js';
+import { IVelocity } from '@/interfaces/velocity.js';
 
-import { Ball, GameSnapshot, Player, Point, SPECS, ShotClock, Side, Team, Vector2D, Velocity } from '@/core.js';
+import { Ball } from '@/core/ball.js';
+import { GameSnapshot } from '@/core/game-snapshot.js';
+import { Player } from '@/core/player.js';
+import { Point } from '@/core/point.js';
+import { ShotClock } from '@/core/shot-clock.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
+import { Team } from '@/core/team.js';
+import { Vector2D } from '@/core/vector.js';
+import { Velocity } from '@/core/velocity.js';
 
-import { intToSide, sideToInt, zeroedVelocity } from '@/utils.js';
+import { intToSide, sideToInt } from '@/utils/side.js';
+import { zeroedVelocity } from '@/utils/velocity.js';
 
 // ------------------------------------------------------------
 // Converters

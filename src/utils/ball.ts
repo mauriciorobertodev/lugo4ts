@@ -1,12 +1,16 @@
-import { IBall, IPlayer, IPoint, IVector2D } from '@/interfaces.js';
-
-import { Ball, SPECS } from '@/core.js';
-
-import { fieldCenterPoint, randomPoint, randomVelocity, zeroedVelocity } from '@/utils.js';
-
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------
+import { IBall } from '@/interfaces/ball.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+
+import { Ball } from '@/core/ball.js';
+import { SPECS } from '@/core/specs.js';
+
+import { fieldCenterPoint } from '@/utils/field.js';
+import { randomPoint } from '@/utils/point.js';
+import { randomVelocity, zeroedVelocity } from '@/utils/velocity.js';
 
 export function zeroedBall(): IBall {
     return new Ball(fieldCenterPoint(), zeroedVelocity(), null);

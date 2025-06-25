@@ -1,4 +1,4 @@
-import type { IPositionable, IVector2D } from '@/interfaces.js';
+import { IPositionable, IVector2D } from '@/interfaces/positionable.js';
 
 export class Vector2D implements IVector2D {
     constructor(

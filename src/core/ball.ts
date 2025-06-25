@@ -1,4 +1,8 @@
-import { IBall, IPlayer, IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
+import { IBall } from '@/interfaces/ball.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import { IRegion } from '@/interfaces/region.js';
+import { IVelocity } from '@/interfaces/velocity.js';
 
 import { Point } from '@/core/point.js';
 import { SPECS } from '@/core/specs.js';

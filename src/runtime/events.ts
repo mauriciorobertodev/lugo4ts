@@ -1,5 +1,7 @@
-import { Side } from '@/core.js';
-import { IGameSnapshot, IPlayer } from '@/interfaces.js';
+import { IGameSnapshot } from '@/interfaces/game-snapshot.js';
+import { IPlayer } from '@/interfaces/player.js';
+
+import { Side } from '@/core/side.js';
 
 export type Event = 'turn' | 'goal' | 'play' | 'pause' | 'over' | 'player-join' | 'player-leave';
 

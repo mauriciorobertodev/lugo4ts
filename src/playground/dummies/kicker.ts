@@ -1,20 +1,23 @@
 import { Order } from '@/generated/server.js';
 
-import { IBot, IPoint } from '@/interfaces.js';
+import { IBot } from '@/interfaces/bot.js';
+import { IGameInspector } from '@/interfaces/game-inspector.js';
+import { IPoint } from '@/interfaces/positionable.js';
 
-import { GameInspector, PlayerState, Point, SPECS } from '@/core.js';
+import { PlayerState } from '@/core/player.js';
+import { Point } from '@/core/point.js';
+import { SPECS } from '@/core/specs.js';
 
-import '@/utils.js';
-import { randomInt } from '@/utils.js';
+import { randomInt } from '@/utils/random.js';
 
 export class DummyKicker implements IBot {
     private distanceToKick: number = this.generateDistanceToKick();
 
-    beforeActions(inspector: GameInspector): void {}
-    afterActions(inspector: GameInspector): void {}
-    onReady(inspector: GameInspector): void {}
+    beforeActions(inspector: IGameInspector): void {}
+    afterActions(inspector: IGameInspector): void {}
+    onReady(inspector: IGameInspector): void {}
 
-    onHolding(inspector: GameInspector): Order[] {
+    onHolding(inspector: IGameInspector): Order[] {
         const orders: Order[] = [];
 
         const me = inspector.getMe();
@@ -37,25 +40,25 @@ export class DummyKicker implements IBot {
         return orders;
     }
 
-    onDisputing(inspector: GameInspector): Order[] {
+    onDisputing(inspector: IGameInspector): Order[] {
         const orders: Order[] = [];
 
         return orders;
     }
 
-    onDefending(inspector: GameInspector): Order[] {
+    onDefending(inspector: IGameInspector): Order[] {
         const orders: Order[] = [];
 
         return orders;
     }
 
-    onSupporting(inspector: GameInspector): Order[] {
+    onSupporting(inspector: IGameInspector): Order[] {
         const orders: Order[] = [];
 
         return orders;
     }
 
-    asGoalkeeper(inspector: GameInspector, state: PlayerState): Order[] {
+    asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
         const orders: Order[] = [];
 
         return orders;

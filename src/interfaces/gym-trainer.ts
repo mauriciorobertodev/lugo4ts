@@ -1,6 +1,7 @@
 import type { OrderSet } from '@/generated/server.js';
 
-import { IGameInspector, IGymSession } from '@/interfaces.js';
+import type { IGameInspector } from '@/interfaces/game-inspector.js';
+import type { IGymSession } from '@/interfaces/gym-session.js';
 
 export interface IGymTrainer<Input = any, Output = any> {
     input: (game: IGameInspector) => Promise<Input>;

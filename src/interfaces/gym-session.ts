@@ -1,6 +1,7 @@
-import { IGameInspector, IGameSnapshot } from '@/interfaces.js';
+import type { IGameInspector } from '@/interfaces/game-inspector.js';
+import type { IGameSnapshot } from '@/interfaces/game-snapshot.js';
 
-import { Environment } from '@/core.js';
+import type { Environment } from '@/core/environment.js';
 
 export interface IGymSession {
     start(): Promise<void>;

@@ -1,4 +1,7 @@
-import type { IMapper, IPlayer, IPoint, IRegion } from '@/interfaces.js';
+import { IMapper } from '@/interfaces/mapper.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint } from '@/interfaces/positionable.js';
+import { IRegion } from '@/interfaces/region.js';
 
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';

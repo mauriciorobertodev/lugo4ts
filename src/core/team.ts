@@ -1,6 +1,7 @@
-import type { IFormation, IPlayer, ITeam } from '@/interfaces.js';
+import { IFormation } from '@/interfaces/formation.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { ITeam } from '@/interfaces/team.js';
 
-import { Player } from '@/core/player.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 

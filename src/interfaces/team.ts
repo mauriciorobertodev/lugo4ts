@@ -1,6 +1,7 @@
-import type { IFormation, IPlayer } from '@/interfaces.js';
+import type { IFormation } from '@/interfaces/formation.js';
+import type { IPlayer } from '@/interfaces/player.js';
 
-import type { Side } from '@/core.js';
+import type { Side } from '@/core/side.js';
 
 export interface ITeam {
     getPlayers(): IPlayer[];

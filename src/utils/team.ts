@@ -1,8 +1,12 @@
-import { IPlayer, ITeam } from '@/interfaces.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { ITeam } from '@/interfaces/team.js';
 
-import { Side, Team } from '@/core.js';
+import { Side } from '@/core/side.js';
+import { Team } from '@/core/team.js';
 
-import { randomInt, randomPlayer, randomSide } from '@/utils.js';
+import { randomPlayer } from '@/utils/player.js';
+import { randomInt } from '@/utils/random.js';
+import { randomSide } from '@/utils/side.js';
 
 import { ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from '@/errors.js';
 

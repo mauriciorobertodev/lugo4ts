@@ -1,8 +1,9 @@
-import { Order } from '@/generated/server.js';
+import type { Order } from '@/generated/server.js';
 
-import type { IBot, IGameInspector } from '@/interfaces.js';
+import type { IBot } from '@/interfaces/bot.js';
+import type { IGameInspector } from '@/interfaces/game-inspector.js';
 
-import { Side } from '@/core.js';
+import type { Side } from '@/core/side.js';
 
 export interface IClient {
     getSide(): Side;

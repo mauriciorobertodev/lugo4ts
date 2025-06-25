@@ -1,19 +1,21 @@
 import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
 
-import type {
-    IBall,
-    IGameInspector,
-    IGoal,
-    IPlayer,
-    IPoint,
-    IRegion,
-    IShotClock,
-    ITeam,
-    IVector2D,
-    IVelocity,
-} from '@/interfaces.js';
+import { IBall } from '@/interfaces/ball.js';
+import { IGameInspector } from '@/interfaces/game-inspector.js';
+import { IGoal } from '@/interfaces/goal.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import { IRegion } from '@/interfaces/region.js';
+import { IShotClock } from '@/interfaces/shot-clock.js';
+import { ITeam } from '@/interfaces/team.js';
+import { IVelocity } from '@/interfaces/velocity.js';
 
-import { AWAY_GOAL, HOME_GOAL, PlayerState, Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
+import { AWAY_GOAL, HOME_GOAL } from '@/core/goal.js';
+import { PlayerState } from '@/core/player.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
+import { Vector2D } from '@/core/vector.js';
+import { Velocity } from '@/core/velocity.js';
 
 import {
     ErrBallNotFound,

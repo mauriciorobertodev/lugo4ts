@@ -1,12 +1,15 @@
-import { IVector2D, IVelocity } from '@/interfaces.js';
-
-import { SPECS, Vector2D, Velocity } from '@/core.js';
-
-import { randomFloat, randomVector2D } from '@/utils.js';
-
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
+import { IVector2D } from '@/interfaces/positionable.js';
+import { IVelocity } from '@/interfaces/velocity.js';
+
+import { SPECS } from '@/core/specs.js';
+import { Vector2D } from '@/core/vector.js';
+import { Velocity } from '@/core/velocity.js';
+
+import { randomFloat } from '@/utils/random.js';
+import { randomVector2D } from '@/utils/vector.js';
 
 // ------------------------------------------------------------
 // Factories

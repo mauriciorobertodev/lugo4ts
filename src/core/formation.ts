@@ -1,4 +1,6 @@
-import type { IFormation, IMapper, IPoint } from '@/interfaces.js';
+import { IFormation } from '@/interfaces/formation.js';
+import { IMapper } from '@/interfaces/mapper.js';
+import { IPoint } from '@/interfaces/positionable.js';
 
 import { Mapper } from '@/core/mapper.js';
 import { Point } from '@/core/point.js';

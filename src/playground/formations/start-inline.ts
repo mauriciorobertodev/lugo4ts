@@ -1,8 +1,9 @@
-import { IFormation } from '@/interfaces.js';
+import { Formation, FormationType } from '@/core/formation.js';
+import { Point } from '@/core/point.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
-import { Formation, FormationType, Point, SPECS, Side } from '@/core.js';
-
-import { lerp } from '@/utils.js';
+import { lerp } from '@/utils/math.js';
 
 export class StartInlineFormation extends Formation {
     constructor(side: Side) {

@@ -1,4 +1,4 @@
-import { IPoint, IPositionable, IVector2D } from '@/interfaces.js';
+import { IPoint, IPositionable, IVector2D } from '@/interfaces/positionable.js';
 
 import { Vector2D } from '@/core/vector.js';
 

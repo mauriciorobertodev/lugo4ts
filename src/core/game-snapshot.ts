@@ -1,16 +1,12 @@
-import type {
-    IBall,
-    IGameSnapshot,
-    IPlayer,
-    IPoint,
-    IShotClock,
-    ITeam,
-    IVector2D,
-    IVelocity,
-    ServerState,
-} from '@/interfaces.js';
+import { IBall } from '@/interfaces/ball.js';
+import { IGameSnapshot, ServerState } from '@/interfaces/game-snapshot.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import { IShotClock } from '@/interfaces/shot-clock.js';
+import { ITeam } from '@/interfaces/team.js';
+import { IVelocity } from '@/interfaces/velocity.js';
 
-import { Ball, Player, Point, SPECS, ShotClock, Team, Vector2D, Velocity } from '@/core.js';
+import { SPECS } from '@/core/specs.js';
 
 export class GameSnapshot implements IGameSnapshot {
     constructor(

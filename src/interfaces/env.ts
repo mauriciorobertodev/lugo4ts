@@ -1,4 +1,4 @@
-import type { Side } from '@/core.js';
+import type { Side } from '@/core/side.js';
 
 export interface IEnv {
     getGrpcUrl(): string;

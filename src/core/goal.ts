@@ -1,4 +1,5 @@
-import { IGoal, IPoint } from '@/interfaces.js';
+import { IGoal } from '@/interfaces/goal.js';
+import { IPoint } from '@/interfaces/positionable.js';
 
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';

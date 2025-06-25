@@ -1,6 +1,7 @@
-import type { IPoint, IRegion } from '@/interfaces.js';
+import type { IPoint } from '@/interfaces/positionable.js';
+import type { IRegion } from '@/interfaces/region.js';
 
-import type { Side } from '@/core.js';
+import type { Side } from '@/core/side.js';
 
 export interface IMapper {
     getCols(): number;

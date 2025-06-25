@@ -1,9 +1,8 @@
-import { IEnv } from '@/interfaces.js';
+import { IEnv } from '@/interfaces/env.js';
 
 import { Side } from '@/core/side.js';
-import { SPECS } from '@/core/specs.js';
 
-import { isValidPlayerNumber } from '@/utils.js';
+import { isValidPlayerNumber } from '@/utils/player.js';
 import { stringToSide } from '@/utils/side.js';
 
 import { ErrBotInvalidNumber, ErrEnvNeedToken } from '@/errors.js';

@@ -1,4 +1,7 @@
-import type { IPlayer, IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
+import type { IPlayer } from '@/interfaces/player.js';
+import type { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import type { IRegion } from '@/interfaces/region.js';
+import type { IVelocity } from '@/interfaces/velocity.js';
 
 export interface IBall {
     getPosition(): IPoint;

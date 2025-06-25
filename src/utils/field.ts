@@ -1,10 +1,10 @@
-import { IPoint } from '@/interfaces.js';
-
-import { Point, SPECS } from '@/core.js';
-
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------
+import { IPoint } from '@/interfaces/positionable.js';
+
+import { Point } from '@/core/point.js';
+import { SPECS } from '@/core/specs.js';
 
 /**
  * Creates a new Point with the given coordinates.

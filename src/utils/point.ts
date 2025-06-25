@@ -1,12 +1,17 @@
-import { IGoal, IPoint, IVector2D } from '@/interfaces.js';
-
-import { AWAY_GOAL, HOME_GOAL, Point, SPECS, Side, Vector2D } from '@/core.js';
-
-import { fieldCenterPoint, randomInt } from '@/utils.js';
-
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
+import { IGoal } from '@/interfaces/goal.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+
+import { AWAY_GOAL, HOME_GOAL } from '@/core/goal.js';
+import { Point } from '@/core/point.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
+import { Vector2D } from '@/core/vector.js';
+
+import { fieldCenterPoint } from '@/utils/field.js';
+import { randomInt } from '@/utils/random.js';
 
 export function pointToVector2D(point: IPoint): IVector2D {
     return new Vector2D(point.getX(), point.getY());

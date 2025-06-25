@@ -1,4 +1,4 @@
-import { Side } from '@/core.js';
+import { Side } from '@/core/side.js';
 
 export function intToSide(side: number): Side {
     return side === 0 ? Side.HOME : Side.AWAY;

@@ -8,6 +8,28 @@
     "publishConfig": {
         "access": "public"
     },
+    "exports": {
+        "./core": {
+            "import": "./dist/core.js",
+            "types": "./dist/core.d.ts"
+        },
+        "./gym": {
+            "import": "./dist/gym.js",
+            "types": "./dist/gym.d.ts"
+        },
+        "./playground": {
+            "import": "./dist/playground.js",
+            "types": "./dist/playground.d.ts"
+        },
+        "./errors": {
+            "import": "./dist/errors.js",
+            "types": "./dist/errors.d.ts"
+        },
+        "./utils": {
+            "import": "./dist/utils.js",
+            "types": "./dist/utils.d.ts"
+        }
+    },
     "files": [
         "dist"
     ],

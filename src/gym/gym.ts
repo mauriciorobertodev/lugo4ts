@@ -1,12 +1,24 @@
-import { BotFactory, IBot, IFormation, IGymTrainer } from '@/interfaces.js';
+import { GymSession } from '@/gym/session.js';
+import { Client } from '@/runtime/client.js';
+import { GameController } from '@/runtime/controller.js';
 
-import { Client, Environment, GameController, GymSession, Point, SPECS, Side } from '@/core.js';
+import { IBot } from '@/interfaces/bot.js';
+import { IFormation } from '@/interfaces/formation.js';
+import { IGymTrainer } from '@/interfaces/gym-trainer.js';
+import { BotFactory } from '@/interfaces/gym.js';
 
-import { flipSide, isValidPlayerNumber, randomInitialPosition, sleep } from '@/utils.js';
+import { Environment } from '@/core/environment.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
+
+import { isValidPlayerNumber } from '@/utils/player.js';
+import { randomInitialPosition } from '@/utils/point.js';
+import { flipSide } from '@/utils/side.js';
+import { sleep } from '@/utils/time.js';
 
 import { ErrBotInvalidNumber } from '@/errors.js';
 
-import { DummyStatue } from '@/playground.js';
+import { DummyStatue } from '@/playground/dummies/statue.js';
 import { StartInlineFormation } from '@/playground/formations/start-inline.js';
 
 export class Gym {

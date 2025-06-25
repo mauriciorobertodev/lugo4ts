@@ -1,35 +1,36 @@
 import { Order } from '@/generated/server.js';
 
-import { IBot } from '@/interfaces.js';
+import { IBot } from '@/interfaces/bot.js';
+import { IGameInspector } from '@/interfaces/game-inspector.js';
 
-import { GameInspector, PlayerState } from '@/core.js';
+import { PlayerState } from '@/core/player.js';
 
 export class DummyChaser implements IBot {
-    beforeActions(inspector: GameInspector): void {}
-    afterActions(inspector: GameInspector): void {}
-    onReady(inspector: GameInspector): void {}
+    beforeActions(inspector: IGameInspector): void {}
+    afterActions(inspector: IGameInspector): void {}
+    onReady(inspector: IGameInspector): void {}
 
-    onHolding(inspector: GameInspector): Order[] {
+    onHolding(inspector: IGameInspector): Order[] {
         return this.chaseBall(inspector);
     }
 
-    onDisputing(inspector: GameInspector): Order[] {
+    onDisputing(inspector: IGameInspector): Order[] {
         return this.chaseBall(inspector);
     }
 
-    onDefending(inspector: GameInspector): Order[] {
+    onDefending(inspector: IGameInspector): Order[] {
         return this.chaseBall(inspector);
     }
 
-    onSupporting(inspector: GameInspector): Order[] {
+    onSupporting(inspector: IGameInspector): Order[] {
         return this.chaseBall(inspector);
     }
 
-    asGoalkeeper(inspector: GameInspector, state: PlayerState): Order[] {
+    asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
         return this.chaseBall(inspector);
     }
 
-    private chaseBall(inspector: GameInspector): Order[] {
+    private chaseBall(inspector: IGameInspector): Order[] {
         const orders: Order[] = [];
 
         const order = inspector.makeOrderMoveToPoint(inspector.getBallPosition());

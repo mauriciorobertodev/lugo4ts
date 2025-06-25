@@ -1,12 +1,14 @@
-import { IShotClock } from '@/interfaces.js';
-
-import { SPECS, ShotClock, Side } from '@/core.js';
-
-import { randomInt, randomSide } from '@/utils.js';
-
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
+import { IShotClock } from '@/interfaces/shot-clock.js';
+
+import { ShotClock } from '@/core/shot-clock.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
+
+import { randomInt } from '@/utils/random.js';
+import { randomSide } from '@/utils/side.js';
 
 // ------------------------------------------------------------
 // Factories

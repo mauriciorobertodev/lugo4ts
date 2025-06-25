@@ -1,20 +1,21 @@
-import { IPlayer, IPoint, IVector2D } from '@/interfaces.js';
-
-import { Player, PlayerState, Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
-
-import {
-    goalFromSide,
-    randomElement,
-    randomInitialPosition,
-    randomInt,
-    randomPointBetweenGoalPoles,
-    randomVector2D,
-    randomVelocity,
-} from '@/utils.js';
-
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+
+import { Player, PlayerState } from '@/core/player.js';
+import { Point } from '@/core/point.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
+import { Vector2D } from '@/core/vector.js';
+import { Velocity } from '@/core/velocity.js';
+
+import { goalFromSide } from '@/utils/goal.js';
+import { randomInitialPosition, randomPointBetweenGoalPoles } from '@/utils/point.js';
+import { randomElement, randomInt } from '@/utils/random.js';
+import { randomVector2D } from '@/utils/vector.js';
+import { randomVelocity } from '@/utils/velocity.js';
 
 // ------------------------------------------------------------
 // Factories
@@ -43,7 +44,7 @@ export function randomPlayer({
 } = {}): IPlayer {
     const isGoalkeeper = number === SPECS.GOALKEEPER_NUMBER;
     const velocity = randomVelocity({ direction, speed, maxSpeed });
-    const secondaryPosition = isGoalkeeper
+    const secondaryPosition: IPoint = isGoalkeeper
         ? randomPointBetweenGoalPoles(goalFromSide(side))
         : randomInitialPosition(side);
     position = position ?? secondaryPosition;

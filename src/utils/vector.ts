@@ -1,12 +1,12 @@
-import { IPoint, IVector2D } from '@/interfaces.js';
-
-import { Point, Vector2D } from '@/core.js';
-
-import { randomFloat } from '@/utils.js';
-
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+
+import { Point } from '@/core/point.js';
+import { Vector2D } from '@/core/vector.js';
+
+import { randomFloat } from '@/utils/random.js';
 
 export function vector2DToPoint(vector: IVector2D): IPoint {
     return new Point(vector.getX(), vector.getY());

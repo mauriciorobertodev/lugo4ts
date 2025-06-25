@@ -1,8 +1,15 @@
-import { FormationObject, IFormation, IMapper } from '@/interfaces.js';
+import { FormationObject, IFormation } from '@/interfaces/formation.js';
+import { IMapper } from '@/interfaces/mapper.js';
 
-import { Formation, FormationType, SPECS, Side } from '@/core.js';
+import { Formation, FormationType } from '@/core/formation.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
-import { createMapperFromObject, isValidPlayerNumber, randomInitialPosition, randomInt, randomSide } from '@/utils.js';
+import { createMapperFromObject } from '@/utils/mapper.js';
+import { isValidPlayerNumber } from '@/utils/player.js';
+import { randomInitialPosition } from '@/utils/point.js';
+import { randomInt } from '@/utils/random.js';
+import { randomSide } from '@/utils/side.js';
 
 import { ErrFormationInvalidPlayerNumber } from '@/errors.js';
 

@@ -1,4 +1,7 @@
-import type { IPlayer, IPoint, IRegion, IVector2D, IVelocity } from '@/interfaces.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import { IRegion } from '@/interfaces/region.js';
+import { IVelocity } from '@/interfaces/velocity.js';
 
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';

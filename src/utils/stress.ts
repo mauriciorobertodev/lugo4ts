@@ -3,11 +3,14 @@ import { performance } from 'perf_hooks';
 
 import { Order } from '@/generated/server.js';
 
-import { IBot, IGameInspector } from '@/interfaces.js';
+import { IBot } from '@/interfaces/bot.js';
+import { IGameInspector } from '@/interfaces/game-inspector.js';
 
-import { PlayerState, SPECS, Side } from '@/core.js';
+import { PlayerState } from '@/core/player.js';
+import { Side } from '@/core/side.js';
+import { SPECS } from '@/core/specs.js';
 
-import { randomGameInspector } from '@/utils.js';
+import { randomGameInspector } from '@/utils/game-inspector.js';
 
 type TestCase = 'onDisputing' | 'onHolding' | 'onDefending' | 'onSupporting' | 'asGoalkeeper';
 

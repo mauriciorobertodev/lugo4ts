@@ -1,11 +1,19 @@
-import { PlayerState, Side } from '@/core.js';
-import type { IBot, IClient, IGameInspector, IPoint } from '@/interfaces.js';
-import { fromGameSnapshot, sideToInt } from '@/utils.js';
 import { credentials } from '@grpc/grpc-js';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 
 import { GameClient } from '@/generated/server.client.js';
 import { GameSnapshot, GameSnapshot_State, Order, OrderSet } from '@/generated/server.js';
+
+import { IBot } from '@/interfaces/bot.js';
+import { IClient } from '@/interfaces/client.js';
+import { IGameInspector } from '@/interfaces/game-inspector.js';
+import { IPoint } from '@/interfaces/positionable.js';
+
+import { PlayerState } from '@/core/player.js';
+import { Side } from '@/core/side.js';
+
+import { fromGameSnapshot } from '@/utils/game-inspector.js';
+import { sideToInt } from '@/utils/side.js';
 
 import { fromLugoGameSnapshot, toLugoPoint } from '@/lugo.js';
 

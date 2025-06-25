@@ -1,4 +1,5 @@
-import type { IVector2D, IVelocity } from '@/interfaces.js';
+import { IVector2D } from '@/interfaces/positionable.js';
+import { IVelocity } from '@/interfaces/velocity.js';
 
 import { Vector2D } from '@/core/vector.js';
 

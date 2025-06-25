@@ -1,8 +1,16 @@
-import { IBall, IFormation, IPlayer, IPoint, IShotClock, ITeam, IVector2D, IVelocity } from '@/interfaces.js';
+import { IBall } from '@/interfaces/ball.js';
+import { IFormation } from '@/interfaces/formation.js';
+import { IPlayer } from '@/interfaces/player.js';
+import { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import { IShotClock } from '@/interfaces/shot-clock.js';
+import { ITeam } from '@/interfaces/team.js';
+import { IVelocity } from '@/interfaces/velocity.js';
 
-import { Ball, Formation, Player, Point, ShotClock, Side, Team, Vector2D, Velocity } from '@/core.js';
+import { zeroedBall } from '@/utils/ball.js';
+import { randomPlayer } from '@/utils/player.js';
+import { randomTeam } from '@/utils/team.js';
 
-import { randomPlayer, randomTeam, zeroedBall } from '@/utils.js';
+import { Side } from './side.js';
 
 export class Environment {
     private name: string = '';
@@ -148,7 +156,7 @@ export class Environment {
     }
 
     private getHomeTeamOrCreate(): ITeam {
-        if (!this.homeTeam)
+        if (!this.homeTeam) {
             this.homeTeam = randomTeam({
                 score: 0,
                 name: 'Home Team',
@@ -167,7 +175,9 @@ export class Environment {
                     randomPlayer({ number: 11, side: Side.HOME }),
                 ],
             });
-        return this.homeTeam;
+        }
+
+        return this.homeTeam!;
     }
 
     private getAwayTeamOrCreate(): ITeam {
@@ -190,11 +200,11 @@ export class Environment {
                     randomPlayer({ number: 11, side: Side.AWAY }),
                 ],
             });
-        return this.awayTeam;
+        return this.awayTeam!;
     }
 
     private getBallOrCreate(): IBall {
         if (!this.ball) this.ball = zeroedBall();
-        return this.ball;
+        return this.ball!;
     }
 }

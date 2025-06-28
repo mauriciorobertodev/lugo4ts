@@ -1,13 +1,13 @@
 import { GymSession } from '@/gym/session.js';
-import { Client } from '@/runtime/client.js';
-import { GameController } from '@/runtime/controller.js';
+import { GameClient } from '@/runtime/game-client.js';
+import { GameController } from '@/runtime/game-controller.js';
 
 import { IBot } from '@/interfaces/bot.js';
-import { IFormation } from '@/interfaces/formation.js';
 import { IGymTrainer } from '@/interfaces/gym-trainer.js';
 import { BotFactory } from '@/interfaces/gym.js';
 
 import { Environment } from '@/core/environment.js';
+import { Formation } from '@/core/formation.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 
@@ -29,8 +29,8 @@ export class Gym {
     private environmentFactory: () => Environment = () => new Environment();
     private trainer: IGymTrainer | null = null;
     private serverAddress: string = 'localhost:5000';
-    private myInitialFormation: IFormation = new StartInlineFormation(this.trainingSide);
-    private opInitialFormation: IFormation = new StartInlineFormation(flipSide(this.trainingSide));
+    private myInitialFormation: Formation = new StartInlineFormation(this.trainingSide);
+    private opInitialFormation: Formation = new StartInlineFormation(flipSide(this.trainingSide));
 
     withServerAddress(address: string): this {
         this.serverAddress = address;
@@ -90,7 +90,7 @@ export class Gym {
                 continue;
             }
 
-            const client = new Client(this.serverAddress, '', side, Number(number), position);
+            const client = new GameClient(this.serverAddress, '', side, Number(number), position);
 
             client
                 .playAsBot(bot)
@@ -108,7 +108,7 @@ export class Gym {
             const side = flipSide(this.trainingSide);
             const position = this.opInitialFormation.tryGetPositionOf(Number(number)) ?? randomInitialPosition(side);
 
-            const client = new Client(this.serverAddress, '', side, Number(number), position);
+            const client = new GameClient(this.serverAddress, '', side, Number(number), position);
 
             client
                 .playAsBot(bot)
@@ -117,7 +117,7 @@ export class Gym {
 
         await sleep(1000);
 
-        const client = new Client(
+        const client = new GameClient(
             this.serverAddress,
             '',
             this.trainingSide,

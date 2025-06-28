@@ -1,12 +1,12 @@
-import { IBall } from '@/interfaces/ball.js';
-import { IFormation } from '@/interfaces/formation.js';
-import { IPlayer } from '@/interfaces/player.js';
-import { IPoint, IVector2D } from '@/interfaces/positionable.js';
-import { IShotClock } from '@/interfaces/shot-clock.js';
-import { ITeam } from '@/interfaces/team.js';
-import { IVelocity } from '@/interfaces/velocity.js';
-
+import { Ball } from '@/core/ball.js';
+import { Formation } from '@/core/formation.js';
+import { Player } from '@/core/player.js';
+import { Point } from '@/core/point.js';
+import { ShotClock } from '@/core/shot-clock.js';
 import { Side } from '@/core/side.js';
+import { Team } from '@/core/team.js';
+import { Vector2D } from '@/core/vector.js';
+import { Velocity } from '@/core/velocity.js';
 
 import { zeroedBall } from '@/utils/ball.js';
 import { randomPlayer } from '@/utils/player.js';
@@ -15,10 +15,10 @@ import { randomTeam } from '@/utils/team.js';
 export class Environment {
     private name: string = '';
     private turn: number | null = null;
-    private ball: IBall | null = null;
-    private homeTeam: ITeam | null = null;
-    private awayTeam: ITeam | null = null;
-    private shotClock: IShotClock | null = null;
+    private ball: Ball | null = null;
+    private homeTeam: Team | null = null;
+    private awayTeam: Team | null = null;
+    private shotClock: ShotClock | null = null;
 
     constructor() {
         this.name = crypto.randomUUID();
@@ -42,26 +42,26 @@ export class Environment {
         return this.name;
     }
 
-    setBall(ball: IBall): this {
+    setBall(ball: Ball): this {
         this.ball = ball;
         return this;
     }
 
-    getBall(): IBall | null {
+    getBall(): Ball | null {
         return this.ball;
     }
 
-    setBallPosition(position: IPoint): this {
+    setBallPosition(position: Point): this {
         this.getBallOrCreate().setPosition(position);
         return this;
     }
 
-    setBallVelocity(velocity: IVelocity): this {
+    setBallVelocity(velocity: Velocity): this {
         this.getBallOrCreate().setVelocity(velocity);
         return this;
     }
 
-    setBallDirection(direction: IVector2D): this {
+    setBallDirection(direction: Vector2D): this {
         this.getBallOrCreate().setVelocity(this.getBallOrCreate().getVelocity().setDirection(direction));
         return this;
     }
@@ -71,24 +71,24 @@ export class Environment {
         return this;
     }
 
-    setBallHolder(holder: IPlayer | null): this {
+    setBallHolder(holder: Player | null): this {
         // TODO: definir a posição da bola com base no holder
         this.getBallOrCreate().setHolder(holder);
         return this;
     }
 
-    addPlayer(player: IPlayer): this {
+    addPlayer(player: Player): this {
         this.getTeamBySideOrCreate(player.getTeamSide()).addPlayer(player);
         return this;
     }
 
-    setHomeTeam(team: ITeam): this {
+    setHomeTeam(team: Team): this {
         if (team.getSide() !== Side.HOME) throw new Error('Home team must be on the HOME side');
         this.homeTeam = team;
         return this;
     }
 
-    getHomePlayer(number: number): IPlayer {
+    getHomePlayer(number: number): Player {
         return this.getHomeTeamOrCreate().getPlayer(number);
     }
 
@@ -97,7 +97,7 @@ export class Environment {
         return this;
     }
 
-    setAwayTeam(team: ITeam): this {
+    setAwayTeam(team: Team): this {
         if (team.getSide() !== Side.AWAY) throw new Error('Away team must be on the AWAY side');
         this.awayTeam = team;
         return this;
@@ -108,21 +108,21 @@ export class Environment {
         return this;
     }
 
-    getAwayPlayer(number: number): IPlayer {
+    getAwayPlayer(number: number): Player {
         return this.getAwayTeamOrCreate().getPlayer(number);
     }
 
-    setHomeTeamPositionsByFormation(formation: IFormation): this {
+    setHomeTeamPositionsByFormation(formation: Formation): this {
         this.getHomeTeamOrCreate().setPositionsByFormation(formation);
         return this;
     }
 
-    setAwayTeamPositionsByFormation(formation: IFormation): this {
+    setAwayTeamPositionsByFormation(formation: Formation): this {
         this.getAwayTeamOrCreate().setPositionsByFormation(formation);
         return this;
     }
 
-    tryGetPlayerByNumberAndSide(number: number, side: Side): IPlayer | null {
+    tryGetPlayerByNumberAndSide(number: number, side: Side): Player | null {
         if (side === Side.HOME) {
             return this.getHomeTeamOrCreate().tryGetPlayer(number);
         } else {
@@ -130,32 +130,32 @@ export class Environment {
         }
     }
 
-    getHomeTeam(): ITeam | null {
+    getHomeTeam(): Team | null {
         return this.homeTeam;
     }
 
-    getAwayTeam(): ITeam | null {
+    getAwayTeam(): Team | null {
         return this.awayTeam;
     }
 
-    getHomePlayers(): IPlayer[] {
+    getHomePlayers(): Player[] {
         return this.getHomeTeam()?.getPlayers() || [];
     }
 
-    getAwayPlayers(): IPlayer[] {
+    getAwayPlayers(): Player[] {
         return this.getAwayTeam()?.getPlayers() || [];
     }
 
-    getShotClock(): IShotClock | null {
+    getShotClock(): ShotClock | null {
         return this.shotClock;
     }
 
-    private getTeamBySideOrCreate(side: Side): ITeam {
+    private getTeamBySideOrCreate(side: Side): Team {
         if (side === Side.HOME) return this.getHomeTeamOrCreate();
         return this.getAwayTeamOrCreate();
     }
 
-    private getHomeTeamOrCreate(): ITeam {
+    private getHomeTeamOrCreate(): Team {
         if (!this.homeTeam) {
             this.homeTeam = randomTeam({
                 score: 0,
@@ -180,7 +180,7 @@ export class Environment {
         return this.homeTeam!;
     }
 
-    private getAwayTeamOrCreate(): ITeam {
+    private getAwayTeamOrCreate(): Team {
         if (!this.awayTeam)
             this.awayTeam = randomTeam({
                 score: 0,
@@ -203,7 +203,7 @@ export class Environment {
         return this.awayTeam!;
     }
 
-    private getBallOrCreate(): IBall {
+    private getBallOrCreate(): Ball {
         if (!this.ball) this.ball = zeroedBall();
         return this.ball!;
     }

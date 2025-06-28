@@ -1,15 +1,15 @@
 import { credentials } from '@grpc/grpc-js';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 
-import { GameClient } from '@/generated/server.client.js';
+import { GameClient as LugoGameClient } from '@/generated/server.client.js';
 import { GameSnapshot, GameSnapshot_State, Order, OrderSet } from '@/generated/server.js';
 
 import { IBot } from '@/interfaces/bot.js';
-import { IClient } from '@/interfaces/client.js';
-import { IGameInspector } from '@/interfaces/game-inspector.js';
-import { IPoint } from '@/interfaces/positionable.js';
+import { IGameClient } from '@/interfaces/game-client.js';
 
+import { GameInspector } from '@/core/game-inspector.js';
 import { PlayerState } from '@/core/player.js';
+import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 
 import { fromGameSnapshot } from '@/utils/game-inspector.js';
@@ -22,16 +22,16 @@ type KnownErrorCode =
     | 'ALREADY_EXISTS' // Mesma conexão grpc tentando se conectar novamente
     | 'UNAVAILABLE'; // Servidor indisponível
 
-export class Client implements IClient {
+export class GameClient implements IGameClient {
     private isConnected = false;
-    private client?: GameClient;
+    private client?: LugoGameClient;
 
     constructor(
         private serverAdd: string,
         private token: string,
         private side: Side,
         private number: number,
-        private initPosition: IPoint
+        private initPosition: Point
     ) {}
 
     async playAsBot(bot: IBot, onJoin?: () => void): Promise<void> {
@@ -52,7 +52,7 @@ export class Client implements IClient {
          * Ele é usado para enviar e receber mensagens do servidor, como se juntar a um time,
          * enviar ordens e receber snapshots do jogo.
          */
-        this.client = new GameClient(transport);
+        this.client = new LugoGameClient(transport);
 
         console.log(
             `[GRPC] Conectando no jogo do lado ${this.side} com o número ${this.number} e posição inicial ${this.initPosition.toString()}...`
@@ -128,7 +128,7 @@ export class Client implements IClient {
         }
     }
 
-    async play(callback: (inspector: IGameInspector) => Promise<Order[]>, onJoin?: () => void): Promise<void> {
+    async play(callback: (inspector: GameInspector) => Promise<Order[]>, onJoin?: () => void): Promise<void> {
         /**
          * O transport é uma instância do GrpcTransport que permite a comunicação com o servidor gRPC.
          * Ele é configurado com o endereço do servidor, as credenciais do canal e as opções do cliente.
@@ -146,7 +146,7 @@ export class Client implements IClient {
          * Ele é usado para enviar e receber mensagens do servidor, como se juntar a um time,
          * enviar ordens e receber snapshots do jogo.
          */
-        this.client = new GameClient(transport);
+        this.client = new LugoGameClient(transport);
 
         console.log(
             `[GRPC] Conectando no jogo do lado ${this.side} com o número ${this.number} e posição inicial ${this.initPosition.toString()}...`
@@ -230,7 +230,7 @@ export class Client implements IClient {
         await this.client?.sendOrders(orders);
     }
 
-    private async onListening(inspector: IGameInspector, bot: IBot): Promise<void> {
+    private async onListening(inspector: GameInspector, bot: IBot): Promise<void> {
         try {
             const orders = generateOrdersForBot(bot, inspector);
 
@@ -264,7 +264,7 @@ export class Client implements IClient {
     }
 }
 
-export function generateOrdersForBot(bot: IBot, inspector: IGameInspector): Order[] {
+export function generateOrdersForBot(bot: IBot, inspector: GameInspector): Order[] {
     bot.beforeActions(inspector);
 
     const playerState = inspector.getMyState();

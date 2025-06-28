@@ -1,32 +1,35 @@
-import { Client } from '@/runtime/client.js';
-import { GameController } from '@/runtime/controller.js';
+import { GameClient } from '@/runtime/game-client.js';
+import { GameController } from '@/runtime/game-controller.js';
 
 import { Order } from '@/generated/server.js';
 
-import { IClient } from '@/interfaces/client.js';
-import { IGameController } from '@/interfaces/controller.js';
-import { IGameInspector } from '@/interfaces/game-inspector.js';
-import { IGameSnapshot } from '@/interfaces/game-snapshot.js';
 import { IGymSession } from '@/interfaces/gym-session.js';
 import { IGymTrainer } from '@/interfaces/gym-trainer.js';
 
 import { Environment } from '@/core/environment.js';
+import { GameInspector } from '@/core/game-inspector.js';
+import { GameSnapshot } from '@/core/game-snapshot.js';
 
 import { fromGameSnapshot } from '@/utils/game-inspector.js';
 import { sleep } from '@/utils/time.js';
 
 export class GymSession implements IGymSession {
     private trainer: IGymTrainer;
-    private remote: IGameController;
+    private remote: GameController;
     private running: boolean = false;
     private initialEnvironment: Environment | null = null;
     private environmentFactory: () => Environment;
-    private lastSnapshot: IGameInspector | null = null;
-    private client: IClient;
+    private lastSnapshot: GameInspector | null = null;
+    private client: GameClient;
     private state: unknown = null;
     private action: unknown = null;
 
-    constructor(trainer: IGymTrainer, remote: GameController, client: Client, environmentFactory: () => Environment) {
+    constructor(
+        trainer: IGymTrainer,
+        remote: GameController,
+        client: GameClient,
+        environmentFactory: () => Environment
+    ) {
         this.trainer = trainer;
         this.remote = remote;
         this.client = client;
@@ -46,7 +49,7 @@ export class GymSession implements IGymSession {
         this.initialEnvironment = environment;
 
         this.client.play(
-            async (inspector: IGameInspector): Promise<Order[]> => {
+            async (inspector: GameInspector): Promise<Order[]> => {
                 this.lastSnapshot = inspector;
                 this.state = await this.trainer.state(inspector);
                 this.action = await this.trainer.action(this.state, inspector);
@@ -77,7 +80,7 @@ export class GymSession implements IGymSession {
     }
 
     // Novo: reaplica o environment original
-    async reset(): Promise<IGameSnapshot> {
+    async reset(): Promise<GameSnapshot> {
         const environment = this.environmentFactory();
         if (!environment) throw new Error('Ambiente inicial não definido');
         this.initialEnvironment = environment;
@@ -88,7 +91,7 @@ export class GymSession implements IGymSession {
     }
 
     // Opcional: se quiser permitir `.applyEnvironment(env)`
-    async applyEnvironment(env: Environment): Promise<IGameSnapshot> {
+    async applyEnvironment(env: Environment): Promise<GameSnapshot> {
         return await this.remote.applyEnvironment(env);
     }
 
@@ -118,7 +121,7 @@ export class GymSession implements IGymSession {
         return { input: this.state, output: this.action, reward, done };
     }
 
-    getLastSnapshot(): IGameInspector {
+    getLastSnapshot(): GameInspector {
         if (!this.lastSnapshot) throw new Error('Snapshot do jogo não disponível');
         return this.lastSnapshot;
     }

@@ -5,7 +5,7 @@ import type { IGameInspector } from '@/interfaces/game-inspector.js';
 
 import type { Side } from '@/core/side.js';
 
-export interface IClient {
+export interface IGameClient {
     getSide(): Side;
     getNumber(): number;
     playAsBot(bot: IBot, onJoin?: () => void): Promise<void>;

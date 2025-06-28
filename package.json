@@ -35,7 +35,7 @@
     },
     "scripts": {
         "dev": "tsx src/index.ts",
-        "build": "tsc && tsc-alias",
+        "build": "rm -rf dist/ && tsc && tsc-alias",
         "build:watch": "tsc --watch",
         "test": "vitest",
         "test:ui": "vitest --ui",

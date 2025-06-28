@@ -55,8 +55,6 @@ export * from '@/core/environment.js';
 
 export * from '@/utils/field.js';
 
-export * from '@/utils/stress.js';
-
 // PLAYGROUND
 export * from '@/playground/dummies/chaser.js';
 export * from '@/playground/dummies/kicker.js';

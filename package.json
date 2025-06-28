@@ -1,6 +1,6 @@
 {
     "name": "@mauricioroberto/lugo4ts",
-    "version": "0.0.14-beta",
+    "version": "0.0.15-beta",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "module",

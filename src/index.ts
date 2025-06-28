@@ -1,4 +1,5 @@
 // CORE
+export * from '@/interfaces/bot.js';
 export * from '@/utils/random.js';
 export * from '@/utils/math.js';
 export * from '@/utils/time.js';

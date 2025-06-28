@@ -1,6 +1,4 @@
 import { IMapper } from '@/interfaces/mapper.js';
-import { IPoint } from '@/interfaces/positionable.js';
-import { IRegion } from '@/interfaces/region.js';
 
 import { Point } from '@/core/point.js';
 import { Region } from '@/core/region.js';
@@ -64,14 +62,14 @@ export class Mapper implements IMapper {
         return this.side;
     }
 
-    getRegion(col: number, row: number): IRegion {
+    getRegion(col: number, row: number): Region {
         if (col < 0 || col > this.cols) throw new ErrMapperColOutOfMapped(col, 0, this.cols);
         if (row < 0 || row > this.rows) throw new ErrMapperRowOutOfMapped(row, 0, this.rows);
 
         col = clamp(col, 0, this.cols - 1);
         row = clamp(row, 0, this.rows - 1);
 
-        let center: IPoint = new Point();
+        let center = new Point();
         center.setX(Math.round(col * this.regionWidth + this.regionWidth / 2));
         center.setY(Math.round(row * this.regionHeight + this.regionHeight / 2));
 
@@ -90,7 +88,7 @@ export class Mapper implements IMapper {
         return this.regionHeight;
     }
 
-    getRegionFromPoint(point: IPoint): IRegion {
+    getRegionFromPoint(point: Point): Region {
         let pt = point;
         if (this.side === Side.AWAY) {
             pt = Mapper.mirrorCoordsToAway(pt);
@@ -105,13 +103,13 @@ export class Mapper implements IMapper {
         return this.getRegion(col, row);
     }
 
-    getRandomRegion(): IRegion {
+    getRandomRegion(): Region {
         const randomCol = randomInt(0, this.cols);
         const randomRow = randomInt(0, this.rows);
         return this.getRegion(randomCol, randomRow);
     }
 
-    static mirrorCoordsToAway(center: IPoint): IPoint {
+    static mirrorCoordsToAway(center: Point): Point {
         const mirrored = new Point();
         mirrored.setX(SPECS.MAX_X_COORDINATE - center.getX());
         mirrored.setY(SPECS.MAX_Y_COORDINATE - center.getY());

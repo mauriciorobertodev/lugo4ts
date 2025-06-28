@@ -1,21 +1,20 @@
 import { IPlayer } from '@/interfaces/player.js';
-import { IPoint, IVector2D } from '@/interfaces/positionable.js';
-import { IRegion } from '@/interfaces/region.js';
-import { IVelocity } from '@/interfaces/velocity.js';
 
 import { Point } from '@/core/point.js';
+import { Region } from '@/core/region.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 import { Vector2D } from '@/core/vector.js';
+import { Velocity } from '@/core/velocity.js';
 
 export class Player implements IPlayer {
     constructor(
         private number: number,
         private isJumping: boolean,
         private side: Side,
-        private position: IPoint,
-        private initPosition: IPoint,
-        private velocity: IVelocity
+        private position: Point,
+        private initPosition: Point,
+        private velocity: Velocity
     ) {}
 
     getNumber(): number {
@@ -26,11 +25,11 @@ export class Player implements IPlayer {
         return this.velocity.getSpeed();
     }
 
-    getDirection(): IVector2D {
+    getDirection(): Vector2D {
         return this.velocity.getDirection();
     }
 
-    getPosition(): IPoint {
+    getPosition(): Point {
         return this.position;
     }
 
@@ -39,7 +38,7 @@ export class Player implements IPlayer {
         return this;
     }
 
-    getVelocity(): IVelocity {
+    getVelocity(): Velocity {
         return this.velocity;
     }
 
@@ -47,7 +46,7 @@ export class Player implements IPlayer {
         return this.side;
     }
 
-    getInitPosition(): IPoint {
+    getInitPosition(): Point {
         return this.initPosition;
     }
 
@@ -77,7 +76,7 @@ export class Player implements IPlayer {
         return this.side === Side.HOME ? less : !less;
     }
 
-    directionToPlayer(player: IPlayer): IVector2D {
+    directionToPlayer(player: IPlayer): Vector2D {
         return this.position.directionTo(player.getPosition());
     }
 
@@ -85,19 +84,19 @@ export class Player implements IPlayer {
         return this.position.distanceTo(player.getPosition());
     }
 
-    directionToRegion(region: IRegion): IVector2D {
+    directionToRegion(region: Region): Vector2D {
         return this.position.directionTo(region.getCenter());
     }
 
-    distanceToRegion(region: IRegion): number {
+    distanceToRegion(region: Region): number {
         return this.position.distanceTo(region.getCenter());
     }
 
-    directionToPoint(point: IPoint): IVector2D {
+    directionToPoint(point: Point): Vector2D {
         return this.position.directionTo(point) as Vector2D;
     }
 
-    distanceToPoint(point: IPoint): number {
+    distanceToPoint(point: Point): number {
         return this.position.distanceTo(point);
     }
 }

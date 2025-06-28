@@ -6,11 +6,11 @@ import { IShotClock } from '@/interfaces/shot-clock.js';
 import { ITeam } from '@/interfaces/team.js';
 import { IVelocity } from '@/interfaces/velocity.js';
 
+import { Side } from '@/core/side.js';
+
 import { zeroedBall } from '@/utils/ball.js';
 import { randomPlayer } from '@/utils/player.js';
 import { randomTeam } from '@/utils/team.js';
-
-import { Side } from './side.js';
 
 export class Environment {
     private name: string = '';

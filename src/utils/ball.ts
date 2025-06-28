@@ -1,18 +1,17 @@
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------
-import { IBall } from '@/interfaces/ball.js';
-import { IPlayer } from '@/interfaces/player.js';
-import { IPoint, IVector2D } from '@/interfaces/positionable.js';
-
 import { Ball } from '@/core/ball.js';
+import { Player } from '@/core/player.js';
+import { Point } from '@/core/point.js';
 import { SPECS } from '@/core/specs.js';
+import { Vector2D } from '@/core/vector.js';
 
 import { fieldCenterPoint } from '@/utils/field.js';
 import { randomPoint } from '@/utils/point.js';
 import { randomVelocity, zeroedVelocity } from '@/utils/velocity.js';
 
-export function zeroedBall(): IBall {
+export function zeroedBall(): Ball {
     return new Ball(fieldCenterPoint(), zeroedVelocity(), null);
 }
 
@@ -23,12 +22,12 @@ export function randomBall({
     speed,
     maxSpeed = SPECS.BALL_MAX_SPEED,
 }: {
-    holder?: IPlayer | null;
-    position?: IPoint;
-    direction?: IVector2D;
+    holder?: Player | null;
+    position?: Point;
+    direction?: Vector2D;
     speed?: number;
     maxSpeed?: number;
-} = {}): IBall {
+} = {}): Ball {
     const velocity = randomVelocity({ direction, speed, maxSpeed });
     return new Ball(position, velocity, holder);
 }

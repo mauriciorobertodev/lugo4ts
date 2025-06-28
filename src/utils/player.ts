@@ -1,9 +1,6 @@
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
-import { IPlayer } from '@/interfaces/player.js';
-import { IPoint, IVector2D } from '@/interfaces/positionable.js';
-
 import { Player, PlayerState } from '@/core/player.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
@@ -12,7 +9,7 @@ import { Vector2D } from '@/core/vector.js';
 import { Velocity } from '@/core/velocity.js';
 
 import { goalFromSide } from '@/utils/goal.js';
-import { randomInitialPosition, randomPointBetweenGoalPoles } from '@/utils/point.js';
+import { randomInitialPosition, randomPointBetweenGoalPoles, randomPointInField } from '@/utils/point.js';
 import { randomElement, randomInt } from '@/utils/random.js';
 import { randomVector2D } from '@/utils/vector.js';
 import { randomVelocity } from '@/utils/velocity.js';
@@ -21,7 +18,7 @@ import { randomVelocity } from '@/utils/velocity.js';
 // Factories
 // ------------------------------------------------------------
 
-export function zeroedPlayer(): IPlayer {
+export function zeroedPlayer(): Player {
     return new Player(0, false, Side.HOME, new Point(0, 0), new Point(0, 0), new Velocity(new Vector2D(0, 0), 0));
 }
 
@@ -29,6 +26,7 @@ export function randomPlayer({
     number = randomInt(1, SPECS.MAX_PLAYERS),
     side = Side.HOME,
     position,
+    initialPosition,
     direction = randomVector2D(),
     speed,
     maxSpeed = SPECS.PLAYER_MAX_SPEED,
@@ -36,19 +34,22 @@ export function randomPlayer({
 }: {
     number?: number;
     side?: Side;
-    position?: IPoint;
-    direction?: IVector2D;
+    position?: Point;
+    initialPosition?: Point;
+    direction?: Vector2D;
     speed?: number;
     maxSpeed?: number;
     isJumping?: boolean;
-} = {}): IPlayer {
+} = {}): Player {
     const isGoalkeeper = number === SPECS.GOALKEEPER_NUMBER;
     const velocity = randomVelocity({ direction, speed, maxSpeed });
-    const secondaryPosition: IPoint = isGoalkeeper
+    const secondaryPosition = isGoalkeeper ? randomPointBetweenGoalPoles(goalFromSide(side)) : randomPointInField();
+    const secondaryInitialPosition = isGoalkeeper
         ? randomPointBetweenGoalPoles(goalFromSide(side))
         : randomInitialPosition(side);
     position = position ?? secondaryPosition;
-    return new Player(number, isJumping, side, position, position, velocity);
+    initialPosition = initialPosition ?? secondaryInitialPosition;
+    return new Player(number, isJumping, side, position, initialPosition, velocity);
 }
 
 export function randomPlayerState(): PlayerState {

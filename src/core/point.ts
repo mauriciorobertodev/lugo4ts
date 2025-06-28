@@ -1,4 +1,4 @@
-import { IPoint, IPositionable, IVector2D } from '@/interfaces/positionable.js';
+import { IPoint, IPositionable } from '@/interfaces/positionable.js';
 
 import { Vector2D } from '@/core/vector.js';
 
@@ -77,7 +77,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    normalized(): IPoint {
+    normalized(): Point {
         return this.clone().normalize();
     }
 
@@ -92,7 +92,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    added(value: IPositionable | number): IPoint {
+    added(value: IPositionable | number): Point {
         return this.clone().add(value);
     }
 
@@ -107,7 +107,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    subtracted(value: IPositionable | number): IPoint {
+    subtracted(value: IPositionable | number): Point {
         return this.clone().subtract(value);
     }
 
@@ -122,7 +122,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    divided(value: IPositionable | number): IPoint {
+    divided(value: IPositionable | number): Point {
         return this.clone().divide(value);
     }
 
@@ -137,7 +137,7 @@ export class Point implements IPoint {
         return this;
     }
 
-    scaled(value: IPositionable | number): IPoint {
+    scaled(value: IPositionable | number): Point {
         return this.clone().scale(value);
     }
 
@@ -145,7 +145,7 @@ export class Point implements IPoint {
         return Math.sqrt(this.getX() ** 2 + this.getY() ** 2);
     }
 
-    directionTo(to: IPoint): IVector2D {
+    directionTo(to: IPoint): Vector2D {
         const direction = to.subtracted(this).normalize();
         return new Vector2D(direction.getX(), direction.getY());
     }
@@ -154,11 +154,11 @@ export class Point implements IPoint {
         return to.subtracted(this).magnitude();
     }
 
-    moveToDirection(direction: IVector2D, distance: number): this {
+    moveToDirection(direction: Vector2D, distance: number): this {
         return this.add(direction.normalized().scale(distance));
     }
 
-    movedToDirection(direction: IVector2D, distance: number): IPoint {
+    movedToDirection(direction: Vector2D, distance: number): Point {
         return this.added(direction.normalized().scale(distance));
     }
 
@@ -166,7 +166,7 @@ export class Point implements IPoint {
         return this.moveToDirection(this.directionTo(point), distance);
     }
 
-    movedToPoint(point: IPoint, distance: number): IPoint {
+    movedToPoint(point: IPoint, distance: number): Point {
         return this.movedToDirection(this.directionTo(point), distance);
     }
 

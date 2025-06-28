@@ -90,7 +90,7 @@ export class Vector2D implements IVector2D {
         return this;
     }
 
-    added(value: IPositionable | number): IVector2D {
+    added(value: IPositionable | number): Vector2D {
         return this.clone().add(value);
     }
 
@@ -105,7 +105,7 @@ export class Vector2D implements IVector2D {
         return this;
     }
 
-    subtracted(value: IPositionable | number): IVector2D {
+    subtracted(value: IPositionable | number): Vector2D {
         return this.clone().subtract(value);
     }
 
@@ -120,7 +120,7 @@ export class Vector2D implements IVector2D {
         return this;
     }
 
-    divided(value: IPositionable | number): IVector2D {
+    divided(value: IPositionable | number): Vector2D {
         return this.clone().divide(value);
     }
 
@@ -133,7 +133,7 @@ export class Vector2D implements IVector2D {
         return this;
     }
 
-    scaled(value: IPositionable | number): IVector2D {
+    scaled(value: IPositionable | number): Vector2D {
         return this.clone().scale(value);
     }
 

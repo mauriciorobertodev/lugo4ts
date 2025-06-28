@@ -1,8 +1,6 @@
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
-import { IShotClock } from '@/interfaces/shot-clock.js';
-
 import { ShotClock } from '@/core/shot-clock.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
@@ -14,7 +12,7 @@ import { randomSide } from '@/utils/side.js';
 // Factories
 // ------------------------------------------------------------
 
-export function zeroedShotClock(): IShotClock {
+export function zeroedShotClock(): ShotClock {
     return new ShotClock(Side.HOME, 0);
 }
 
@@ -26,6 +24,6 @@ export function randomShotClock({
     teamSide?: Side;
     remainingTurns?: number;
     maxRemainingTurns?: number;
-} = {}): IShotClock {
+} = {}): ShotClock {
     return new ShotClock(teamSide, remainingTurns ?? randomInt(1, maxRemainingTurns));
 }

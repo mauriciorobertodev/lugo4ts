@@ -1,8 +1,7 @@
-import { IMapper } from '@/interfaces/mapper.js';
-import { IPlayer } from '@/interfaces/player.js';
-import { IPoint } from '@/interfaces/positionable.js';
 import { IRegion } from '@/interfaces/region.js';
 
+import { Mapper } from '@/core/mapper.js';
+import { Player } from '@/core/player.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 
@@ -11,8 +10,8 @@ export class Region implements IRegion {
         protected col: number,
         protected row: number,
         protected side: Side,
-        protected center: IPoint,
-        protected mapper: IMapper
+        protected center: Point,
+        protected mapper: Mapper
     ) {}
 
     is(region: IRegion): boolean {
@@ -31,59 +30,59 @@ export class Region implements IRegion {
         return this.row;
     }
 
-    getCenter(): IPoint {
+    getCenter(): Point {
         return this.center;
     }
 
-    frontRight(): IRegion {
+    frontRight(): Region {
         return this.front().right();
     }
 
-    front(): IRegion {
+    front(): Region {
         return this.mapper.getRegion(Math.min(this.col + 1, this.mapper.getCols()), this.row);
     }
 
-    frontLeft(): IRegion {
+    frontLeft(): Region {
         return this.front().left();
     }
 
-    backRight(): IRegion {
+    backRight(): Region {
         return this.back().right();
     }
 
-    back(): IRegion {
+    back(): Region {
         return this.mapper.getRegion(Math.max(this.col - 1, 0), this.row);
     }
 
-    backLeft(): IRegion {
+    backLeft(): Region {
         return this.back().left();
     }
 
-    left(): IRegion {
+    left(): Region {
         return this.mapper.getRegion(this.col, Math.max(this.row - 1, 0));
     }
 
-    right(): IRegion {
+    right(): Region {
         return this.mapper.getRegion(this.col, Math.min(this.row + 1, this.mapper.getRows()));
     }
 
-    coordinates(): IPoint {
+    coordinates(): Point {
         return new Point(this.col, this.row);
     }
 
-    distanceToRegion(region: IRegion): number {
+    distanceToRegion(region: Region): number {
         return this.coordinates().distanceTo(region.coordinates());
     }
 
-    distanceToPoint(point: IPoint): number {
+    distanceToPoint(point: Point): number {
         return this.getCenter().distanceTo(point);
     }
 
-    containsPoint(point: IPoint): boolean {
+    containsPoint(point: Point): boolean {
         return this.mapper.getRegionFromPoint(point).is(this);
     }
 
-    containsPlayer(player: IPlayer): boolean {
+    containsPlayer(player: Player): boolean {
         return this.containsPoint(player.getPosition());
     }
 

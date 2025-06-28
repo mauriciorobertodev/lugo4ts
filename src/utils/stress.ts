@@ -4,8 +4,8 @@ import { performance } from 'perf_hooks';
 import { Order } from '@/generated/server.js';
 
 import { IBot } from '@/interfaces/bot.js';
-import { IGameInspector } from '@/interfaces/game-inspector.js';
 
+import { GameInspector } from '@/core/game-inspector.js';
 import { PlayerState } from '@/core/player.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
@@ -77,7 +77,7 @@ export class BotPerformanceTester {
 
             for (let i = 0; i < test.times; i++) {
                 const start = performance.now();
-                let inspector: IGameInspector;
+                let inspector: GameInspector;
                 let orders: Order[] = [];
 
                 switch (test.case) {

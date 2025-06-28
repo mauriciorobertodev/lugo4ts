@@ -1,19 +1,16 @@
 import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
 
-import { IBall } from '@/interfaces/ball.js';
 import { IGameInspector } from '@/interfaces/game-inspector.js';
-import { IGoal } from '@/interfaces/goal.js';
-import { IPlayer } from '@/interfaces/player.js';
-import { IPoint, IVector2D } from '@/interfaces/positionable.js';
-import { IRegion } from '@/interfaces/region.js';
-import { IShotClock } from '@/interfaces/shot-clock.js';
-import { ITeam } from '@/interfaces/team.js';
-import { IVelocity } from '@/interfaces/velocity.js';
 
-import { AWAY_GOAL, HOME_GOAL } from '@/core/goal.js';
-import { PlayerState } from '@/core/player.js';
+import { Ball } from '@/core/ball.js';
+import { AWAY_GOAL, Goal, HOME_GOAL } from '@/core/goal.js';
+import { Player, PlayerState } from '@/core/player.js';
+import { Point } from '@/core/point.js';
+import { Region } from '@/core/region.js';
+import { ShotClock } from '@/core/shot-clock.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
+import { Team } from '@/core/team.js';
 import { Vector2D } from '@/core/vector.js';
 import { Velocity } from '@/core/velocity.js';
 
@@ -29,23 +26,23 @@ import {
 import { toLugoVelocity } from '@/lugo.js';
 
 export class GameInspector implements IGameInspector {
-    private readonly me: IPlayer;
+    private readonly me: Player;
     private readonly state: PlayerState;
 
     private readonly turn: number = 0;
-    private readonly homeTeam: ITeam | null = null;
-    private readonly awayTeam: ITeam | null = null;
-    private readonly ball: IBall | null = null;
-    private readonly shotClock: IShotClock | null = null;
+    private readonly homeTeam: Team | null = null;
+    private readonly awayTeam: Team | null = null;
+    private readonly ball: Ball | null = null;
+    private readonly shotClock: ShotClock | null = null;
     private readonly turnsBallInGoalZone: number = 0;
 
     constructor(
         playerSide: Side,
         playerNumber: number,
-        homeTeam?: ITeam,
-        awayTeam?: ITeam,
-        ball?: IBall,
-        shotClock?: IShotClock,
+        homeTeam?: Team,
+        awayTeam?: Team,
+        ball?: Ball,
+        shotClock?: ShotClock,
         turnsBallInGoalZone: number = 0,
         turn: number = 0
     ) {
@@ -63,7 +60,7 @@ export class GameInspector implements IGameInspector {
         return this.turn;
     }
 
-    getPlayer(side: Side, number: number): IPlayer {
+    getPlayer(side: Side, number: number): Player {
         const player = this.tryGetPlayer(side, number);
 
         if (!player) throw new ErrPlayerNotFound(side, number);
@@ -71,7 +68,7 @@ export class GameInspector implements IGameInspector {
         return player;
     }
 
-    tryGetPlayer(side: Side, number: number): IPlayer | null {
+    tryGetPlayer(side: Side, number: number): Player | null {
         const team = this.getTeam(side);
 
         if (team) return team.tryGetPlayer(number);
@@ -79,7 +76,7 @@ export class GameInspector implements IGameInspector {
         return null;
     }
 
-    getTeam(side: Side): ITeam {
+    getTeam(side: Side): Team {
         if (side === Side.HOME) {
             if (!this.homeTeam) {
                 throw new ErrTeamNotFound(Side.HOME);
@@ -99,17 +96,17 @@ export class GameInspector implements IGameInspector {
         return !!this.shotClock;
     }
 
-    getShotClock(): IShotClock | null {
+    getShotClock(): ShotClock | null {
         if (!this.shotClock) return null;
         return this.shotClock;
     }
 
-    getBall(): IBall {
+    getBall(): Ball {
         if (!this.ball) throw new ErrBallNotFound();
         return this.ball;
     }
 
-    getBallHolder(): IPlayer | null {
+    getBallHolder(): Player | null {
         return this.getBall().getHolder();
     }
     getBallHasHolder(): boolean {
@@ -124,11 +121,11 @@ export class GameInspector implements IGameInspector {
         return SPECS.BALL_TIME_IN_GOAL_ZONE - this.getBallTurnsInGoalZone();
     }
 
-    getBallPosition(): IPoint {
+    getBallPosition(): Point {
         return this.getBall().getPosition();
     }
 
-    getBallDirection(): IVector2D {
+    getBallDirection(): Vector2D {
         return this.getBall().getDirection();
     }
 
@@ -136,15 +133,15 @@ export class GameInspector implements IGameInspector {
         return this.getBall().getSpeed();
     }
 
-    getAttackGoal(): IGoal {
+    getAttackGoal(): Goal {
         return this.getMyTeamSide() === Side.HOME ? AWAY_GOAL : HOME_GOAL;
     }
 
-    getDefenseGoal(): IGoal {
+    getDefenseGoal(): Goal {
         return this.getMyTeamSide() === Side.HOME ? HOME_GOAL : AWAY_GOAL;
     }
 
-    getMe(): IPlayer {
+    getMe(): Player {
         return this.me;
     }
 
@@ -152,7 +149,7 @@ export class GameInspector implements IGameInspector {
         return this.state;
     }
 
-    getMyTeam(): ITeam {
+    getMyTeam(): Team {
         return this.getTeam(this.getMyTeamSide());
     }
 
@@ -164,11 +161,11 @@ export class GameInspector implements IGameInspector {
         return this.me.getTeamSide();
     }
 
-    getMyPosition(): IPoint {
+    getMyPosition(): Point {
         return this.me.getPosition();
     }
 
-    getMyDirection(): IVector2D {
+    getMyDirection(): Vector2D {
         return this.me.getDirection();
     }
 
@@ -176,19 +173,19 @@ export class GameInspector implements IGameInspector {
         return this.me.getSpeed();
     }
 
-    getMyVelocity(): IVelocity {
+    getMyVelocity(): Velocity {
         return this.me.getVelocity();
     }
 
-    getMyPlayers(): IPlayer[] {
+    getMyPlayers(): Player[] {
         return this.getMyTeam().getPlayers();
     }
 
-    getMyGoalkeeper(): IPlayer {
+    getMyGoalkeeper(): Player {
         return this.getPlayer(this.getMyTeamSide(), SPECS.GOALKEEPER_NUMBER);
     }
 
-    tryGetMyGoalkeeper(): IPlayer | null {
+    tryGetMyGoalkeeper(): Player | null {
         return this.tryGetPlayer(this.getMyTeamSide(), SPECS.GOALKEEPER_NUMBER);
     }
 
@@ -196,23 +193,23 @@ export class GameInspector implements IGameInspector {
         return this.getMyTeam().getScore();
     }
 
-    getMyPlayer(number: number): IPlayer {
+    getMyPlayer(number: number): Player {
         return this.getPlayer(this.getMyTeamSide(), number);
     }
 
-    tryGetMyPlayer(number: number): IPlayer | null {
+    tryGetMyPlayer(number: number): Player | null {
         return this.tryGetPlayer(this.getMyTeamSide(), number);
     }
 
-    getOpponentPlayer(number: number): IPlayer {
+    getOpponentPlayer(number: number): Player {
         return this.getPlayer(this.getOpponentSide(), number);
     }
 
-    tryGetOpponentPlayer(number: number): IPlayer | null {
+    tryGetOpponentPlayer(number: number): Player | null {
         return this.tryGetPlayer(this.getOpponentSide(), number);
     }
 
-    getOpponentTeam(): ITeam {
+    getOpponentTeam(): Team {
         return this.getTeam(this.getOpponentSide());
     }
 
@@ -220,15 +217,15 @@ export class GameInspector implements IGameInspector {
         return this.getMyTeamSide() === Side.HOME ? Side.AWAY : Side.HOME;
     }
 
-    getOpponentPlayers(): IPlayer[] {
+    getOpponentPlayers(): Player[] {
         return this.getOpponentTeam().getPlayers();
     }
 
-    getOpponentGoalkeeper(): IPlayer {
+    getOpponentGoalkeeper(): Player {
         return this.getOpponentPlayer(SPECS.GOALKEEPER_NUMBER);
     }
 
-    tryGetOpponentGoalkeeper(): IPlayer | null {
+    tryGetOpponentGoalkeeper(): Player | null {
         return this.tryGetOpponentPlayer(SPECS.GOALKEEPER_NUMBER);
     }
 
@@ -236,17 +233,17 @@ export class GameInspector implements IGameInspector {
         return this.getOpponentTeam().getScore();
     }
 
-    makeOrderMoveToPoint(point: IPoint, speed?: number): Order {
+    makeOrderMoveToPoint(point: Point, speed?: number): Order {
         const direction = this.getMyPosition().directionTo(point);
         return this.makeOrderMoveToDirection(direction, speed);
     }
 
-    makeOrderKickToPoint(target: IPoint, speed: number = SPECS.BALL_MAX_SPEED): Order {
+    makeOrderKickToPoint(target: Point, speed: number = SPECS.BALL_MAX_SPEED): Order {
         const direction = this.getBallPosition().directionTo(target);
         return this.makeOrderKickToDirection(direction, speed);
     }
 
-    makeOrderMoveToDirection(direction: IVector2D, speed: number = SPECS.PLAYER_MAX_SPEED): Order {
+    makeOrderMoveToDirection(direction: Vector2D, speed: number = SPECS.PLAYER_MAX_SPEED): Order {
         if (direction.is(new Vector2D(0, 0))) throw new ErrMoveZeroDirection();
 
         const vel = new Velocity(direction, speed);
@@ -256,7 +253,7 @@ export class GameInspector implements IGameInspector {
         return Order.create({ action: { oneofKind: 'move', move } });
     }
 
-    makeOrderKickToDirection(direction: IVector2D, speed: number = SPECS.BALL_MAX_SPEED): Order {
+    makeOrderKickToDirection(direction: Vector2D, speed: number = SPECS.BALL_MAX_SPEED): Order {
         if (direction.is(new Vector2D(0, 0))) throw new ErrKickZeroDirection();
 
         const vel = new Velocity(direction, speed);
@@ -266,35 +263,35 @@ export class GameInspector implements IGameInspector {
         return Order.create({ action: { oneofKind: 'kick', kick } });
     }
 
-    makeOrderMoveToRegion(region: IRegion, speed: number = SPECS.PLAYER_MAX_SPEED): Order {
+    makeOrderMoveToRegion(region: Region, speed: number = SPECS.PLAYER_MAX_SPEED): Order {
         const direction = this.getMyPosition().directionTo(region.getCenter());
         return this.makeOrderMoveToDirection(direction, speed);
     }
 
-    makeOrderKickToRegion(region: IRegion, speed: number = SPECS.BALL_MAX_SPEED): Order {
+    makeOrderKickToRegion(region: Region, speed: number = SPECS.BALL_MAX_SPEED): Order {
         const direction = this.getBallPosition().directionTo(region.getCenter());
         return this.makeOrderKickToDirection(direction, speed);
     }
 
-    makeOrderMoveToPlayer(player: IPlayer, speed: number = SPECS.PLAYER_MAX_SPEED): Order {
+    makeOrderMoveToPlayer(player: Player, speed: number = SPECS.PLAYER_MAX_SPEED): Order {
         const direction = this.getMyPosition().directionTo(player.getPosition());
         return this.makeOrderMoveToDirection(direction, speed);
     }
 
-    makeOrderKickToPlayer(player: IPlayer, speed: number = SPECS.BALL_MAX_SPEED): Order {
+    makeOrderKickToPlayer(player: Player, speed: number = SPECS.BALL_MAX_SPEED): Order {
         const direction = this.getBallPosition().directionTo(player.getPosition());
         return this.makeOrderKickToDirection(direction, speed);
     }
 
-    makeOrderLookAtPoint(point: IPoint): Order {
+    makeOrderLookAtPoint(point: Point): Order {
         return this.makeOrderLookAtDirection(this.getMyPosition().directionTo(point));
     }
 
-    makeOrderLookAtDirection(direction: IVector2D): Order {
+    makeOrderLookAtDirection(direction: Vector2D): Order {
         return this.makeOrderMoveToDirection(direction, 0);
     }
 
-    makeOrderJumpToPoint(target: IPoint, speed: number = SPECS.GOALKEEPER_JUMP_MAX_SPEED): Order {
+    makeOrderJumpToPoint(target: Point, speed: number = SPECS.GOALKEEPER_JUMP_MAX_SPEED): Order {
         const origin = this.getMyPosition();
         const direction = origin.directionTo(target);
         if (direction.is(new Vector2D(0, 0))) throw new ErrJumpZeroDirection();
@@ -306,17 +303,17 @@ export class GameInspector implements IGameInspector {
         return Order.create({ action: { oneofKind: 'jump', jump } });
     }
 
-    tryMakeOrderMoveToPoint(point: IPoint, speed: number = SPECS.PLAYER_MAX_SPEED): Order | null {
+    tryMakeOrderMoveToPoint(point: Point, speed: number = SPECS.PLAYER_MAX_SPEED): Order | null {
         const direction = this.getMe().getPosition().directionTo(point);
         return this.tryMakeOrderMoveToDirection(direction, speed);
     }
 
-    tryMakeOrderKickToPoint(target: IPoint, speed: number = SPECS.BALL_MAX_SPEED): Order | null {
+    tryMakeOrderKickToPoint(target: Point, speed: number = SPECS.BALL_MAX_SPEED): Order | null {
         const direction = this.getBallPosition().directionTo(target);
         return this.tryMakeOrderKickToDirection(direction, speed);
     }
 
-    tryMakeOrderMoveToDirection(direction: IVector2D, speed: number = SPECS.PLAYER_MAX_SPEED): Order | null {
+    tryMakeOrderMoveToDirection(direction: Vector2D, speed: number = SPECS.PLAYER_MAX_SPEED): Order | null {
         if (direction.is(new Vector2D(0, 0))) return null;
 
         const vel = new Velocity(direction, speed);
@@ -326,7 +323,7 @@ export class GameInspector implements IGameInspector {
         return Order.create({ action: { oneofKind: 'move', move } });
     }
 
-    tryMakeOrderKickToDirection(direction: IVector2D, speed: number = SPECS.BALL_MAX_SPEED): Order | null {
+    tryMakeOrderKickToDirection(direction: Vector2D, speed: number = SPECS.BALL_MAX_SPEED): Order | null {
         if (direction.is(new Vector2D(0, 0))) return null;
 
         const vel = new Velocity(direction, speed);
@@ -336,36 +333,36 @@ export class GameInspector implements IGameInspector {
         return Order.create({ action: { oneofKind: 'kick', kick } });
     }
 
-    tryMakeOrderMoveToRegion(region: IRegion, speed: number = SPECS.PLAYER_MAX_SPEED): Order | null {
+    tryMakeOrderMoveToRegion(region: Region, speed: number = SPECS.PLAYER_MAX_SPEED): Order | null {
         const direction = this.getMe().getPosition().directionTo(region.getCenter());
         return this.tryMakeOrderMoveToDirection(direction, speed);
     }
 
-    tryMakeOrderKickToRegion(region: IRegion, speed: number = SPECS.BALL_MAX_SPEED): Order | null {
+    tryMakeOrderKickToRegion(region: Region, speed: number = SPECS.BALL_MAX_SPEED): Order | null {
         const direction = this.getBallPosition().directionTo(region.getCenter());
         return this.tryMakeOrderKickToDirection(direction, speed);
     }
 
-    tryMakeOrderMoveToPlayer(player: IPlayer, speed: number = SPECS.PLAYER_MAX_SPEED): Order | null {
+    tryMakeOrderMoveToPlayer(player: Player, speed: number = SPECS.PLAYER_MAX_SPEED): Order | null {
         const direction = this.getMe().getPosition().directionTo(player.getPosition());
         return this.tryMakeOrderMoveToDirection(direction, speed);
     }
 
-    tryMakeOrderKickToPlayer(player: IPlayer, speed: number = SPECS.BALL_MAX_SPEED): Order | null {
+    tryMakeOrderKickToPlayer(player: Player, speed: number = SPECS.BALL_MAX_SPEED): Order | null {
         const direction = this.getBallPosition().directionTo(player.getPosition());
         return this.tryMakeOrderKickToDirection(direction, speed);
     }
 
-    tryMakeOrderLookAtPoint(point: IPoint): Order | null {
+    tryMakeOrderLookAtPoint(point: Point): Order | null {
         const direction = this.getMe().getPosition().directionTo(point);
         return this.tryMakeOrderLookAtDirection(direction);
     }
 
-    tryMakeOrderLookAtDirection(direction: IVector2D): Order | null {
+    tryMakeOrderLookAtDirection(direction: Vector2D): Order | null {
         return this.tryMakeOrderMoveToDirection(direction, 0);
     }
 
-    tryMakeOrderJumpToPoint(target: IPoint, speed: number = SPECS.GOALKEEPER_JUMP_MAX_SPEED): Order | null {
+    tryMakeOrderJumpToPoint(target: Point, speed: number = SPECS.GOALKEEPER_JUMP_MAX_SPEED): Order | null {
         const origin = this.getMyPosition();
         const direction = origin.directionTo(target);
         if (direction.is(new Vector2D(0, 0))) return null;

@@ -1,10 +1,7 @@
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
-import { IGoal } from '@/interfaces/goal.js';
-import { IPoint, IVector2D } from '@/interfaces/positionable.js';
-
-import { AWAY_GOAL, HOME_GOAL } from '@/core/goal.js';
+import { AWAY_GOAL, Goal, HOME_GOAL } from '@/core/goal.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
@@ -13,7 +10,7 @@ import { Vector2D } from '@/core/vector.js';
 import { fieldCenterPoint } from '@/utils/field.js';
 import { randomInt } from '@/utils/random.js';
 
-export function pointToVector2D(point: IPoint): IVector2D {
+export function pointToVector2D(point: Point): Vector2D {
     return new Vector2D(point.getX(), point.getY());
 }
 
@@ -21,7 +18,7 @@ export function pointToVector2D(point: IPoint): IVector2D {
 // Factories
 // ------------------------------------------------------------
 
-export function zeroedPoint(): IPoint {
+export function zeroedPoint(): Point {
     return new Point(0, 0);
 }
 
@@ -41,13 +38,13 @@ export function randomPoint({
     return new Point(randomX, randomY);
 }
 
-export function randomPointInField(): IPoint {
+export function randomPointInField(): Point {
     const randomX = randomInt(0, SPECS.MAX_X_COORDINATE);
     const randomY = randomInt(0, SPECS.MAX_Y_COORDINATE);
     return new Point(randomX, randomY);
 }
 
-export function randomPointInSide(side: Side): IPoint {
+export function randomPointInSide(side: Side): Point {
     const minX = side === Side.HOME ? 0 : SPECS.MAX_X_COORDINATE / 2;
     const maxX = side === Side.HOME ? SPECS.MAX_X_COORDINATE / 2 - 1 : SPECS.MAX_X_COORDINATE;
     const randomX = randomInt(minX, maxX);
@@ -55,7 +52,7 @@ export function randomPointInSide(side: Side): IPoint {
     return new Point(randomX, randomY);
 }
 
-export function randomInitialPosition(side: Side): IPoint {
+export function randomInitialPosition(side: Side): Point {
     const position = randomPointInSide(side);
 
     if (!isValidInitialPosition(position)) {
@@ -65,13 +62,13 @@ export function randomInitialPosition(side: Side): IPoint {
     return position;
 }
 
-export function randomPointBetween(a: IPoint, b: IPoint): IPoint {
+export function randomPointBetween(a: Point, b: Point): Point {
     const x = randomInt(Math.min(a.getX(), b.getX()), Math.max(a.getX(), b.getX()));
     const y = randomInt(Math.min(a.getY(), b.getY()), Math.max(a.getY(), b.getY()));
     return new Point(x, y);
 }
 
-export function randomPointBetweenGoalPoles(goal: IGoal): IPoint {
+export function randomPointBetweenGoalPoles(goal: Goal): Point {
     const top = goal.getTopPole();
     const bottom = goal.getBottomPole();
 
@@ -86,7 +83,7 @@ export function randomPointBetweenGoalPoles(goal: IGoal): IPoint {
 // Validators
 // ------------------------------------------------------------
 
-export function isValidInitialPosition(position: IPoint): boolean {
+export function isValidInitialPosition(position: Point): boolean {
     // se está dentro do círculo central, não é válido,pois é região neutra
     if (position.distanceTo(fieldCenterPoint()) <= SPECS.FIELD_CENTER_RADIUS) {
         return false;

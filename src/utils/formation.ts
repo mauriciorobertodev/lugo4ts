@@ -1,7 +1,7 @@
-import { FormationObject, IFormation } from '@/interfaces/formation.js';
-import { IMapper } from '@/interfaces/mapper.js';
+import { FormationObject } from '@/interfaces/formation.js';
 
 import { Formation, FormationType } from '@/core/formation.js';
+import { Mapper } from '@/core/mapper.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 
@@ -64,8 +64,8 @@ export function randomFormation({
     maxPlayers?: number;
     minPlayers?: number;
     type?: FormationType;
-    mapper?: IMapper | null;
-} = {}): IFormation {
+    mapper?: Mapper | null;
+} = {}): Formation {
     const formation = new Formation(undefined, undefined, side, type, mapper);
 
     const playerCount = randomInt(minPlayers, maxPlayers);
@@ -82,7 +82,7 @@ export function randomFormation({
     return formation;
 }
 
-export function randomStartFormation(side: Side = randomSide()): IFormation {
+export function randomStartFormation(side: Side = randomSide()): Formation {
     const formation = randomFormation();
 
     for (let i = 1; i <= SPECS.MAX_PLAYERS; i++) {

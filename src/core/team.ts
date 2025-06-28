@@ -1,7 +1,7 @@
-import { IFormation } from '@/interfaces/formation.js';
-import { IPlayer } from '@/interfaces/player.js';
 import { ITeam } from '@/interfaces/team.js';
 
+import { Formation } from '@/core/formation.js';
+import { Player } from '@/core/player.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 
@@ -20,7 +20,7 @@ export class Team implements ITeam {
         private name: string,
         private score: number,
         private side: Side,
-        private players: IPlayer[]
+        private players: Player[]
     ) {
         if (this.score < 0) {
             throw new ErrTeamInvalidScore(this.score);
@@ -78,13 +78,13 @@ export class Team implements ITeam {
         return this;
     }
 
-    getRandomPlayer(ignore: number[] = []): IPlayer {
+    getRandomPlayer(ignore: number[] = []): Player {
         const players = this.players.filter((p) => !ignore.includes(p.getNumber()));
         if (players.length === 0) throw new ErrTeamEmpty();
         return randomElement(players);
     }
 
-    tryGetRandomPlayer(ignore: number[] = []): IPlayer | null {
+    tryGetRandomPlayer(ignore: number[] = []): Player | null {
         try {
             return this.getRandomPlayer(ignore);
         } catch {
@@ -92,11 +92,11 @@ export class Team implements ITeam {
         }
     }
 
-    getGoalkeeper(): IPlayer {
+    getGoalkeeper(): Player {
         return this.getPlayer(SPECS.GOALKEEPER_NUMBER);
     }
 
-    tryGetGoalkeeper(): IPlayer | null {
+    tryGetGoalkeeper(): Player | null {
         try {
             return this.getGoalkeeper();
         } catch {
@@ -104,17 +104,17 @@ export class Team implements ITeam {
         }
     }
 
-    getPlayer(number: number): IPlayer {
+    getPlayer(number: number): Player {
         const player = this.players.find((p) => p.getNumber() === number);
         if (!player) throw new ErrPlayerNotFound(this.side, number);
         return player;
     }
 
-    tryGetPlayer(number: number): IPlayer | null {
+    tryGetPlayer(number: number): Player | null {
         return this.players.find((p) => p.getNumber() === number) ?? null;
     }
 
-    getPlayers(): IPlayer[] {
+    getPlayers(): Player[] {
         return this.players;
     }
 
@@ -134,7 +134,7 @@ export class Team implements ITeam {
         return this.players.some((player) => player.getNumber() === number);
     }
 
-    setPositionsByFormation(formation: IFormation): this {
+    setPositionsByFormation(formation: Formation): this {
         formation.setSide(this.side);
         this.players.forEach((player, index) => {
             const position = formation.tryGetPositionOf(player.getNumber());
@@ -143,7 +143,7 @@ export class Team implements ITeam {
         return this;
     }
 
-    addPlayer(player: IPlayer): this {
+    addPlayer(player: Player): this {
         if (player.getTeamSide() !== this.side) {
             throw new ErrTeamInvalidSide(player.getNumber(), this.side);
         }

@@ -23,8 +23,8 @@ export class GymSession implements IGymSession {
     private environmentFactory: () => Environment;
     private lastSnapshot: IGameInspector | null = null;
     private client: IClient;
-    private input: unknown = null;
-    private output: unknown = null;
+    private state: unknown = null;
+    private action: unknown = null;
 
     constructor(trainer: IGymTrainer, remote: GameController, client: Client, environmentFactory: () => Environment) {
         this.trainer = trainer;
@@ -48,10 +48,10 @@ export class GymSession implements IGymSession {
         this.client.play(
             async (inspector: IGameInspector): Promise<Order[]> => {
                 this.lastSnapshot = inspector;
-                this.input = await this.trainer.input(inspector);
-                this.output = await this.trainer.predict(this.input, inspector);
-                const orders = await this.trainer.play(this.output, inspector);
-                return orders.orders;
+                this.state = await this.trainer.state(inspector);
+                this.action = await this.trainer.action(this.state, inspector);
+                const orders = await this.trainer.play(this.action, inspector);
+                return orders;
             },
             async () => {
                 await this.applyEnvironment(environment);
@@ -111,13 +111,11 @@ export class GymSession implements IGymSession {
 
         this.lastSnapshot = fromGameSnapshot(this.client.getSide(), this.client.getNumber(), newSnapshot);
 
-        // console.log(`Turn: ${this.lastSnapshot.getTurn()}`);
-
-        if (!this.running) return { input: this.input, output: this.output, done: true, reward: 0 };
+        if (!this.running) return { input: this.state, output: this.action, done: true, reward: 0 };
 
         const { reward, done } = await this.trainer.evaluate(prevSnapshot!, this.lastSnapshot!);
 
-        return { input: this.input, output: this.output, reward, done };
+        return { input: this.state, output: this.action, reward, done };
     }
 
     getLastSnapshot(): IGameInspector {

@@ -1,6 +1,4 @@
 import { IFormation } from '@/interfaces/formation.js';
-import { IMapper } from '@/interfaces/mapper.js';
-import { IPoint } from '@/interfaces/positionable.js';
 
 import { Mapper } from '@/core/mapper.js';
 import { Point } from '@/core/point.js';
@@ -8,7 +6,7 @@ import { Side } from '@/core/side.js';
 
 import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } from '@/errors.js';
 
-type Positions = Record<number, IPoint>;
+type Positions = Record<number, Point>;
 
 export class Formation implements IFormation {
     constructor(
@@ -16,7 +14,7 @@ export class Formation implements IFormation {
         private name: string = '',
         private side: Side = Side.HOME,
         private type: FormationType = FormationType.POINTS,
-        private mapper: IMapper | null = null
+        private mapper: Mapper | null = null
     ) {}
 
     getSide(): Side {
@@ -36,7 +34,7 @@ export class Formation implements IFormation {
         return this;
     }
 
-    setMapper(mapper: IMapper): this {
+    setMapper(mapper: Mapper): this {
         this.mapper = mapper;
         this.side = mapper.getSide();
         return this;
@@ -57,13 +55,13 @@ export class Formation implements IFormation {
         return this;
     }
 
-    getPositionOf(playerNumber: number): IPoint {
+    getPositionOf(playerNumber: number): Point {
         const position = this.tryGetPositionOf(playerNumber);
         if (!position) throw new ErrFormationPlayerPositionNotDefined(playerNumber);
         return this.side === Side.AWAY ? Mapper.mirrorCoordsToAway(position) : position;
     }
 
-    tryGetPositionOf(playerNumber: number): IPoint | null {
+    tryGetPositionOf(playerNumber: number): Point | null {
         const position = this.positions[playerNumber];
         if (!position) return null;
 
@@ -74,7 +72,7 @@ export class Formation implements IFormation {
         return this.side === Side.AWAY ? Mapper.mirrorCoordsToAway(position) : position;
     }
 
-    setPositionOf(playerNumber: number, position: IPoint): this {
+    setPositionOf(playerNumber: number, position: Point): this {
         this.positions[playerNumber] = position;
         return this;
     }
@@ -84,7 +82,7 @@ export class Formation implements IFormation {
         return this;
     }
 
-    toArray(): IPoint[] {
+    toArray(): Point[] {
         return Object.values(this.positions);
     }
 
@@ -92,12 +90,12 @@ export class Formation implements IFormation {
         return this.type === FormationType.REGIONS;
     }
 
-    getMapper(): IMapper {
+    getMapper(): Mapper {
         if (!this.mapper) throw new ErrFormationMapperNotDefined();
         return this.mapper;
     }
 
-    getPositions(): Record<number, IPoint> {
+    getPositions(): Record<number, Point> {
         return this.positions;
     }
 

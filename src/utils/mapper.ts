@@ -1,14 +1,14 @@
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
-import { IMapper, MapperObject } from '@/interfaces/mapper.js';
+import { MapperObject } from '@/interfaces/mapper.js';
 
 import { Mapper } from '@/core/mapper.js';
 import { Side } from '@/core/side.js';
 
 import { randomInt } from '@/utils/random.js';
 
-export function createMapperFromObject({ cols, rows, side }: MapperObject): IMapper {
+export function createMapperFromObject({ cols, rows, side }: MapperObject): Mapper {
     return new Mapper(cols, rows, side);
 }
 
@@ -16,7 +16,7 @@ export function createMapperFromObject({ cols, rows, side }: MapperObject): IMap
 // Factories
 // ------------------------------------------------------------
 
-export function zeroedMapper(): IMapper {
+export function zeroedMapper(): Mapper {
     return new Mapper(4, 2, Side.HOME);
 }
 
@@ -32,6 +32,6 @@ export function randomMapper({
     minRows?: number;
     maxRows?: number;
     side?: Side;
-} = {}): IMapper {
+} = {}): Mapper {
     return new Mapper(randomInt(minCols, maxCols), randomInt(minRows, maxRows), side);
 }

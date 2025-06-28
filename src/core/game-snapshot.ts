@@ -1,22 +1,23 @@
-import { IBall } from '@/interfaces/ball.js';
 import { IGameSnapshot, ServerState } from '@/interfaces/game-snapshot.js';
-import { IPlayer } from '@/interfaces/player.js';
-import { IPoint, IVector2D } from '@/interfaces/positionable.js';
-import { IShotClock } from '@/interfaces/shot-clock.js';
-import { ITeam } from '@/interfaces/team.js';
-import { IVelocity } from '@/interfaces/velocity.js';
 
+import { Ball } from '@/core/ball.js';
+import { Player } from '@/core/player.js';
+import { Point } from '@/core/point.js';
+import { ShotClock } from '@/core/shot-clock.js';
 import { SPECS } from '@/core/specs.js';
+import { Team } from '@/core/team.js';
+import { Vector2D } from '@/core/vector.js';
+import { Velocity } from '@/core/velocity.js';
 
 export class GameSnapshot implements IGameSnapshot {
     constructor(
         private readonly serverState: ServerState,
         private readonly turn: number,
-        private readonly homeTeam?: ITeam,
-        private readonly awayTeam?: ITeam,
-        private readonly ball?: IBall,
+        private readonly homeTeam?: Team,
+        private readonly awayTeam?: Team,
+        private readonly ball?: Ball,
         private readonly turnsBallInGoalZone?: number,
-        private readonly shotClock?: IShotClock
+        private readonly shotClock?: ShotClock
     ) {}
 
     hasHomePlayer(number: number): boolean {
@@ -27,27 +28,27 @@ export class GameSnapshot implements IGameSnapshot {
         return this.getAwayPlayers().some((player) => player.getNumber() === number);
     }
 
-    getHomePlayer(number: number): IPlayer | null {
+    getHomePlayer(number: number): Player | null {
         return this.getHomePlayers().find((player) => player.getNumber() === number) || null;
     }
 
-    getHomeGoalkeeper(): IPlayer | null {
+    getHomeGoalkeeper(): Player | null {
         return this.getHomePlayer(SPECS.GOALKEEPER_NUMBER);
     }
 
-    getHomePlayers(): IPlayer[] {
+    getHomePlayers(): Player[] {
         return this.homeTeam?.getPlayers() || [];
     }
 
-    getAwayPlayer(number: number): IPlayer | null {
+    getAwayPlayer(number: number): Player | null {
         return this.getAwayPlayers().find((player) => player.getNumber() === number) || null;
     }
 
-    getAwayGoalkeeper(): IPlayer | null {
+    getAwayGoalkeeper(): Player | null {
         return this.getAwayPlayer(SPECS.GOALKEEPER_NUMBER);
     }
 
-    getAwayPlayers(): IPlayer[] {
+    getAwayPlayers(): Player[] {
         return this.awayTeam?.getPlayers() || [];
     }
 
@@ -59,7 +60,7 @@ export class GameSnapshot implements IGameSnapshot {
         return this.shotClock !== undefined;
     }
 
-    getBallPosition(): IPoint {
+    getBallPosition(): Point {
         return this.getBall().getPosition();
     }
 
@@ -67,15 +68,15 @@ export class GameSnapshot implements IGameSnapshot {
         return this.getBall().getSpeed();
     }
 
-    getBallDirection(): IVector2D {
+    getBallDirection(): Vector2D {
         return this.getBall().getDirection();
     }
 
-    getBallVelocity(): IVelocity {
+    getBallVelocity(): Velocity {
         return this.getBall().getVelocity();
     }
 
-    getBallHolder(): IPlayer | null {
+    getBallHolder(): Player | null {
         return this.getBall().getHolder();
     }
 
@@ -87,7 +88,7 @@ export class GameSnapshot implements IGameSnapshot {
         return SPECS.BALL_TIME_IN_GOAL_ZONE - this.getBallTurnsInGoalZone();
     }
 
-    getShotClock(): IShotClock | null {
+    getShotClock(): ShotClock | null {
         return this.shotClock || null;
     }
 
@@ -99,15 +100,15 @@ export class GameSnapshot implements IGameSnapshot {
         return this.serverState;
     }
 
-    getHomeTeam(): ITeam {
+    getHomeTeam(): Team {
         return this.homeTeam!;
     }
 
-    getAwayTeam(): ITeam {
+    getAwayTeam(): Team {
         return this.awayTeam!;
     }
 
-    getBall(): IBall {
+    getBall(): Ball {
         return this.ball!;
     }
 }

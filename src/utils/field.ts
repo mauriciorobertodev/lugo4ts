@@ -1,15 +1,13 @@
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------
-import { IPoint } from '@/interfaces/positionable.js';
-
 import { Point } from '@/core/point.js';
 import { SPECS } from '@/core/specs.js';
 
 /**
  * Creates a new Point with the given coordinates.
  */
-export function fieldCenterPoint(): IPoint {
+export function fieldCenterPoint(): Point {
     return new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y);
 }
 
@@ -26,7 +24,7 @@ export function fieldCenterPoint(): IPoint {
  * isValidInsideFieldPoint(new Point(10, 20)); // true
  * isValidInsideFieldPoint(new Point(-1, 20)); // false
  */
-export function isValidInsideFieldPoint(point: IPoint): boolean {
+export function isValidInsideFieldPoint(point: Point): boolean {
     return (
         point.getX() >= 0 &&
         point.getX() <= SPECS.MAX_X_COORDINATE &&

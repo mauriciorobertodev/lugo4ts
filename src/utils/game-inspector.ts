@@ -1,7 +1,5 @@
-import { IGameInspector } from '@/interfaces/game-inspector.js';
-import { IGameSnapshot } from '@/interfaces/game-snapshot.js';
-
 import { GameInspector } from '@/core/game-inspector.js';
+import { GameSnapshot } from '@/core/game-snapshot.js';
 import { PlayerState } from '@/core/player.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
@@ -19,7 +17,7 @@ import { ErrGameInvalidPlayerState } from '@/errors.js';
 // Converters
 // ------------------------------------------------------------
 
-export function fromGameSnapshot(playerSide: Side, playerNumber: number, snapshot: IGameSnapshot): IGameInspector {
+export function fromGameSnapshot(playerSide: Side, playerNumber: number, snapshot: GameSnapshot): GameInspector {
     return new GameInspector(
         playerSide,
         playerNumber,
@@ -42,7 +40,7 @@ export function randomGameInspectorInOnHolding({
 }: {
     playerSide?: Side;
     playerNumber?: number;
-}): IGameInspector {
+}): GameInspector {
     const homeTeam = randomTeam({
         side: Side.HOME,
         populate: SPECS.MAX_PLAYERS,
@@ -72,7 +70,7 @@ export function randomGameInspectorInOnDefending({
 }: {
     playerSide?: Side;
     playerNumber?: number;
-}): IGameInspector {
+}): GameInspector {
     const homeTeam = randomTeam({
         side: Side.HOME,
         populate: SPECS.MAX_PLAYERS,
@@ -103,7 +101,7 @@ export function randomGameInspectorInOnDisputing({
 }: {
     playerSide?: Side;
     playerNumber?: number;
-}): IGameInspector {
+}): GameInspector {
     const homeTeam = randomTeam({
         side: Side.HOME,
         populate: SPECS.MAX_PLAYERS,
@@ -131,7 +129,7 @@ export function randomGameInspectorInOnSupporting({
 }: {
     playerSide?: Side;
     playerNumber?: number;
-}): IGameInspector {
+}): GameInspector {
     const homeTeam = randomTeam({
         side: Side.HOME,
         populate: SPECS.MAX_PLAYERS,
@@ -159,7 +157,7 @@ export function randomGameInspectorInOnSupporting({
 export function randomGameInspectorInAsGoalKeeper({
     playerState,
     playerSide = randomSide(),
-}: { playerSide?: Side; playerState?: PlayerState } = {}): IGameInspector {
+}: { playerSide?: Side; playerState?: PlayerState } = {}): GameInspector {
     switch (playerState) {
         case PlayerState.HOLDING:
             return randomGameInspectorInOnHolding({ playerNumber: SPECS.GOALKEEPER_NUMBER, playerSide });
@@ -182,7 +180,7 @@ export function randomGameInspector({
     playerNumber?: number;
     playerSide?: Side;
     playerState?: PlayerState;
-} = {}): IGameInspector {
+} = {}): GameInspector {
     const isGoalkeeper = playerNumber === SPECS.GOALKEEPER_NUMBER;
 
     if (isGoalkeeper) {

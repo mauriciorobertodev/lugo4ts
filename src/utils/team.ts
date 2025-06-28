@@ -1,6 +1,4 @@
-import { IPlayer } from '@/interfaces/player.js';
-import { ITeam } from '@/interfaces/team.js';
-
+import { Player } from '@/core/player.js';
 import { Side } from '@/core/side.js';
 import { Team } from '@/core/team.js';
 
@@ -18,7 +16,7 @@ import { ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from '@/errors.js';
 // Factories
 // ------------------------------------------------------------
 
-export function zeroedTeam(): ITeam {
+export function zeroedTeam(): Team {
     return new Team('Zeroed Team', 0, Side.HOME, []);
 }
 
@@ -33,8 +31,8 @@ export function randomTeam({
     side?: Side;
     populate?: number;
     score?: number;
-    players?: IPlayer[];
-} = {}): ITeam {
+    players?: Player[];
+} = {}): Team {
     players.forEach((p) => {
         if (p.getTeamSide() !== side) throw new ErrTeamInvalidSide(p.getNumber(), side);
     });
@@ -47,7 +45,7 @@ export function randomTeam({
         takenNumbers.add(p.getNumber());
     }
 
-    const teamPlayers: IPlayer[] = [...players];
+    const teamPlayers: Player[] = [...players];
 
     for (let num = 1; teamPlayers.length < populate; num++) {
         if (takenNumbers.has(num)) continue;

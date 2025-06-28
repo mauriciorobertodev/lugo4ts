@@ -1,13 +1,13 @@
 // ------------------------------------------------------------
 // Converters
 // ---------------------------------------------------------
-import { IBall } from '@/interfaces/ball.js';
-import { IGameSnapshot, ServerState } from '@/interfaces/game-snapshot.js';
-import { IShotClock } from '@/interfaces/shot-clock.js';
-import { ITeam } from '@/interfaces/team.js';
+import { ServerState } from '@/interfaces/game-snapshot.js';
 
+import { Ball } from '@/core/ball.js';
 import { GameSnapshot } from '@/core/game-snapshot.js';
+import { ShotClock } from '@/core/shot-clock.js';
 import { Side } from '@/core/side.js';
+import { Team } from '@/core/team.js';
 
 import { randomBall } from '@/utils/ball.js';
 import { randomTeam } from '@/utils/team.js';
@@ -16,7 +16,7 @@ import { randomTeam } from '@/utils/team.js';
 // Factories
 // ------------------------------------------------------------
 
-export function createZeroedSnapshot(): IGameSnapshot {
+export function createZeroedSnapshot(): GameSnapshot {
     return new GameSnapshot(ServerState.WAITING, 0);
 }
 
@@ -29,12 +29,12 @@ export function randomGameSnapshot({
     shotClock,
 }: {
     turn?: number;
-    homeTeam?: ITeam | null;
-    awayTeam?: ITeam | null;
-    ball?: IBall | null;
+    homeTeam?: Team | null;
+    awayTeam?: Team | null;
+    ball?: Ball | null;
     turnsBallInGoalZone?: number;
-    shotClock?: IShotClock;
-} = {}): IGameSnapshot {
+    shotClock?: ShotClock;
+} = {}): GameSnapshot {
     return new GameSnapshot(
         ServerState.WAITING,
         turn,

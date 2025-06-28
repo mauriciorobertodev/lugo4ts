@@ -1,19 +1,18 @@
-import { IVector2D } from '@/interfaces/positionable.js';
 import { IVelocity } from '@/interfaces/velocity.js';
 
 import { Vector2D } from '@/core/vector.js';
 
 export class Velocity implements IVelocity {
     constructor(
-        private direction: IVector2D = new Vector2D(),
+        private direction: Vector2D = new Vector2D(),
         private speed: number = 0
     ) {}
 
-    getDirection(): IVector2D {
+    getDirection(): Vector2D {
         return this.direction;
     }
 
-    setDirection(direction: IVector2D): this {
+    setDirection(direction: Vector2D): this {
         this.direction = direction;
         return this;
     }

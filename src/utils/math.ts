@@ -1,5 +1,3 @@
-import { IPoint } from '@/interfaces/positionable.js';
-
 import { Point } from '@/core/point.js';
 
 import { ErrMathInterpolationFactor } from '@/errors.js';
@@ -26,7 +24,7 @@ export function lerp(start: number, end: number, t: number): number {
  *  const interpolatedPoint = PointUtils.lerp(pointA, pointB, 0.5);
  *  @see {@link https://en.wikipedia.org/wiki/Linear_interpolation}
  */
-export function lerp2D(a: IPoint, b: IPoint, t: number): IPoint {
+export function lerp2D(a: Point, b: Point, t: number): Point {
     if (t < 0 || t > 1) throw new ErrMathInterpolationFactor(t);
     return new Point(lerp(a.getX(), b.getX(), t), lerp(a.getY(), b.getY(), t));
 }

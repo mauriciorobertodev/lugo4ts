@@ -1,28 +1,28 @@
 import { IBall } from '@/interfaces/ball.js';
-import { IPlayer } from '@/interfaces/player.js';
-import { IPoint, IVector2D } from '@/interfaces/positionable.js';
-import { IRegion } from '@/interfaces/region.js';
-import { IVelocity } from '@/interfaces/velocity.js';
 
+import { Player } from '@/core/player.js';
 import { Point } from '@/core/point.js';
+import { Region } from '@/core/region.js';
 import { SPECS } from '@/core/specs.js';
+import { Vector2D } from '@/core/vector.js';
+import { Velocity } from '@/core/velocity.js';
 
 import { zeroedVelocity } from '@/utils/velocity.js';
 
 export class Ball implements IBall {
-    private position: IPoint;
-    private velocity: IVelocity;
+    private position: Point;
+    private velocity: Velocity;
 
     constructor(
-        position: IPoint | null,
-        velocity: IVelocity | null,
-        private holder: IPlayer | null
+        position: Point | null,
+        velocity: Velocity | null,
+        private holder: Player | null
     ) {
         this.position = position ?? new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y);
         this.velocity = velocity ?? zeroedVelocity();
     }
 
-    setDirection(direction: IVector2D): this {
+    setDirection(direction: Vector2D): this {
         this.velocity = this.velocity.setDirection(direction);
         return this;
     }
@@ -32,25 +32,25 @@ export class Ball implements IBall {
         return this;
     }
 
-    getPosition(): IPoint {
+    getPosition(): Point {
         return this.position;
     }
 
-    setPosition(position: IPoint): this {
+    setPosition(position: Point): this {
         this.position = position;
         return this;
     }
 
-    getVelocity(): IVelocity {
+    getVelocity(): Velocity {
         return this.velocity;
     }
 
-    setVelocity(velocity: IVelocity): this {
+    setVelocity(velocity: Velocity): this {
         this.velocity = velocity;
         return this;
     }
 
-    getDirection(): IVector2D {
+    getDirection(): Vector2D {
         return this.getVelocity().getDirection();
     }
 
@@ -62,41 +62,41 @@ export class Ball implements IBall {
         return !!this.holder;
     }
 
-    getHolder(): IPlayer | null {
+    getHolder(): Player | null {
         return this.holder;
     }
 
-    setHolder(holder: IPlayer | null): this {
+    setHolder(holder: Player | null): this {
         this.holder = holder;
         return this;
     }
 
-    holderIs(holder: IPlayer): boolean {
+    holderIs(holder: Player): boolean {
         if (!this.holder) return false;
         return this.holder.getNumber() === holder.getNumber() && this.holder.getTeamSide() === holder.getTeamSide();
     }
 
-    directionToPlayer(player: IPlayer): IVector2D {
+    directionToPlayer(player: Player): Vector2D {
         return this.getPosition().directionTo(player.getPosition());
     }
 
-    directionToPoint(point: IPoint): IVector2D {
+    directionToPoint(point: Point): Vector2D {
         return this.getPosition().directionTo(point);
     }
 
-    directionToRegion(region: IRegion): IVector2D {
+    directionToRegion(region: Region): Vector2D {
         return this.getPosition().directionTo(region.getCenter());
     }
 
-    distanceToPlayer(player: IPlayer): number {
+    distanceToPlayer(player: Player): number {
         return this.getPosition().distanceTo(player.getPosition());
     }
 
-    distanceToPoint(point: IPoint): number {
+    distanceToPoint(point: Point): number {
         return this.getPosition().distanceTo(point);
     }
 
-    distanceToRegion(region: IRegion): number {
+    distanceToRegion(region: Region): number {
         return this.getPosition().distanceTo(region.getCenter());
     }
 }

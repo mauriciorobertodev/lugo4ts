@@ -1,6 +1,6 @@
 {
     "name": "@mauricioroberto/lugo4ts",
-    "version": "0.0.18-beta",
+    "version": "0.0.19-beta",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "module",
@@ -11,18 +11,26 @@
     "exports": {
         ".": {
             "import": "./dist/index.js",
+            "require": "./dist/index.js",
+            "default": "./dist/index.js",
             "types": "./dist/index.d.ts"
         },
         "./gym": {
             "import": "./dist/gym.js",
+            "require": "./dist/gym.js",
+            "default": "./dist/gym.js",
             "types": "./dist/gym.d.ts"
         },
         "./stress": {
             "import": "./dist/stress.js",
+            "require": "./dist/stress.js",
+            "default": "./dist/stress.js",
             "types": "./dist/stress.d.ts"
         },
         "./runtime": {
             "import": "./dist/runtime.js",
+            "require": "./dist/runtime.js",
+            "default": "./dist/runtime.js",
             "types": "./dist/runtime.d.ts"
         }
     },

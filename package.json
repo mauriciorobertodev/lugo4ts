@@ -1,6 +1,6 @@
 {
     "name": "@mauricioroberto/lugo4ts",
-    "version": "0.0.16-beta",
+    "version": "0.0.17-beta",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "module",
@@ -21,9 +21,9 @@
             "import": "./dist/stress.js",
             "types": "./dist/stress.d.ts"
         },
-        "./env": {
-            "import": "./dist/env.js",
-            "types": "./dist/env.d.ts"
+        "./runtime": {
+            "import": "./dist/runtime.js",
+            "types": "./dist/runtime.d.ts"
         }
     },
     "files": [

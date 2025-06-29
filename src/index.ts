@@ -59,6 +59,13 @@ export * from '@/utils/field.js';
 
 export * from '@/utils/logger.js';
 
+// TACTICS
+export * from '@/core/field-zone.js';
+export * from '@/utils/field-zone.js';
+
+export * from '@/core/tactics.js';
+export * from '@/utils/tactics.js';
+
 // PLAYGROUND
 export * from '@/playground/dummies/chaser.js';
 export * from '@/playground/dummies/kicker.js';
@@ -76,3 +83,5 @@ export { type GameSnapshotObject, ServerState } from '@/interfaces/game-snapshot
 export { type GameInspectorObject } from '@/interfaces/game-inspector.js';
 export { type ShotClockObject } from '@/interfaces/shot-clock.js';
 export { type RegionObject } from '@/interfaces/region.js';
+export { type TacticsObject } from '@/interfaces/tactics.js';
+export { type FieldZoneObject } from '@/interfaces/field-zone.js';

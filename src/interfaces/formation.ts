@@ -4,6 +4,9 @@ import type { IPoint } from '@/interfaces/positionable.js';
 import type { Side } from '@/core/side.js';
 
 export interface IFormation {
+    getId(): string;
+    setId(id: string): this;
+
     getName(): string;
     setName(name: string): this;
 

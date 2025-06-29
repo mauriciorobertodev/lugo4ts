@@ -11,19 +11,30 @@ import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } fr
 type Positions = Record<number, Point>;
 
 export class Formation implements IFormation {
+    private id: string;
     constructor(
         private positions: Positions = {},
-        private name: string = '',
+        private name: string = '??????',
         private side: Side = Side.HOME,
         private type: FormationType = FormationType.POINTS,
         private mapper: Mapper | null = null
     ) {
+        this.id = randomUUID();
         if (this.mapper) {
             this.side = this.mapper.getSide();
             this.type = FormationType.REGIONS;
         }
 
         if (!this.name) this.name = randomUUID();
+    }
+
+    getId(): string {
+        return this.id;
+    }
+
+    setId(id: string): this {
+        this.id = id;
+        return this;
     }
 
     getSide(): Side {

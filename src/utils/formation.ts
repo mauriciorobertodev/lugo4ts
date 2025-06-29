@@ -99,8 +99,10 @@ export function makeFormation({
     positions = {},
     type = FormationType.POINTS,
     mapper = undefined,
-    name = randomUUID(),
+    name = '?????',
+    id = randomUUID(),
 }: {
+    id?: string;
     side?: Side;
     positions?: Record<number, [number, number]>;
     type?: FormationType;

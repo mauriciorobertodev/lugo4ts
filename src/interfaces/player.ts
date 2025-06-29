@@ -32,7 +32,12 @@ export interface IPlayer {
     distanceToPlayer(player: IPlayer): number;
     distanceToPoint(point: IPoint): number;
     distanceToRegion(region: IRegion): number;
+
+    clone(): IPlayer;
+    toObject(): PlayerObject;
 }
+
+export type PlayerNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 export enum PlayerState {
     SUPPORTING = 'supporting',
@@ -47,6 +52,5 @@ export type PlayerObject = {
     position: PointObject;
     initPosition: PointObject;
     velocity: VelocityObject;
-    isGoalkeeper?: boolean;
-    isJumping?: boolean;
+    isJumping: boolean;
 };

@@ -1,4 +1,4 @@
-import { IPlayer } from '@/interfaces/player.js';
+import { IPlayer, PlayerObject } from '@/interfaces/player.js';
 
 import { Point } from '@/core/point.js';
 import { Region } from '@/core/region.js';
@@ -98,5 +98,27 @@ export class Player implements IPlayer {
 
     distanceToPoint(point: Point): number {
         return this.position.distanceTo(point);
+    }
+
+    clone(): Player {
+        return new Player(
+            this.number,
+            this.isJumping,
+            this.side,
+            this.position.clone(),
+            this.initPosition.clone(),
+            this.velocity.clone()
+        );
+    }
+
+    toObject(): PlayerObject {
+        return {
+            number: this.number,
+            side: this.side,
+            position: this.position.toObject(),
+            initPosition: this.initPosition.toObject(),
+            velocity: this.velocity.toObject(),
+            isJumping: this.isJumping,
+        };
     }
 }

@@ -1,12 +1,19 @@
-// ------------------------------------------------------------
-// Converters
-// ------------------------------------------------------------
+import { VelocityObject } from '@/interfaces/velocity.js';
+
 import { SPECS } from '@/core/specs.js';
 import { Vector2D } from '@/core/vector.js';
 import { Velocity } from '@/core/velocity.js';
 
 import { randomFloat } from '@/utils/random.js';
-import { randomVector2D } from '@/utils/vector.js';
+import { fromVector2DObject, randomVector2D } from '@/utils/vector.js';
+
+// ------------------------------------------------------------
+// Converters
+// ------------------------------------------------------------
+
+export function fromVelocityObject(obj: VelocityObject): Velocity {
+    return new Velocity(fromVector2DObject(obj.direction), obj.speed);
+}
 
 // ------------------------------------------------------------
 // Factories

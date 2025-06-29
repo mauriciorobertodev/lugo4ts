@@ -1,4 +1,4 @@
-import { IPositionable, IVector2D } from '@/interfaces/positionable.js';
+import { IPositionable, IVector2D, Vector2DObject } from '@/interfaces/positionable.js';
 
 export class Vector2D implements IVector2D {
     constructor(
@@ -22,10 +22,6 @@ export class Vector2D implements IVector2D {
     setY(y: number): this {
         this.y = y;
         return this;
-    }
-
-    clone(): Vector2D {
-        return new Vector2D(this.x, this.y);
     }
 
     addX(value: number): this {
@@ -159,5 +155,16 @@ export class Vector2D implements IVector2D {
 
     angleInDegrees(): number {
         return this.angleInRadians() * (180 / Math.PI);
+    }
+
+    clone(): Vector2D {
+        return new Vector2D(this.x, this.y);
+    }
+
+    toObject(): Vector2DObject {
+        return {
+            x: this.getX(),
+            y: this.getY(),
+        };
     }
 }

@@ -1,4 +1,4 @@
-import { IMapper } from '@/interfaces/mapper.js';
+import { IMapper, MapperObject } from '@/interfaces/mapper.js';
 
 import { Point } from '@/core/point.js';
 import { Region } from '@/core/region.js';
@@ -63,8 +63,8 @@ export class Mapper implements IMapper {
     }
 
     getRegion(col: number, row: number): Region {
-        if (col < 0 || col > this.cols) throw new ErrMapperColOutOfMapped(col, 0, this.cols);
-        if (row < 0 || row > this.rows) throw new ErrMapperRowOutOfMapped(row, 0, this.rows);
+        if (!this.isValidCol(col)) throw new ErrMapperColOutOfMapped(col, 0, this.cols);
+        if (!this.isValidRow(row)) throw new ErrMapperRowOutOfMapped(row, 0, this.rows);
 
         col = clamp(col, 0, this.cols - 1);
         row = clamp(row, 0, this.rows - 1);
@@ -114,5 +114,29 @@ export class Mapper implements IMapper {
         mirrored.setX(SPECS.MAX_X_COORDINATE - center.getX());
         mirrored.setY(SPECS.MAX_Y_COORDINATE - center.getY());
         return mirrored;
+    }
+
+    isValidCol(col: number): boolean {
+        return col >= 0 && col < this.cols;
+    }
+
+    isValidRow(row: number): boolean {
+        return row >= 0 && row < this.rows;
+    }
+
+    isValidRegion(col: number, row: number): boolean {
+        return this.isValidCol(col) && this.isValidRow(row);
+    }
+
+    clone(): Mapper {
+        return new Mapper(this.cols, this.rows, this.side);
+    }
+
+    toObject(): MapperObject {
+        return {
+            cols: this.cols,
+            rows: this.rows,
+            side: this.side,
+        };
     }
 }

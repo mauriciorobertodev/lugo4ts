@@ -2,23 +2,25 @@ import { FormationObject, FormationType } from '@/interfaces/formation.js';
 
 import { Formation } from '@/core/formation.js';
 import { Mapper } from '@/core/mapper.js';
+import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 
-import { createMapperFromObject } from '@/utils/mapper.js';
 import { isValidPlayerNumber } from '@/utils/player.js';
 import { randomInitialPosition } from '@/utils/point.js';
-import { randomInt } from '@/utils/random.js';
+import { randomInt, randomUUID } from '@/utils/random.js';
 import { randomSide } from '@/utils/side.js';
 
 import { ErrFormationInvalidPlayerNumber } from '@/errors.js';
+
+import { FromMapperObject } from './mapper.js';
 
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
 
 export function fromFormationObject({ name, side, positions, type, mapper }: FormationObject): Formation {
-    const formation = new Formation({}, name, side, type, mapper ? createMapperFromObject(mapper) : undefined);
+    const formation = new Formation({}, name, side, type, mapper ? FromMapperObject(mapper) : undefined);
 
     for (const keyStr in positions) {
         const playerNumber = parseInt(keyStr, 10);
@@ -90,4 +92,24 @@ export function randomStartFormation(side: Side = randomSide()): Formation {
     }
 
     return formation;
+}
+
+export function makeFormation({
+    side = randomSide(),
+    positions = {},
+    type = FormationType.POINTS,
+    mapper = undefined,
+    name = randomUUID(),
+}: {
+    side?: Side;
+    positions?: Record<number, [number, number]>;
+    type?: FormationType;
+    mapper?: Mapper | null;
+    name?: string;
+}) {
+    const points: Record<number, Point> = {};
+    for (const [playerNumber, [x, y]] of Object.entries(positions)) {
+        points[parseInt(playerNumber, 10)] = new Point(x, y);
+    }
+    return new Formation(points, name, side, type, mapper);
 }

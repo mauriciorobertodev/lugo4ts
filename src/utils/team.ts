@@ -1,8 +1,10 @@
+import { TeamObject } from '@/interfaces/team.js';
+
 import { Player } from '@/core/player.js';
 import { Side } from '@/core/side.js';
 import { Team } from '@/core/team.js';
 
-import { randomPlayer } from '@/utils/player.js';
+import { fromPlayerObject, randomPlayer } from '@/utils/player.js';
 import { randomInt } from '@/utils/random.js';
 import { randomSide } from '@/utils/side.js';
 
@@ -11,6 +13,11 @@ import { ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from '@/errors.js';
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
+
+export function fromTeamObject(obj: TeamObject): Team {
+    const players = obj.players.map((p) => fromPlayerObject(p));
+    return new Team(obj.name, obj.score, obj.side, players);
+}
 
 // ------------------------------------------------------------
 // Factories

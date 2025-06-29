@@ -19,6 +19,13 @@ export interface IMapper {
     getRegion(col: number, row: number): IRegion;
     getRegionFromPoint(point: IPoint): IRegion;
     getRandomRegion(): IRegion;
+
+    isValidCol(col: number): boolean;
+    isValidRow(row: number): boolean;
+    isValidRegion(col: number, row: number): boolean;
+
+    clone(): IMapper;
+    toObject(): MapperObject;
 }
 
 export type MapperObject = {

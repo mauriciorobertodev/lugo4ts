@@ -1,7 +1,4 @@
-// ------------------------------------------------------------
-// Converters
-// ------------------------------------------------------------
-import { PlayerState } from '@/interfaces/player.js';
+import { PlayerObject, PlayerState } from '@/interfaces/player.js';
 
 import { Player } from '@/core/player.js';
 import { Point } from '@/core/point.js';
@@ -11,10 +8,30 @@ import { Vector2D } from '@/core/vector.js';
 import { Velocity } from '@/core/velocity.js';
 
 import { goalFromSide } from '@/utils/goal.js';
-import { randomInitialPosition, randomPointBetweenGoalPoles, randomPointInField } from '@/utils/point.js';
+import {
+    fromPointObject,
+    randomInitialPosition,
+    randomPointBetweenGoalPoles,
+    randomPointInField,
+} from '@/utils/point.js';
 import { randomElement, randomInt } from '@/utils/random.js';
 import { randomVector2D } from '@/utils/vector.js';
-import { randomVelocity } from '@/utils/velocity.js';
+import { fromVelocityObject, randomVelocity } from '@/utils/velocity.js';
+
+// ------------------------------------------------------------
+// Converters
+// ------------------------------------------------------------
+
+export function fromPlayerObject(obj: PlayerObject): Player {
+    return new Player(
+        obj.number,
+        obj.isJumping,
+        obj.side,
+        fromPointObject(obj.position),
+        fromPointObject(obj.initPosition),
+        fromVelocityObject(obj.velocity)
+    );
+}
 
 // ------------------------------------------------------------
 // Factories

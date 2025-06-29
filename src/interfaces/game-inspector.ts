@@ -14,9 +14,9 @@ import type { Side } from '@/core/side.js';
 
 export interface IGameInspector {
     getTurn(): number;
-    getPlayer(side: Side, number: number): IPlayer;
-    tryGetPlayer(side: Side, number: number): IPlayer | null;
-    getTeam(side: Side): ITeam;
+    // getPlayer(side: Side, number: number): IPlayer;
+    // tryGetPlayer(side: Side, number: number): IPlayer | null;
+    // getTeam(side: Side): ITeam;
 
     hasShotClock(): boolean;
     getShotClock(): IShotClock | null;
@@ -95,19 +95,18 @@ export interface IGameInspector {
     makeOrderStop(): Order;
 
     makeOrderCatch(): Order;
+
+    clone(): IGameInspector;
+    toObject(): GameInspectorObject;
 }
 
 export type GameInspectorObject = {
     turn: number;
-    side: Side;
-    number: number;
-    state: PlayerState;
-    me: PlayerObject;
-    myTeam: TeamObject;
-    opponentTeam: TeamObject;
-    myGoal: GoalObject;
-    opponentGoal: GoalObject;
-    ball: BallObject;
+    myTeamSide: Side;
+    myNumber: number;
+    homeTeam?: TeamObject;
+    awayTeam?: TeamObject;
+    ball?: BallObject;
     shotClock?: ShotClockObject | null;
     ballTurnsInGoalZone: number;
 };

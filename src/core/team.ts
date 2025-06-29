@@ -1,4 +1,4 @@
-import { ITeam } from '@/interfaces/team.js';
+import { ITeam, TeamObject } from '@/interfaces/team.js';
 
 import { Formation } from '@/core/formation.js';
 import { Player } from '@/core/player.js';
@@ -150,5 +150,23 @@ export class Team implements ITeam {
         this.players = this.players.filter((p) => p.getNumber() !== player.getNumber());
         this.players.push(player);
         return this;
+    }
+
+    clone(): Team {
+        return new Team(
+            this.name,
+            this.score,
+            this.side,
+            this.players.map((player) => player.clone())
+        );
+    }
+
+    toObject(): TeamObject {
+        return {
+            name: this.name,
+            score: this.score,
+            side: this.side,
+            players: this.players.map((player) => player.toObject()),
+        };
     }
 }

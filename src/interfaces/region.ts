@@ -12,6 +12,8 @@ export interface IRegion {
     getCol(): number;
     getRow(): number;
 
+    getSide(): Side;
+
     getCenter(): IPoint;
     frontRight(): IRegion;
     front(): IRegion;
@@ -31,6 +33,9 @@ export interface IRegion {
     containsPoint(point: IPoint): boolean;
 
     toString(): string;
+
+    clone(): IRegion;
+    toObject(): RegionObject;
 }
 
 export type RegionObject = {

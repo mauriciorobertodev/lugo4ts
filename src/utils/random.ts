@@ -10,3 +10,11 @@ export function randomElement<T>(array: T[]): T {
     if (array.length === 0) throw new Error('Array cannot be empty');
     return array[randomInt(0, array.length - 1)];
 }
+
+export function randomUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = (Math.random() * 16) | 0;
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+}

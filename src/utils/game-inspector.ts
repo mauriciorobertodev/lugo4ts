@@ -1,3 +1,5 @@
+import { GameInspectorObject } from '@/interfaces/game-inspector.js';
+import { GameSnapshotObject } from '@/interfaces/game-snapshot.js';
 import { PlayerState } from '@/interfaces/player.js';
 
 import { GameInspector } from '@/core/game-inspector.js';
@@ -5,12 +7,12 @@ import { GameSnapshot } from '@/core/game-snapshot.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 
-import { randomBall } from '@/utils/ball.js';
+import { fromBallObject, randomBall } from '@/utils/ball.js';
 import { randomPlayerState } from '@/utils/player.js';
 import { randomInt } from '@/utils/random.js';
-import { randomShotClock } from '@/utils/shot-clock.js';
+import { fromShotClockObject, randomShotClock } from '@/utils/shot-clock.js';
 import { randomSide } from '@/utils/side.js';
-import { randomTeam } from '@/utils/team.js';
+import { fromTeamObject, randomTeam } from '@/utils/team.js';
 
 import { ErrGameInvalidPlayerState } from '@/errors.js';
 
@@ -28,6 +30,19 @@ export function fromGameSnapshot(playerSide: Side, playerNumber: number, snapsho
         snapshot.getShotClock() ?? undefined,
         snapshot.getBallTurnsInGoalZone(),
         snapshot.getTurn()
+    );
+}
+
+export function fromGameInspectorObject(obj: GameInspectorObject): GameInspector {
+    return new GameInspector(
+        obj.myTeamSide,
+        obj.myNumber,
+        obj.homeTeam ? fromTeamObject(obj.homeTeam) : undefined,
+        obj.awayTeam ? fromTeamObject(obj.awayTeam) : undefined,
+        obj.ball ? fromBallObject(obj.ball) : undefined,
+        obj.shotClock ? fromShotClockObject(obj.shotClock) : undefined,
+        obj.ballTurnsInGoalZone,
+        obj.turn
     );
 }
 

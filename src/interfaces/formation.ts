@@ -27,17 +27,12 @@ export interface IFormation {
     getPositions(): Record<number, IPoint>;
 
     toArray(): IPoint[];
+
+    clone(): IFormation;
+    toObject(): FormationObject;
 }
 
 export type FormationObject = {
-    name?: string;
-    side?: Side;
-    positions?: Record<number, [number, number]>;
-    type?: FormationType;
-    mapper?: MapperObject | null;
-};
-
-export type FormationObjectWith = {
     name?: string;
     side?: Side;
     positions?: Record<number, [number, number]>;

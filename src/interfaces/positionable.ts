@@ -46,6 +46,9 @@ export interface IVector2D extends IPositionable {
 
     angleInRadians(): number;
     angleInDegrees(): number;
+
+    clone(): IVector2D;
+    toObject(): Vector2DObject;
 }
 
 export interface IPoint extends IPositionable {
@@ -70,6 +73,9 @@ export interface IPoint extends IPositionable {
     subtracted(value: IPositionable | number): IPoint;
     divided(value: IPositionable | number): IPoint;
     scaled(value: IPositionable | number): IPoint;
+
+    clone(): IPoint;
+    toObject(): PointObject;
 }
 
 export type PointObject = {

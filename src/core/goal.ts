@@ -1,4 +1,4 @@
-import { IGoal } from '@/interfaces/goal.js';
+import { GoalObject, IGoal } from '@/interfaces/goal.js';
 import { IPoint } from '@/interfaces/positionable.js';
 
 import { Point } from '@/core/point.js';
@@ -7,7 +7,7 @@ import { SPECS } from '@/core/specs.js';
 
 export class Goal implements IGoal {
     constructor(
-        protected place: Side,
+        protected side: Side,
         protected center: Point,
         protected topPole: Point,
         protected bottomPole: Point
@@ -18,7 +18,7 @@ export class Goal implements IGoal {
     }
 
     getSide(): Side {
-        return this.place;
+        return this.side;
     }
 
     getTopPole(): Point {
@@ -27,6 +27,24 @@ export class Goal implements IGoal {
 
     getBottomPole(): Point {
         return this.bottomPole;
+    }
+
+    clone(): Goal {
+        return new Goal(
+            this.side,
+            new Point(this.center.getX(), this.center.getY()),
+            new Point(this.topPole.getX(), this.topPole.getY()),
+            new Point(this.bottomPole.getX(), this.bottomPole.getY())
+        );
+    }
+
+    toObject(): GoalObject {
+        return {
+            side: this.side,
+            center: this.center.toObject(),
+            topPole: this.topPole.toObject(),
+            bottomPole: this.bottomPole.toObject(),
+        };
     }
 }
 

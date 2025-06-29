@@ -1,11 +1,11 @@
-import { Mapper, Side, createMapperFromObject, randomMapper, zeroedMapper } from '@/index.js';
+import { FromMapperObject, Mapper, Side, randomMapper, zeroedMapper } from '@/index.js';
 import { describe, expect, test } from 'vitest';
 
 describe('Utils/Mapper', () => {
     describe('Converters', () => {
         test('DEVE criar um Mapper a partir de um objeto', () => {
             const obj = { cols: 10, rows: 5, side: Side.AWAY };
-            const m = createMapperFromObject(obj);
+            const m = FromMapperObject(obj);
             expect(m).toBeInstanceOf(Mapper);
             expect(m.getCols()).toBe(10);
             expect(m.getRows()).toBe(5);

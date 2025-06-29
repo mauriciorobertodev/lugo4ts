@@ -1,4 +1,4 @@
-import { IPoint, IPositionable } from '@/interfaces/positionable.js';
+import { IPoint, IPositionable, PointObject } from '@/interfaces/positionable.js';
 
 import { Vector2D } from '@/core/vector.js';
 
@@ -24,10 +24,6 @@ export class Point implements IPoint {
     setY(y: number): this {
         this.y = y;
         return this;
-    }
-
-    clone(): Point {
-        return new Point(this.x, this.y);
     }
 
     addX(value: number): this {
@@ -180,5 +176,16 @@ export class Point implements IPoint {
 
     eq(positionable: IPoint): boolean {
         return this.is(positionable);
+    }
+
+    clone(): Point {
+        return new Point(this.x, this.y);
+    }
+
+    toObject(): PointObject {
+        return {
+            x: this.getX(),
+            y: this.getY(),
+        };
     }
 }

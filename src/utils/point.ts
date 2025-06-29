@@ -1,6 +1,5 @@
-// ------------------------------------------------------------
-// Converters
-// ------------------------------------------------------------
+import { PointObject } from '@/interfaces/positionable.js';
+
 import { AWAY_GOAL, Goal, HOME_GOAL } from '@/core/goal.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
@@ -10,8 +9,16 @@ import { Vector2D } from '@/core/vector.js';
 import { fieldCenterPoint } from '@/utils/field.js';
 import { randomInt } from '@/utils/random.js';
 
+// ------------------------------------------------------------
+// Converters
+// ------------------------------------------------------------
+
 export function pointToVector2D(point: Point): Vector2D {
     return new Vector2D(point.getX(), point.getY());
+}
+
+export function fromPointObject(obj: PointObject): Point {
+    return new Point(obj.x, obj.y);
 }
 
 // ------------------------------------------------------------

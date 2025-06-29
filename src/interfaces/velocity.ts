@@ -6,6 +6,9 @@ export interface IVelocity {
 
     getSpeed(): number;
     setSpeed(speed: number): this;
+
+    clone(): IVelocity;
+    toObject(): VelocityObject;
 }
 
 export type VelocityObject = {

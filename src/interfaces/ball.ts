@@ -28,6 +28,9 @@ export interface IBall {
     distanceToPlayer(player: IPlayer): number;
     distanceToPoint(point: IPoint): number;
     distanceToRegion(region: IRegion): number;
+
+    clone(): IBall;
+    toObject(): BallObject;
 }
 
 export type BallObject = {

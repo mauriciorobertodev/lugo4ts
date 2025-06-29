@@ -1,8 +1,10 @@
-import { FormationType, IFormation } from '@/interfaces/formation.js';
+import { FormationObject, FormationType, IFormation } from '@/interfaces/formation.js';
 
 import { Mapper } from '@/core/mapper.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
+
+import { randomUUID } from '@/utils/random.js';
 
 import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } from '@/errors.js';
 
@@ -15,7 +17,14 @@ export class Formation implements IFormation {
         private side: Side = Side.HOME,
         private type: FormationType = FormationType.POINTS,
         private mapper: Mapper | null = null
-    ) {}
+    ) {
+        if (this.mapper) {
+            this.side = this.mapper.getSide();
+            this.type = FormationType.REGIONS;
+        }
+
+        if (!this.name) this.name = randomUUID();
+    }
 
     getSide(): Side {
         return this.side;
@@ -37,6 +46,7 @@ export class Formation implements IFormation {
     setMapper(mapper: Mapper): this {
         this.mapper = mapper;
         this.side = mapper.getSide();
+        this.type = FormationType.REGIONS;
         return this;
     }
 
@@ -101,5 +111,34 @@ export class Formation implements IFormation {
 
     countPositions(): number {
         return Object.keys(this.positions).length;
+    }
+
+    clone(): Formation {
+        const clonedPositions: Positions = {};
+        for (const [key, value] of Object.entries(this.positions)) {
+            clonedPositions[Number(key)] = value.clone();
+        }
+        return new Formation(
+            clonedPositions,
+            this.name,
+            this.side,
+            this.type,
+            this.mapper ? this.mapper.clone() : null
+        );
+    }
+
+    toObject(): FormationObject {
+        const positions: Record<number, [number, number]> = {};
+        for (const [playerNumber, point] of Object.entries(this.getPositions())) {
+            positions[parseInt(playerNumber, 10)] = [point.getX(), point.getY()];
+        }
+
+        return {
+            positions,
+            name: this.name,
+            side: this.side,
+            type: this.type,
+            mapper: this.mapper ? this.mapper.toObject() : null,
+        };
     }
 }

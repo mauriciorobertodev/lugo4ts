@@ -1,4 +1,4 @@
-import { IRegion } from '@/interfaces/region.js';
+import { IRegion, RegionObject } from '@/interfaces/region.js';
 
 import { Mapper } from '@/core/mapper.js';
 import { Player } from '@/core/player.js';
@@ -13,6 +13,10 @@ export class Region implements IRegion {
         protected center: Point,
         protected mapper: Mapper
     ) {}
+
+    getSide(): Side {
+        return this.side;
+    }
 
     is(region: IRegion): boolean {
         return this.eq(region);
@@ -88,5 +92,19 @@ export class Region implements IRegion {
 
     toString(): string {
         return `[${this.col}, ${this.row}]`;
+    }
+
+    clone(): Region {
+        return new Region(this.col, this.row, this.side, this.center.clone(), this.mapper.clone());
+    }
+
+    toObject(): RegionObject {
+        return {
+            col: this.col,
+            row: this.row,
+            side: this.side,
+            center: this.center.toObject(),
+            mapper: this.mapper.toObject(),
+        };
     }
 }

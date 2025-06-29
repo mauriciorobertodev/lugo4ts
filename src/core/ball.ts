@@ -1,4 +1,4 @@
-import { IBall } from '@/interfaces/ball.js';
+import { BallObject, IBall } from '@/interfaces/ball.js';
 
 import { Player } from '@/core/player.js';
 import { Point } from '@/core/point.js';
@@ -98,5 +98,17 @@ export class Ball implements IBall {
 
     distanceToRegion(region: Region): number {
         return this.getPosition().distanceTo(region.getCenter());
+    }
+
+    clone(): Ball {
+        return new Ball(this.position.clone(), this.velocity.clone(), this.holder);
+    }
+
+    toObject(): BallObject {
+        return {
+            position: this.position.toObject(),
+            velocity: this.velocity.toObject(),
+            holder: this.holder ? this.holder.toObject() : null,
+        };
     }
 }

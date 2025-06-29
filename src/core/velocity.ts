@@ -1,4 +1,4 @@
-import { IVelocity } from '@/interfaces/velocity.js';
+import { IVelocity, VelocityObject } from '@/interfaces/velocity.js';
 
 import { Vector2D } from '@/core/vector.js';
 
@@ -28,5 +28,16 @@ export class Velocity implements IVelocity {
 
     toString(): string {
         return `[${this.direction.getX()}, ${this.direction.getY()}, ${this.speed}]`;
+    }
+
+    clone(): Velocity {
+        return new Velocity(this.direction.clone(), this.speed);
+    }
+
+    toObject(): VelocityObject {
+        return {
+            direction: this.direction.toObject(),
+            speed: this.speed,
+        };
     }
 }

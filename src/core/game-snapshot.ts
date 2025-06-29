@@ -1,4 +1,4 @@
-import { IGameSnapshot, ServerState } from '@/interfaces/game-snapshot.js';
+import { GameSnapshotObject, IGameSnapshot, ServerState } from '@/interfaces/game-snapshot.js';
 
 import { Ball } from '@/core/ball.js';
 import { Player } from '@/core/player.js';
@@ -16,7 +16,7 @@ export class GameSnapshot implements IGameSnapshot {
         private readonly homeTeam?: Team,
         private readonly awayTeam?: Team,
         private readonly ball?: Ball,
-        private readonly turnsBallInGoalZone?: number,
+        private readonly ballTurnsInGoalZone?: number,
         private readonly shotClock?: ShotClock
     ) {}
 
@@ -81,7 +81,7 @@ export class GameSnapshot implements IGameSnapshot {
     }
 
     getBallTurnsInGoalZone(): number {
-        return this.turnsBallInGoalZone || 0;
+        return this.ballTurnsInGoalZone || 0;
     }
 
     getBallRemainingTurnsInGoalZone(): number {
@@ -110,5 +110,29 @@ export class GameSnapshot implements IGameSnapshot {
 
     getBall(): Ball {
         return this.ball!;
+    }
+
+    clone(): GameSnapshot {
+        return new GameSnapshot(
+            this.serverState,
+            this.turn,
+            this.homeTeam ? this.homeTeam.clone() : undefined,
+            this.awayTeam ? this.awayTeam.clone() : undefined,
+            this.ball ? this.ball.clone() : undefined,
+            this.ballTurnsInGoalZone,
+            this.shotClock ? this.shotClock.clone() : undefined
+        );
+    }
+
+    toObject(): GameSnapshotObject {
+        return {
+            state: this.serverState,
+            turn: this.turn,
+            homeTeam: this.homeTeam?.toObject(),
+            awayTeam: this.awayTeam?.toObject(),
+            ball: this.ball?.toObject(),
+            shotClock: this.shotClock?.toObject(),
+            ballTurnsInGoalZone: this.ballTurnsInGoalZone || 0,
+        };
     }
 }

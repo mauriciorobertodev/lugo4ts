@@ -43,14 +43,17 @@ export interface IGameSnapshot {
     getBallRemainingTurnsInGoalZone(): number;
 
     getShotClock(): IShotClock | null;
+
+    clone(): IGameSnapshot;
+    toObject(): GameSnapshotObject;
 }
 
 export type GameSnapshotObject = {
     turn: number;
     state: ServerState;
-    homeTeam: TeamObject;
-    awayTeam: TeamObject;
-    ball: BallObject;
+    homeTeam?: TeamObject;
+    awayTeam?: TeamObject;
+    ball?: BallObject;
     shotClock?: ShotClockObject | null;
     ballTurnsInGoalZone: number;
 };

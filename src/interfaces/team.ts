@@ -32,6 +32,9 @@ export interface ITeam {
     tryGetGoalkeeper(): IPlayer | null;
 
     setPositionsByFormation(formation: IFormation): this;
+
+    clone(): ITeam;
+    toObject(): TeamObject;
 }
 
 export type TeamObject = {

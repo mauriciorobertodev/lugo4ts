@@ -4,10 +4,12 @@ export interface IShotClock {
     getRemainingTurnsWithBall(): number;
     getTurnsWithBall(): number;
     getHolderSide(): Side;
+
+    clone(): IShotClock;
+    toObject(): ShotClockObject;
 }
 
 export type ShotClockObject = {
-    remainingTurnsWithBall: number;
-    turnsWithBall: number;
+    remainingTurns: number;
     holderSide: Side;
 };

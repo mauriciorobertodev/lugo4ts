@@ -1,6 +1,6 @@
 import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
 
-import { IGameInspector } from '@/interfaces/game-inspector.js';
+import { GameInspectorObject, IGameInspector } from '@/interfaces/game-inspector.js';
 import { PlayerState } from '@/interfaces/player.js';
 
 import { Ball } from '@/core/ball.js';
@@ -35,7 +35,7 @@ export class GameInspector implements IGameInspector {
     private readonly awayTeam: Team | null = null;
     private readonly ball: Ball | null = null;
     private readonly shotClock: ShotClock | null = null;
-    private readonly turnsBallInGoalZone: number = 0;
+    private readonly ballTurnsInGoalZone: number = 0;
 
     constructor(
         playerSide: Side,
@@ -44,14 +44,14 @@ export class GameInspector implements IGameInspector {
         awayTeam?: Team,
         ball?: Ball,
         shotClock?: ShotClock,
-        turnsBallInGoalZone: number = 0,
+        ballTurnsInGoalZone: number = 0,
         turn: number = 0
     ) {
         this.homeTeam = homeTeam ?? null;
         this.awayTeam = awayTeam ?? null;
         this.ball = ball ?? null;
         this.shotClock = shotClock ?? null;
-        this.turnsBallInGoalZone = turnsBallInGoalZone;
+        this.ballTurnsInGoalZone = ballTurnsInGoalZone;
         this.me = this.getPlayer(playerSide, playerNumber);
         this.state = this.definePlayerState();
         this.turn = turn;
@@ -115,7 +115,7 @@ export class GameInspector implements IGameInspector {
     }
 
     getBallTurnsInGoalZone(): number {
-        return this.turnsBallInGoalZone ?? 0;
+        return this.ballTurnsInGoalZone ?? 0;
     }
 
     getBallRemainingTurnsInGoalZone(): number {
@@ -398,5 +398,31 @@ export class GameInspector implements IGameInspector {
         }
 
         return PlayerState.DEFENDING;
+    }
+
+    clone(): GameInspector {
+        return new GameInspector(
+            this.getMyTeamSide(),
+            this.getMyNumber(),
+            this.homeTeam?.clone(),
+            this.awayTeam?.clone(),
+            this.ball?.clone(),
+            this.shotClock?.clone(),
+            this.ballTurnsInGoalZone,
+            this.turn
+        );
+    }
+
+    toObject(): GameInspectorObject {
+        return {
+            turn: this.turn,
+            myTeamSide: this.getMyTeamSide(),
+            myNumber: this.getMyNumber(),
+            homeTeam: this.homeTeam?.toObject(),
+            awayTeam: this.awayTeam?.toObject(),
+            ball: this.ball?.toObject(),
+            shotClock: this.shotClock?.toObject(),
+            ballTurnsInGoalZone: this.ballTurnsInGoalZone || 0,
+        };
     }
 }

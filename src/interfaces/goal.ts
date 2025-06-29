@@ -7,6 +7,9 @@ export interface IGoal {
     getSide(): Side;
     getTopPole(): IPoint;
     getBottomPole(): IPoint;
+
+    clone(): IGoal;
+    toObject(): GoalObject;
 }
 
 export type GoalObject = {

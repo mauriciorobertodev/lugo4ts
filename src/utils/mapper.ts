@@ -8,8 +8,8 @@ import { Side } from '@/core/side.js';
 
 import { randomInt } from '@/utils/random.js';
 
-export function createMapperFromObject({ cols, rows, side }: MapperObject): Mapper {
-    return new Mapper(cols, rows, side);
+export function FromMapperObject(obj: MapperObject): Mapper {
+    return new Mapper(obj.cols, obj.rows, obj.side);
 }
 
 // ------------------------------------------------------------

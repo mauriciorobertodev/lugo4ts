@@ -2,9 +2,9 @@ import { Order } from '@/generated/server.js';
 
 import { IBot } from '@/interfaces/bot.js';
 import { IGameInspector } from '@/interfaces/game-inspector.js';
+import { PlayerState } from '@/interfaces/player.js';
 import { IPoint } from '@/interfaces/positionable.js';
 
-import { PlayerState } from '@/core/player.js';
 import { Point } from '@/core/point.js';
 import { SPECS } from '@/core/specs.js';
 
@@ -65,8 +65,8 @@ export class DummyKicker implements IBot {
     }
 
     private generateDistanceToKick(): number {
-        const MIN_DISTANCE_TO_GOAL = SPECS.GOAL_ZONE_RANGE;
-        const MAX_DISTANCE_TO_GOAL = SPECS.GOAL_ZONE_RANGE * 5;
+        const MIN_DISTANCE_TO_GOAL = SPECS.GOAL_ZONE_RADIUS;
+        const MAX_DISTANCE_TO_GOAL = SPECS.GOAL_ZONE_RADIUS * 5;
 
         return randomInt(MIN_DISTANCE_TO_GOAL, MAX_DISTANCE_TO_GOAL);
     }

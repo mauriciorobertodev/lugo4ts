@@ -1,6 +1,5 @@
+import { randomElement, randomFloat, randomInt } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { randomElement, randomFloat, randomInt, zeroedPoint } from '@/utils.js';
 
 describe('Utils/Random', () => {
     test('DEVE gerar um número aleatório entre dois valores', () => {

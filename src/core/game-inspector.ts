@@ -1,10 +1,11 @@
 import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
 
 import { IGameInspector } from '@/interfaces/game-inspector.js';
+import { PlayerState } from '@/interfaces/player.js';
 
 import { Ball } from '@/core/ball.js';
 import { AWAY_GOAL, Goal, HOME_GOAL } from '@/core/goal.js';
-import { Player, PlayerState } from '@/core/player.js';
+import { Player } from '@/core/player.js';
 import { Point } from '@/core/point.js';
 import { Region } from '@/core/region.js';
 import { ShotClock } from '@/core/shot-clock.js';
@@ -118,7 +119,7 @@ export class GameInspector implements IGameInspector {
     }
 
     getBallRemainingTurnsInGoalZone(): number {
-        return SPECS.BALL_TIME_IN_GOAL_ZONE - this.getBallTurnsInGoalZone();
+        return SPECS.BALL_MAX_TURNS_IN_GOAL_ZONE - this.getBallTurnsInGoalZone();
     }
 
     getBallPosition(): Point {

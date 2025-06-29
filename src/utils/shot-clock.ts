@@ -19,7 +19,7 @@ export function zeroedShotClock(): ShotClock {
 export function randomShotClock({
     teamSide = randomSide(),
     remainingTurns,
-    maxRemainingTurns = SPECS.SHOT_CLOCK_TIME,
+    maxRemainingTurns = SPECS.SHOT_CLOCK_TURNS,
 }: {
     teamSide?: Side;
     remainingTurns?: number;

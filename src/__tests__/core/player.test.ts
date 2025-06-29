@@ -1,8 +1,16 @@
-import { afterEach, beforeEach, describe, expect, test } from 'vitest';
-
-import { Mapper, Player, Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
-
-import { randomPlayer, randomPoint, randomVelocity } from '@/utils.js';
+import {
+    Mapper,
+    Player,
+    Point,
+    SPECS,
+    Side,
+    Vector2D,
+    Velocity,
+    randomPlayer,
+    randomPoint,
+    randomVelocity,
+} from '@/index.js';
+import { describe, expect, test } from 'vitest';
 
 describe('Core/Player', () => {
     test('Getter e Setter', () => {

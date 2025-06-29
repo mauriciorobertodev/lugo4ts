@@ -1,7 +1,9 @@
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
-import { Player, PlayerState } from '@/core/player.js';
+import { PlayerState } from '@/interfaces/player.js';
+
+import { Player } from '@/core/player.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';

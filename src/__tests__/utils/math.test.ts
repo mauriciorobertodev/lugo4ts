@@ -1,8 +1,5 @@
+import { Point, isBetween, lerp2D, randomInt } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Point } from '@/core.js';
-
-import { isBetween, lerp2D, randomInt } from '@/utils.js';
 
 import { ErrMathInterpolationFactor } from '@/errors.js';
 

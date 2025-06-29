@@ -1,7 +1,7 @@
-import type { IPlayer } from '@/interfaces/player.js';
-import type { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import type { IPlayer, PlayerObject } from '@/interfaces/player.js';
+import type { IPoint, IVector2D, PointObject } from '@/interfaces/positionable.js';
 import type { IRegion } from '@/interfaces/region.js';
-import type { IVelocity } from '@/interfaces/velocity.js';
+import type { IVelocity, VelocityObject } from '@/interfaces/velocity.js';
 
 export interface IBall {
     getPosition(): IPoint;
@@ -31,7 +31,7 @@ export interface IBall {
 }
 
 export type BallObject = {
-    position: IPoint;
-    velocity: IVelocity;
-    holder: IPlayer | null;
+    position: PointObject;
+    velocity: VelocityObject;
+    holder: PlayerObject | null;
 };

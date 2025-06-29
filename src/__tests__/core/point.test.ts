@@ -1,7 +1,5 @@
+import { Point, Vector2D } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Vector2D } from '@/core.js';
-import { Point } from '@/core/point.js';
 
 describe('Core/Point', () => {
     test('DEVE definir, adicionar, subtrair, escalar e dividir o eixo X', () => {

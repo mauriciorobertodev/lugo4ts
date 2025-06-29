@@ -67,12 +67,12 @@ export class Player implements IPlayer {
     }
 
     isInAttackSide(): boolean {
-        const more = this.position.getX() > SPECS.FIELD_CENTER_X;
+        const more = this.position.getX() > SPECS.CENTER_X_COORDINATE;
         return this.side === Side.HOME ? more : !more;
     }
 
     isInDefenseSide(): boolean {
-        const less = this.position.getX() < SPECS.FIELD_CENTER_X;
+        const less = this.position.getX() < SPECS.CENTER_X_COORDINATE;
         return this.side === Side.HOME ? less : !less;
     }
 
@@ -99,11 +99,4 @@ export class Player implements IPlayer {
     distanceToPoint(point: Point): number {
         return this.position.distanceTo(point);
     }
-}
-
-export enum PlayerState {
-    SUPPORTING = 'supporting',
-    HOLDING = 'holding',
-    DEFENDING = 'defending',
-    DISPUTING = 'disputing',
 }

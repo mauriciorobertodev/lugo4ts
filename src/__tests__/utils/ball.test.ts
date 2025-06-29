@@ -1,8 +1,5 @@
+import { Ball, SPECS, randomBall, zeroedBall } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Ball, SPECS } from '@/core.js';
-
-import { randomBall, zeroedBall } from '@/utils.js';
 
 describe('Utils/Ball', () => {
     describe('Factories', () => {

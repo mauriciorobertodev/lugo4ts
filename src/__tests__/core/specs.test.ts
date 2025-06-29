@@ -1,7 +1,5 @@
+import { SPECS } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Mapper, Player, SPECS, Side, Vector2D, Velocity } from '@/core.js';
-import { Point } from '@/core/point.js';
 
 describe('Core/Specs', () => {
     test('DEVE ter a constante BASE_UNIT igual a 100', function () {
@@ -57,7 +55,7 @@ describe('Core/Specs', () => {
     });
 
     test('DEVE calcular GOAL_WIDTH como 30 vezes BASE_UNIT', function () {
-        expect(SPECS.GOAL_WIDTH).toBe(30 * SPECS.BASE_UNIT);
+        expect(SPECS.GOAL_SIZE).toBe(30 * SPECS.BASE_UNIT);
     });
 
     test('DEVE calcular GOAL_MIN_Y corretamente', function () {

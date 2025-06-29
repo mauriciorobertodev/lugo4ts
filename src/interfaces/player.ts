@@ -1,6 +1,6 @@
-import type { IPoint, IVector2D } from '@/interfaces/positionable.js';
+import type { IPoint, IVector2D, PointObject } from '@/interfaces/positionable.js';
 import type { IRegion } from '@/interfaces/region.js';
-import type { IVelocity } from '@/interfaces/velocity.js';
+import type { IVelocity, VelocityObject } from '@/interfaces/velocity.js';
 
 import type { Side } from '@/core/side.js';
 
@@ -33,3 +33,20 @@ export interface IPlayer {
     distanceToPoint(point: IPoint): number;
     distanceToRegion(region: IRegion): number;
 }
+
+export enum PlayerState {
+    SUPPORTING = 'supporting',
+    HOLDING = 'holding',
+    DEFENDING = 'defending',
+    DISPUTING = 'disputing',
+}
+
+export type PlayerObject = {
+    number: number;
+    side: Side;
+    position: PointObject;
+    initPosition: PointObject;
+    velocity: VelocityObject;
+    isGoalkeeper?: boolean;
+    isJumping?: boolean;
+};

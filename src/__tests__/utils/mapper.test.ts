@@ -1,8 +1,5 @@
+import { Mapper, Side, createMapperFromObject, randomMapper, zeroedMapper } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Mapper, Side } from '@/core.js';
-
-import { createMapperFromObject, randomMapper, zeroedMapper } from '@/utils/mapper.js';
 
 describe('Utils/Mapper', () => {
     describe('Converters', () => {

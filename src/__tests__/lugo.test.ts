@@ -1,3 +1,17 @@
+import {
+    Ball,
+    Velocity as CoreVelocity,
+    GameSnapshot,
+    Player,
+    Point,
+    ServerState,
+    ShotClock,
+    Side,
+    Team,
+    Vector2D,
+    randomPoint,
+    randomVector2D,
+} from '@/index.js';
 import { expect, test } from 'vitest';
 
 import { Point as LugoPoint, Vector as LugoVector, Velocity } from '@/generated/physics.js';
@@ -10,22 +24,6 @@ import {
     Team as LugoTeam,
     Team_Side,
 } from '@/generated/server.js';
-
-import { ServerState } from '@/interfaces.js';
-
-import {
-    Ball,
-    Velocity as CoreVelocity,
-    GameSnapshot,
-    Player,
-    Point,
-    ShotClock,
-    Side,
-    Team,
-    Vector2D,
-} from '@/core.js';
-
-import { randomPoint, randomVector2D } from '@/utils.js';
 
 import {
     fromLugoBall,
@@ -90,7 +88,7 @@ test('DEVE retornar um LugoPoint com mesmos dados', () => {
 });
 
 test('DEVE retornar um LugoVector com mesmos dados', () => {
-    let pos = new Point(500, 200);
+    let pos = new Vector2D(500, 200);
     let vector = toLugoVector(pos);
 
     // expect(vector).toBeInstanceOf(LugoVector);
@@ -98,7 +96,7 @@ test('DEVE retornar um LugoVector com mesmos dados', () => {
     expect(vector.x).toBe(pos.getX());
     expect(vector.y).toBe(pos.getY());
 
-    pos = new Point(500.55, 200.66);
+    pos = new Vector2D(500.55, 200.66);
     vector = toLugoVector(pos);
 
     expect(typeof vector).toBe(typeof LugoVector);

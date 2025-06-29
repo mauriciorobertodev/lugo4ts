@@ -1,9 +1,3 @@
-import { beforeEach, describe, expect, test } from 'vitest';
-
-import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
-
-import { ServerState } from '@/interfaces.js';
-
 import {
     AWAY_GOAL,
     Ball,
@@ -12,21 +6,15 @@ import {
     GameSnapshot,
     HOME_GOAL,
     Mapper,
-    Player,
     PlayerState,
     Point,
     Region,
     SPECS,
+    ServerState,
     ShotClock,
     Side,
     Vector2D,
-    Velocity,
-} from '@/core.js';
-
-import {
     fromGameSnapshot,
-    randomBall,
-    randomGameInspector,
     randomGameInspectorInAsGoalKeeper,
     randomGameInspectorInOnDefending,
     randomGameInspectorInOnDisputing,
@@ -36,9 +24,10 @@ import {
     randomPlayer,
     randomPoint,
     randomTeam,
-    randomVector2D,
-    zeroedBall,
-} from '@/utils.js';
+} from '@/index.js';
+import { describe, expect, test } from 'vitest';
+
+import { Catch, Jump, Kick, Move, Order } from '@/generated/server.js';
 
 import {
     ErrJumpZeroDirection,
@@ -113,7 +102,7 @@ describe('Core/GameInspector', () => {
         expect(inspector.getBallHasHolder()).toEqual(!!snapshot.getBall().getHolder());
         expect(inspector.getBallTurnsInGoalZone()).toEqual(snapshot.getBallTurnsInGoalZone());
         expect(inspector.getBallRemainingTurnsInGoalZone()).toEqual(
-            SPECS.BALL_TIME_IN_GOAL_ZONE - snapshot.getBallTurnsInGoalZone()
+            SPECS.BALL_MAX_TURNS_IN_GOAL_ZONE - snapshot.getBallTurnsInGoalZone()
         );
 
         expect(inspector.hasShotClock()).toEqual(!!snapshot.getShotClock());

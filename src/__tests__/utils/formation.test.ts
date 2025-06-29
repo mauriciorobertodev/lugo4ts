@@ -1,11 +1,17 @@
+import {
+    Formation,
+    FormationObject,
+    FormationType,
+    SPECS,
+    Side,
+    fromFormationObject,
+    randomElement,
+    randomFormation,
+    randomMapper,
+    randomStartFormation,
+    zeroedFormation,
+} from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { FormationObject } from '@/interfaces.js';
-
-import { Formation, FormationType, SPECS, Side } from '@/core.js';
-
-import { randomElement, randomMapper } from '@/utils.js';
-import { fromFormationObject, randomFormation, randomStartFormation, zeroedFormation } from '@/utils/formation.js';
 
 import { ErrFormationInvalidPlayerNumber } from '@/errors.js';
 

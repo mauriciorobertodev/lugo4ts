@@ -1,8 +1,5 @@
+import { Side, flipSide, intToSide, randomSide, sideToInt, stringToSide } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Side } from '@/core.js';
-
-import { flipSide, intToSide, randomSide, sideToInt, stringToSide } from '@/utils/side.js';
 
 describe('Utils/Side', () => {
     describe('Conversores', () => {

@@ -71,3 +71,13 @@ export interface IPoint extends IPositionable {
     divided(value: IPositionable | number): IPoint;
     scaled(value: IPositionable | number): IPoint;
 }
+
+export type PointObject = {
+    x: number;
+    y: number;
+};
+
+export type Vector2DObject = {
+    x: number;
+    y: number;
+};

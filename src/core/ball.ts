@@ -18,7 +18,7 @@ export class Ball implements IBall {
         velocity: Velocity | null,
         private holder: Player | null
     ) {
-        this.position = position ?? new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y);
+        this.position = position ?? new Point(SPECS.CENTER_X_COORDINATE, SPECS.CENTER_Y_COORDINATE);
         this.velocity = velocity ?? zeroedVelocity();
     }
 

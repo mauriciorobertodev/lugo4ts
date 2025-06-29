@@ -91,7 +91,7 @@ export function isValidInitialPosition(position: Point): boolean {
 
     // se ele está mais distante da linha de gol do que o range da zona de gol, é válido porque é impossível que ele esteja na zona de gol
     // se ele está mais distante da linha de gol do que o range da zona de gol, é válido
-    if (position.getX() > SPECS.GOAL_ZONE_RANGE && position.getX() < SPECS.MAX_X_COORDINATE - SPECS.GOAL_ZONE_RANGE) {
+    if (position.getX() > SPECS.GOAL_ZONE_RADIUS && position.getX() < SPECS.MAX_X_COORDINATE - SPECS.GOAL_ZONE_RADIUS) {
         return true;
     }
 
@@ -108,7 +108,7 @@ export function isValidInitialPosition(position: Point): boolean {
     ];
 
     for (const pole of goalPoles) {
-        if (position.distanceTo(pole) <= SPECS.GOAL_ZONE_RANGE) {
+        if (position.distanceTo(pole) <= SPECS.GOAL_ZONE_RADIUS) {
             return false;
         }
     }

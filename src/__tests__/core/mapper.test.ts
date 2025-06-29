@@ -1,6 +1,5 @@
-import { afterEach, beforeEach, describe, expect, test } from 'vitest';
-
-import { Env, Mapper, Point, SPECS, Side } from '@/core.js';
+import { Mapper, Point, SPECS, Side } from '@/index.js';
+import { describe, expect, test } from 'vitest';
 
 import {
     ErrMapperColOutOfMapped,

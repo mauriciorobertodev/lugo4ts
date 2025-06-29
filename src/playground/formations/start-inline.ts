@@ -1,4 +1,6 @@
-import { Formation, FormationType } from '@/core/formation.js';
+import { FormationType } from '@/interfaces/formation.js';
+
+import { Formation } from '@/core/formation.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
@@ -9,10 +11,10 @@ export class StartInlineFormation extends Formation {
     constructor(side: Side) {
         super([], 'Start Inline Formation', side, FormationType.POINTS);
 
-        const X1 = SPECS.GOAL_ZONE_RANGE;
-        const X2 = SPECS.FIELD_CENTER_X - SPECS.FIELD_CENTER_RADIUS;
-        const X3 = SPECS.FIELD_CENTER_X + SPECS.FIELD_CENTER_RADIUS;
-        const X4 = SPECS.MAX_X_COORDINATE - SPECS.GOAL_ZONE_RANGE;
+        const X1 = SPECS.GOAL_ZONE_RADIUS;
+        const X2 = SPECS.CENTER_X_COORDINATE - SPECS.FIELD_CENTER_RADIUS;
+        const X3 = SPECS.CENTER_X_COORDINATE + SPECS.FIELD_CENTER_RADIUS;
+        const X4 = SPECS.MAX_X_COORDINATE - SPECS.GOAL_ZONE_RADIUS;
 
         const SIDE_Xs = {
             [Side.HOME]: [X1, X2],
@@ -24,7 +26,7 @@ export class StartInlineFormation extends Formation {
             [Side.AWAY]: SPECS.MAX_X_COORDINATE,
         };
 
-        const Y = SPECS.FIELD_CENTER_Y;
+        const Y = SPECS.CENTER_Y_COORDINATE;
 
         for (let number = 1; number <= SPECS.MAX_PLAYERS; number++) {
             const [X1, X2] = SIDE_Xs[this.getSide()];

@@ -1,8 +1,5 @@
+import { Vector2D, randomVector2D, vector2DToPoint, zeroedVector } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Vector2D } from '@/core.js';
-
-import { randomVector2D, vector2DToPoint, zeroedVector } from '@/utils/vector.js';
 
 describe('Utils/Vector', () => {
     describe('Converters', () => {

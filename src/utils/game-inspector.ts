@@ -1,6 +1,7 @@
+import { PlayerState } from '@/interfaces/player.js';
+
 import { GameInspector } from '@/core/game-inspector.js';
 import { GameSnapshot } from '@/core/game-snapshot.js';
-import { PlayerState } from '@/core/player.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 

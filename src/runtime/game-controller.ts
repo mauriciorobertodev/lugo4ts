@@ -127,7 +127,7 @@ export class GameController implements IGameController {
     }
 
     async resetBallPosition(): Promise<GameSnapshot> {
-        return this.setBallPosition(new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y));
+        return this.setBallPosition(new Point(SPECS.CENTER_X_COORDINATE, SPECS.CENTER_Y_COORDINATE));
     }
 
     async addPlayer(player: Player): Promise<GameSnapshot> {

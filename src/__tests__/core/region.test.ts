@@ -1,7 +1,5 @@
+import { Mapper, Player, Point, Side, Vector2D, Velocity } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Mapper, Player, Side, Vector2D, Velocity } from '@/core.js';
-import { Point } from '@/core/point.js';
 
 describe('Core/Region', () => {
     test('DEVE retornar a coluna e linha da região', function () {

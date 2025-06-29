@@ -5,3 +5,9 @@ export interface IShotClock {
     getTurnsWithBall(): number;
     getHolderSide(): Side;
 }
+
+export type ShotClockObject = {
+    remainingTurnsWithBall: number;
+    turnsWithBall: number;
+    holderSide: Side;
+};

@@ -1,10 +1,5 @@
+import { GameSnapshot, SPECS, ServerState, Side, randomBall, randomShotClock, randomTeam } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { ServerState } from '@/interfaces.js';
-
-import { GameSnapshot, SPECS, Side } from '@/core.js';
-
-import { randomBall, randomShotClock, randomTeam } from '@/utils.js';
 
 describe('Core/GameSnapshot', () => {
     test('Getters e Setters', () => {
@@ -34,7 +29,7 @@ describe('Core/GameSnapshot', () => {
         expect(snapshot.getBallSpeed()).toBe(ball.getSpeed());
         expect(snapshot.getBallHolder()).toBe(holder);
         expect(snapshot.getBallTurnsInGoalZone()).toBe(0);
-        expect(snapshot.getBallRemainingTurnsInGoalZone()).toBe(SPECS.BALL_TIME_IN_GOAL_ZONE);
+        expect(snapshot.getBallRemainingTurnsInGoalZone()).toBe(SPECS.BALL_MAX_TURNS_IN_GOAL_ZONE);
     });
 
     test('DEVE retornar se tem o jogador X', () => {

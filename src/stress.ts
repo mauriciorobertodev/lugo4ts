@@ -4,9 +4,9 @@ import { performance } from 'perf_hooks';
 import { Order } from '@/generated/server.js';
 
 import { IBot } from '@/interfaces/bot.js';
+import { PlayerState } from '@/interfaces/player.js';
 
 import { GameInspector } from '@/core/game-inspector.js';
-import { PlayerState } from '@/core/player.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 

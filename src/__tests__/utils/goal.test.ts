@@ -1,8 +1,5 @@
+import { AWAY_GOAL, Goal, HOME_GOAL, SPECS, Side, goalFromSide, randomGoal } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { AWAY_GOAL, Goal, HOME_GOAL, SPECS, Side } from '@/core.js';
-
-import { goalFromSide, randomGoal } from '@/utils.js';
 
 describe('Utils/Goal', () => {
     test('DEVE criar um novo gol de ambas as sides', () => {
@@ -16,7 +13,7 @@ describe('Utils/Goal', () => {
         expect(homeGoal.getTopPole().getY()).toBe(SPECS.GOAL_MAX_Y);
 
         expect(homeGoal.getCenter().getX()).toBe(0);
-        expect(homeGoal.getCenter().getY()).toBe(SPECS.FIELD_CENTER_Y);
+        expect(homeGoal.getCenter().getY()).toBe(SPECS.CENTER_Y_COORDINATE);
 
         expect(homeGoal.getBottomPole().getX()).toBe(0);
         expect(homeGoal.getBottomPole().getY()).toBe(SPECS.GOAL_MIN_Y);
@@ -25,7 +22,7 @@ describe('Utils/Goal', () => {
         expect(awayGoal.getTopPole().getY()).toBe(SPECS.GOAL_MAX_Y);
 
         expect(awayGoal.getCenter().getX()).toBe(SPECS.MAX_X_COORDINATE);
-        expect(awayGoal.getCenter().getY()).toBe(SPECS.FIELD_CENTER_Y);
+        expect(awayGoal.getCenter().getY()).toBe(SPECS.CENTER_Y_COORDINATE);
 
         expect(awayGoal.getBottomPole().getX()).toBe(SPECS.MAX_X_COORDINATE);
         expect(awayGoal.getBottomPole().getY()).toBe(SPECS.GOAL_MIN_Y);

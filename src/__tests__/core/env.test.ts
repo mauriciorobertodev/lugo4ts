@@ -1,6 +1,6 @@
+import { Side } from '@/index.js';
+import { Env } from '@/runtime.js';
 import { afterEach, beforeEach, describe, expect, test } from 'vitest';
-
-import { Env, Side } from '@/core.js';
 
 import { ErrBotInvalidNumber, ErrEnvNeedToken } from '@/errors.js';
 

@@ -1,7 +1,6 @@
 import type { IMapper, MapperObject } from '@/interfaces/mapper.js';
 import type { IPoint } from '@/interfaces/positionable.js';
 
-import type { FormationType } from '@/core/formation.js';
 import type { Side } from '@/core/side.js';
 
 export interface IFormation {
@@ -37,3 +36,16 @@ export type FormationObject = {
     type?: FormationType;
     mapper?: MapperObject | null;
 };
+
+export type FormationObjectWith = {
+    name?: string;
+    side?: Side;
+    positions?: Record<number, [number, number]>;
+    type?: FormationType;
+    mapper?: MapperObject | null;
+};
+
+export enum FormationType {
+    REGIONS = 'regions',
+    POINTS = 'points',
+}

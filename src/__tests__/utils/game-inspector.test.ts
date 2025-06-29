@@ -1,8 +1,9 @@
-import { describe, expect, test } from 'vitest';
-
-import { Ball, GameInspector, PlayerState, Side, Team } from '@/core.js';
-
 import {
+    Ball,
+    GameInspector,
+    PlayerState,
+    Side,
+    Team,
     fromGameSnapshot,
     randomGameInspector,
     randomGameInspectorInAsGoalKeeper,
@@ -11,7 +12,8 @@ import {
     randomGameInspectorInOnHolding,
     randomGameInspectorInOnSupporting,
     randomGameSnapshot,
-} from '@/utils.js';
+} from '@/index.js';
+import { describe, expect, test } from 'vitest';
 
 import { ErrGameInvalidPlayerState } from '@/errors.js';
 

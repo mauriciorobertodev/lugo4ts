@@ -1,6 +1,5 @@
+import { Goal, Point, Side } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Goal, Point, Side } from '@/core.js';
 
 describe('Core/Goal', () => {
     test('DEVE construir um gol customizado', function () {

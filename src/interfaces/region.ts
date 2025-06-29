@@ -1,5 +1,9 @@
 import type { IPlayer } from '@/interfaces/player.js';
-import type { IPoint } from '@/interfaces/positionable.js';
+import type { IPoint, PointObject } from '@/interfaces/positionable.js';
+
+import { Side } from '@/core/side.js';
+
+import { MapperObject } from './mapper.js';
 
 export interface IRegion {
     eq(region: IRegion): boolean;
@@ -28,3 +32,11 @@ export interface IRegion {
 
     toString(): string;
 }
+
+export type RegionObject = {
+    col: number;
+    row: number;
+    center: PointObject;
+    side: Side;
+    mapper: MapperObject;
+};

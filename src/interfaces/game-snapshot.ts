@@ -1,8 +1,8 @@
-import type { IBall } from '@/interfaces/ball.js';
+import type { BallObject, IBall } from '@/interfaces/ball.js';
 import type { IPlayer } from '@/interfaces/player.js';
 import type { IPoint, IVector2D } from '@/interfaces/positionable.js';
-import type { IShotClock } from '@/interfaces/shot-clock.js';
-import type { ITeam } from '@/interfaces/team.js';
+import type { IShotClock, ShotClockObject } from '@/interfaces/shot-clock.js';
+import type { ITeam, TeamObject } from '@/interfaces/team.js';
 import type { IVelocity } from '@/interfaces/velocity.js';
 
 export enum ServerState {
@@ -44,3 +44,13 @@ export interface IGameSnapshot {
 
     getShotClock(): IShotClock | null;
 }
+
+export type GameSnapshotObject = {
+    turn: number;
+    state: ServerState;
+    homeTeam: TeamObject;
+    awayTeam: TeamObject;
+    ball: BallObject;
+    shotClock?: ShotClockObject | null;
+    ballTurnsInGoalZone: number;
+};

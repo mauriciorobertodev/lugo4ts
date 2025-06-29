@@ -6,9 +6,9 @@ import { GameSnapshot, GameSnapshot_State, Order, OrderSet } from '@/generated/s
 
 import { IBot } from '@/interfaces/bot.js';
 import { IGameClient } from '@/interfaces/game-client.js';
+import { PlayerState } from '@/interfaces/player.js';
 
 import { GameInspector } from '@/core/game-inspector.js';
-import { PlayerState } from '@/core/player.js';
 import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 

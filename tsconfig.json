@@ -19,5 +19,5 @@
         "moduleResolution": "NodeNext"
     },
     "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "dist", "test", "tests", "coverage", "docs", "src/__tests__"]
+    "exclude": ["node_modules", "dist", "test", "tests", "coverage", "docs"]
 }

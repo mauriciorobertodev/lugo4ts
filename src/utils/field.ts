@@ -8,7 +8,7 @@ import { SPECS } from '@/core/specs.js';
  * Creates a new Point with the given coordinates.
  */
 export function fieldCenterPoint(): Point {
-    return new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y);
+    return new Point(SPECS.CENTER_X_COORDINATE, SPECS.CENTER_Y_COORDINATE);
 }
 
 // ------------------------------------------------------------

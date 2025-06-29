@@ -1,6 +1,6 @@
 {
     "name": "@mauricioroberto/lugo4ts",
-    "version": "0.0.15-beta",
+    "version": "0.0.16-beta",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "module",
@@ -35,7 +35,7 @@
     },
     "scripts": {
         "dev": "tsx src/index.ts",
-        "build": "rm -rf dist/ && tsc && tsc-alias",
+        "build": "rm -rf dist/ && tsc && tsc-alias && rm -rf dist/__tests__",
         "build:watch": "tsc --watch",
         "test": "vitest",
         "test:ui": "vitest --ui",

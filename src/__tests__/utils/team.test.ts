@@ -1,9 +1,5 @@
+import { Side, Team, randomPlayer, randomTeam, zeroedTeam } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Side, Team } from '@/core.js';
-
-import { randomPlayer } from '@/utils.js';
-import { randomTeam, zeroedTeam } from '@/utils/team.js';
 
 import { ErrTeamInvalidSide } from '@/errors.js';
 

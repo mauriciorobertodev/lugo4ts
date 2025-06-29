@@ -1,5 +1,5 @@
 import type { IFormation } from '@/interfaces/formation.js';
-import type { IPlayer } from '@/interfaces/player.js';
+import type { IPlayer, PlayerObject } from '@/interfaces/player.js';
 
 import type { Side } from '@/core/side.js';
 
@@ -33,3 +33,10 @@ export interface ITeam {
 
     setPositionsByFormation(formation: IFormation): this;
 }
+
+export type TeamObject = {
+    side: Side;
+    name: string;
+    score: number;
+    players: PlayerObject[];
+};

@@ -85,7 +85,7 @@ export class GameSnapshot implements IGameSnapshot {
     }
 
     getBallRemainingTurnsInGoalZone(): number {
-        return SPECS.BALL_TIME_IN_GOAL_ZONE - this.getBallTurnsInGoalZone();
+        return SPECS.BALL_MAX_TURNS_IN_GOAL_ZONE - this.getBallTurnsInGoalZone();
     }
 
     getShotClock(): ShotClock | null {

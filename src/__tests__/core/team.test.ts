@@ -1,10 +1,6 @@
+import { Player, Point, SPECS, Side, Team, randomPlayer, randomTeam } from '@/index.js';
 import { randomInt } from 'crypto';
 import { describe, expect, test } from 'vitest';
-
-import { Mapper, Player, SPECS, Side, Team, Vector2D, Velocity } from '@/core.js';
-import { Point } from '@/core/point.js';
-
-import { randomPlayer, randomTeam } from '@/utils.js';
 
 import {
     ErrPlayerNotFound,

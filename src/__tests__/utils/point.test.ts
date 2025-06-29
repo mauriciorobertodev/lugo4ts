@@ -1,8 +1,10 @@
-import { describe, expect, test } from 'vitest';
-
-import { AWAY_GOAL, HOME_GOAL, Point, SPECS, Side, Vector2D } from '@/core.js';
-
 import {
+    AWAY_GOAL,
+    HOME_GOAL,
+    Point,
+    SPECS,
+    Side,
+    Vector2D,
     fieldCenterPoint,
     isValidInitialPosition,
     pointToVector2D,
@@ -13,7 +15,8 @@ import {
     randomPointInField,
     randomPointInSide,
     zeroedPoint,
-} from '@/utils.js';
+} from '@/index.js';
+import { describe, expect, test } from 'vitest';
 
 describe('Utils/Point', () => {
     describe('Converters', () => {
@@ -119,22 +122,22 @@ describe('Utils/Point', () => {
                 const homeGoal = HOME_GOAL;
                 const awayGoal = AWAY_GOAL;
 
-                expect(p1.distanceTo(homeGoal.getTopPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
-                expect(p2.distanceTo(awayGoal.getTopPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
+                expect(p1.distanceTo(homeGoal.getTopPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
+                expect(p2.distanceTo(awayGoal.getTopPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
 
-                expect(p1.distanceTo(homeGoal.getCenter())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
-                expect(p2.distanceTo(awayGoal.getCenter())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
+                expect(p1.distanceTo(homeGoal.getCenter())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
+                expect(p2.distanceTo(awayGoal.getCenter())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
 
-                expect(p1.distanceTo(homeGoal.getBottomPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
-                expect(p2.distanceTo(awayGoal.getBottomPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
+                expect(p1.distanceTo(homeGoal.getBottomPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
+                expect(p2.distanceTo(awayGoal.getBottomPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
 
                 //
                 // SE estiver com o Y entre os polos gol ele deve estar fora do range da zona de gol
                 if (p1.getY() >= homeGoal.getTopPole().getY() && p1.getY() <= homeGoal.getBottomPole().getY()) {
-                    expect(p1.getX()).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
+                    expect(p1.getX()).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
                 }
                 if (p2.getY() >= awayGoal.getTopPole().getY() && p2.getY() <= awayGoal.getBottomPole().getY()) {
-                    expect(p2.getX()).toBeLessThan(SPECS.MAX_X_COORDINATE - SPECS.GOAL_ZONE_RANGE);
+                    expect(p2.getX()).toBeLessThan(SPECS.MAX_X_COORDINATE - SPECS.GOAL_ZONE_RADIUS);
                 }
             }
         });
@@ -204,22 +207,22 @@ describe('Utils/Point', () => {
                 const homeGoal = HOME_GOAL;
                 const awayGoal = AWAY_GOAL;
 
-                expect(p1.distanceTo(homeGoal.getTopPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
-                expect(p2.distanceTo(awayGoal.getTopPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
+                expect(p1.distanceTo(homeGoal.getTopPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
+                expect(p2.distanceTo(awayGoal.getTopPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
 
-                expect(p1.distanceTo(homeGoal.getCenter())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
-                expect(p2.distanceTo(awayGoal.getCenter())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
+                expect(p1.distanceTo(homeGoal.getCenter())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
+                expect(p2.distanceTo(awayGoal.getCenter())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
 
-                expect(p1.distanceTo(homeGoal.getBottomPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
-                expect(p2.distanceTo(awayGoal.getBottomPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
+                expect(p1.distanceTo(homeGoal.getBottomPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
+                expect(p2.distanceTo(awayGoal.getBottomPole())).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
 
                 // SE estiver com o Y entre os polos gol ele deve estar fora do range da zona de gol
                 if (p1.getY() >= homeGoal.getTopPole().getY() && p1.getY() <= homeGoal.getBottomPole().getY()) {
-                    expect(p1.getX()).toBeGreaterThan(SPECS.GOAL_ZONE_RANGE);
+                    expect(p1.getX()).toBeGreaterThan(SPECS.GOAL_ZONE_RADIUS);
                 }
 
                 if (p2.getY() >= awayGoal.getTopPole().getY() && p2.getY() <= awayGoal.getBottomPole().getY()) {
-                    expect(p2.getX()).toBeLessThan(SPECS.MAX_X_COORDINATE - SPECS.GOAL_ZONE_RANGE);
+                    expect(p2.getX()).toBeLessThan(SPECS.MAX_X_COORDINATE - SPECS.GOAL_ZONE_RADIUS);
                 }
             }
         });

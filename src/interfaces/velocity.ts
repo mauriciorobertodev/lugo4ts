@@ -1,4 +1,4 @@
-import type { IVector2D } from './positionable.js';
+import type { IVector2D, Vector2DObject } from './positionable.js';
 
 export interface IVelocity {
     getDirection(): IVector2D;
@@ -7,3 +7,8 @@ export interface IVelocity {
     getSpeed(): number;
     setSpeed(speed: number): this;
 }
+
+export type VelocityObject = {
+    direction: Vector2DObject;
+    speed: number;
+};

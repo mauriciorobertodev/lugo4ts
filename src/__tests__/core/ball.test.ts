@@ -1,8 +1,18 @@
+import {
+    Ball,
+    Mapper,
+    Player,
+    Point,
+    SPECS,
+    Side,
+    Vector2D,
+    Velocity,
+    randomBall,
+    randomPlayer,
+    randomPoint,
+    zeroedBall,
+} from '@/index.js';
 import { beforeEach, describe, expect, test } from 'vitest';
-
-import { Ball, Mapper, Player, Point, SPECS, Side, Vector2D, Velocity } from '@/core.js';
-
-import { randomBall, randomPlayer, randomPoint, zeroedBall } from '@/utils.js';
 
 let position: Point;
 let velocity: Velocity;
@@ -95,7 +105,7 @@ describe('Core/Ball', () => {
     test('DEVE criar uma bola no posição no centro do campo e velocity zerada', () => {
         const ball = zeroedBall();
 
-        expect(ball.getPosition()).toEqual(new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y));
+        expect(ball.getPosition()).toEqual(new Point(SPECS.CENTER_X_COORDINATE, SPECS.CENTER_Y_COORDINATE));
         expect(ball.getDirection()).toEqual(new Vector2D(0, 0));
         expect(ball.getSpeed()).toEqual(0);
     });

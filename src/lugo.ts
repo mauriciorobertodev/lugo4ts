@@ -86,7 +86,9 @@ export function toLugoPlayer(player: IPlayer): LugoPlayer {
 
 export function fromLugoBall(lugoBall: LugoBall): Ball {
     return new Ball(
-        lugoBall.position ? fromLugoPoint(lugoBall.position) : new Point(SPECS.FIELD_CENTER_X, SPECS.FIELD_CENTER_Y),
+        lugoBall.position
+            ? fromLugoPoint(lugoBall.position)
+            : new Point(SPECS.CENTER_X_COORDINATE, SPECS.CENTER_Y_COORDINATE),
         lugoBall.velocity ? fromLugoVelocity(lugoBall.velocity) : zeroedVelocity(),
         lugoBall.holder ? fromLugoPlayer(lugoBall.holder) : null
     );
@@ -101,7 +103,7 @@ export function toLugoBall(ball: IBall): LugoBall {
 }
 
 export function fromLugoShotClock(lugoClock: LugoShotClock): ShotClock {
-    return new ShotClock(intToSide(lugoClock.teamSide), lugoClock.remainingTurns ?? SPECS.SHOT_CLOCK_TIME);
+    return new ShotClock(intToSide(lugoClock.teamSide), lugoClock.remainingTurns ?? SPECS.SHOT_CLOCK_TURNS);
 }
 
 export function toLugoShotClock(clock: IShotClock): LugoShotClock {

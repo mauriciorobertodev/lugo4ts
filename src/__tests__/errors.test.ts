@@ -1,6 +1,5 @@
+import { Side } from '@/index.js';
 import { expect, test } from 'vitest';
-
-import { Side } from '@/core.js';
 
 import {
     ErrBallNotFound,

@@ -2,8 +2,7 @@ import { Order } from '@/generated/server.js';
 
 import { IBot } from '@/interfaces/bot.js';
 import { IGameInspector } from '@/interfaces/game-inspector.js';
-
-import { PlayerState } from '@/core/player.js';
+import { PlayerState } from '@/interfaces/player.js';
 
 export class DummyStatue implements IBot {
     beforeActions(inspector: IGameInspector): void {}

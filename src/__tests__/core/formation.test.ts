@@ -1,15 +1,7 @@
-import { afterEach, beforeEach, describe, expect, test } from 'vitest';
+import { Formation, FormationType, Mapper, Point, Side, randomMapper } from '@/index.js';
+import { describe, expect, test } from 'vitest';
 
-import { Env, Formation, FormationType, Mapper, Point, Side } from '@/core.js';
-
-import { randomMapper } from '@/utils.js';
-
-import {
-    ErrBotInvalidNumber,
-    ErrEnvNeedToken,
-    ErrFormationMapperNotDefined,
-    ErrFormationPlayerPositionNotDefined,
-} from '@/errors.js';
+import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } from '@/errors.js';
 
 describe('Core/Formation', () => {
     test('Getters e Setters', () => {

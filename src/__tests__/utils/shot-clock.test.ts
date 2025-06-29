@@ -1,8 +1,5 @@
+import { SPECS, ShotClock, Side, randomShotClock, zeroedShotClock } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { SPECS, ShotClock, Side } from '@/core.js';
-
-import { randomShotClock, zeroedShotClock } from '@/utils/shot-clock.js';
 
 describe('Utils/ShotClock', () => {
     describe('Factories', () => {
@@ -19,7 +16,7 @@ describe('Utils/ShotClock', () => {
                 expect(s).toBeInstanceOf(ShotClock);
                 expect([Side.HOME, Side.AWAY]).toContain(s.getHolderSide());
                 expect(s.getRemainingTurnsWithBall()).toBeGreaterThanOrEqual(1);
-                expect(s.getRemainingTurnsWithBall()).toBeLessThanOrEqual(SPECS.SHOT_CLOCK_TIME);
+                expect(s.getRemainingTurnsWithBall()).toBeLessThanOrEqual(SPECS.SHOT_CLOCK_TURNS);
             }
         });
 

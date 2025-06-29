@@ -1,6 +1,6 @@
-import { FormationObject } from '@/interfaces/formation.js';
+import { FormationObject, FormationType } from '@/interfaces/formation.js';
 
-import { Formation, FormationType } from '@/core/formation.js';
+import { Formation } from '@/core/formation.js';
 import { Mapper } from '@/core/mapper.js';
 import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';

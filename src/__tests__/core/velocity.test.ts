@@ -1,8 +1,5 @@
+import { Vector2D, Velocity, zeroedVelocity } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Vector2D, Velocity } from '@/core.js';
-
-import { zeroedVelocity } from '@/utils.js';
 
 describe('Core/Velocity', () => {
     test('DEVE retornar uma velocity zerada', function () {

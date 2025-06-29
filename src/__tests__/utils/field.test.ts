@@ -1,16 +1,13 @@
+import { Point, SPECS, fieldCenterPoint, isValidInsideFieldPoint } from '@/index.js';
 import { describe, expect, test } from 'vitest';
-
-import { Point, SPECS } from '@/core.js';
-
-import { fieldCenterPoint, isValidInsideFieldPoint } from '@/utils.js';
 
 describe('Utils/Field', () => {
     test('DEVE criar um novo Point representando o centro do campo', () => {
         const center = fieldCenterPoint();
 
         expect(center).toBeInstanceOf(Point);
-        expect(center.getX()).toBe(SPECS.FIELD_CENTER_X);
-        expect(center.getY()).toBe(SPECS.FIELD_CENTER_Y);
+        expect(center.getX()).toBe(SPECS.CENTER_X_COORDINATE);
+        expect(center.getY()).toBe(SPECS.CENTER_Y_COORDINATE);
     });
 
     test('DEVE validar se um ponto está dentro dos limites do campo', () => {

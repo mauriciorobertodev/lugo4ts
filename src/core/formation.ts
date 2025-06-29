@@ -1,4 +1,4 @@
-import { IFormation } from '@/interfaces/formation.js';
+import { FormationType, IFormation } from '@/interfaces/formation.js';
 
 import { Mapper } from '@/core/mapper.js';
 import { Point } from '@/core/point.js';
@@ -102,9 +102,4 @@ export class Formation implements IFormation {
     countPositions(): number {
         return Object.keys(this.positions).length;
     }
-}
-
-export enum FormationType {
-    REGIONS = 'regions',
-    POINTS = 'points',
 }

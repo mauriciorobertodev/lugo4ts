@@ -63,3 +63,14 @@ export * from '@/playground/dummies/kicker.js';
 export * from '@/playground/dummies/statue.js';
 
 export * from '@/playground/formations/start-inline.js';
+
+// OBJECTS
+export { type FormationObject, FormationType } from '@/interfaces/formation.js';
+export { type MapperObject } from '@/interfaces/mapper.js';
+export { type PlayerObject, PlayerState } from '@/interfaces/player.js';
+export { type TeamObject } from '@/interfaces/team.js';
+export { type BallObject } from '@/interfaces/ball.js';
+export { type GameSnapshotObject, ServerState } from '@/interfaces/game-snapshot.js';
+export { type GameInspectorObject } from '@/interfaces/game-inspector.js';
+export { type ShotClockObject } from '@/interfaces/shot-clock.js';
+export { type RegionObject } from '@/interfaces/region.js';

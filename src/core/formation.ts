@@ -19,7 +19,6 @@ export class Formation implements IFormation {
         private mapper: Mapper | null = null,
         private id: string = randomUUID()
     ) {
-        this.id = randomUUID();
         if (this.mapper) {
             this.side = this.mapper.getSide();
             this.type = FormationType.REGIONS;

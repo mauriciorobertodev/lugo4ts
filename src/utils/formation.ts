@@ -117,5 +117,5 @@ export function makeFormation({
     for (const [playerNumber, [x, y]] of Object.entries(positions)) {
         points[parseInt(playerNumber, 10)] = new Point(x, y);
     }
-    return new Formation(points, name, side, type, mapper);
+    return new Formation(points, name, side, type, mapper, id);
 }

@@ -8,11 +8,11 @@ import { randomUUID } from '@/utils/random.js';
 
 import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } from '@/errors.js';
 
-type Positions = Record<number, Point>;
+export type FormationPositions = Record<number, Point>;
 
 export class Formation implements IFormation {
     constructor(
-        private positions: Positions = {},
+        private positions: FormationPositions = {},
         private name: string = '??????',
         private side: Side = Side.HOME,
         private type: FormationType = FormationType.POINTS,
@@ -125,7 +125,7 @@ export class Formation implements IFormation {
     }
 
     clone(): Formation {
-        const clonedPositions: Positions = {};
+        const clonedPositions: FormationPositions = {};
         for (const [key, value] of Object.entries(this.positions)) {
             clonedPositions[Number(key)] = value.clone();
         }

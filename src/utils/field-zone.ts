@@ -15,5 +15,5 @@ export function fromFieldZoneObject({
     end,
     formation,
 }: FieldZoneObject): FieldZone {
-    return new FieldZone(id, name, start.col, end.col, start.row, end.row, fromFormationObject(formation));
+    return new FieldZone(name, start.col, end.col, start.row, end.row, fromFormationObject(formation), id);
 }

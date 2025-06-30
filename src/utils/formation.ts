@@ -19,8 +19,8 @@ import { FromMapperObject } from './mapper.js';
 // Converters
 // ------------------------------------------------------------
 
-export function fromFormationObject({ name, side, positions, type, mapper }: FormationObject): Formation {
-    const formation = new Formation({}, name, side, type, mapper ? FromMapperObject(mapper) : undefined);
+export function fromFormationObject({ name, side, positions, type, mapper, id }: FormationObject): Formation {
+    const formation = new Formation({}, name, side, type, mapper ? FromMapperObject(mapper) : undefined, id);
 
     for (const keyStr in positions) {
         const playerNumber = parseInt(keyStr, 10);
@@ -46,6 +46,8 @@ export function zeroedFormation() {
 }
 
 export function randomFormation({
+    id = randomUUID(),
+    name = '?????',
     side = randomSide(),
     positions = {},
     maxX = SPECS.MAX_X_COORDINATE,
@@ -57,6 +59,8 @@ export function randomFormation({
     type = FormationType.POINTS,
     mapper = undefined,
 }: {
+    id?: string;
+    name?: string;
     side?: Side;
     positions?: Record<number, [number, number]>;
     maxX?: number;
@@ -68,7 +72,7 @@ export function randomFormation({
     type?: FormationType;
     mapper?: Mapper | null;
 } = {}): Formation {
-    const formation = new Formation(undefined, undefined, side, type, mapper);
+    const formation = new Formation(undefined, name, side, type, mapper, id);
 
     const playerCount = randomInt(minPlayers, maxPlayers);
 

@@ -14,13 +14,13 @@ import { FieldZoneObject, IFieldZone } from '@/interfaces/field-zone.js';
 
 export class FieldZone implements IFieldZone {
     constructor(
-        private id: string = randomUUID(),
         private name: string,
         private startCol: number,
         private endCol: number,
         private startRow: number,
         private endRow: number,
-        private formation: Formation
+        private formation: Formation,
+        private id: string = randomUUID()
     ) {}
 
     setId(id: string): this {
@@ -87,13 +87,13 @@ export class FieldZone implements IFieldZone {
 
     clone(): FieldZone {
         return new FieldZone(
-            randomUUID(),
             this.name,
             this.startCol,
             this.endCol,
             this.startRow,
             this.endRow,
-            this.formation.clone()
+            this.formation.clone(),
+            randomUUID()
         );
     }
 

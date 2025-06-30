@@ -36,10 +36,11 @@ export interface IFormation {
 }
 
 export type FormationObject = {
+    id?: string;
     name?: string;
-    side?: Side;
-    positions?: Record<number, [number, number]>;
-    type?: FormationType;
+    side: Side;
+    positions: Record<number, [number, number]>;
+    type: FormationType;
     mapper?: MapperObject | null;
 };
 

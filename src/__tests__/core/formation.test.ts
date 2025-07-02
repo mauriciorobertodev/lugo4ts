@@ -22,18 +22,18 @@ describe('Core/Formation', () => {
         expect(f.setName('Test Formation')).toBe(f);
         expect(f.getName()).toBe('Test Formation');
 
-        expect(f.getSide()).toBe(Side.HOME);
-        f.setSide(Side.AWAY);
-        expect(f.getSide()).toBe(Side.AWAY);
+        expect(f.getViewSide()).toBe(Side.HOME);
+        f.setViewSide(Side.AWAY);
+        expect(f.getViewSide()).toBe(Side.AWAY);
 
         const m = randomMapper();
         expect(f.setMapper(m)).toBe(f);
         expect(f.getMapper()).toBe(m);
 
-        expect(f.getType()).toBe(FormationType.POINTS);
-        f.setType(FormationType.REGIONS);
         expect(f.getType()).toBe(FormationType.REGIONS);
         expect(f.isRegions()).toBe(true);
+        f.setType(FormationType.POINTS);
+        expect(f.getType()).toBe(FormationType.POINTS);
 
         expect(f.hasPositionOf(1)).toBe(true);
         expect(f.hasPositionOf(2)).toBe(false);
@@ -43,18 +43,18 @@ describe('Core/Formation', () => {
 
     test('DEVE deve alterar também a side do mapper quando existe', () => {
         const m = randomMapper({ side: Side.HOME });
-        const f = new Formation([], 'Test Formation', Side.HOME, FormationType.REGIONS, m);
+        const f = new Formation([], 'Test Formation', FormationType.REGIONS, m);
 
-        expect(f.getSide()).toBe(m.getSide());
+        expect(f.getViewSide()).toBe(m.getViewSide());
 
-        f.setSide(Side.AWAY);
-        expect(f.getSide()).toBe(Side.AWAY);
-        expect(m.getSide()).toBe(Side.AWAY);
+        f.setViewSide(Side.AWAY);
+        expect(f.getViewSide()).toBe(Side.AWAY);
+        expect(m.getViewSide()).toBe(Side.AWAY);
     });
 
     test('DEVE retornar o centro de uma região quando o tipo for REGIONS', () => {
-        const m = new Mapper(10, 10, Side.HOME);
-        const f = new Formation([], 'Test Formation', Side.HOME, FormationType.REGIONS, m);
+        const m = new Mapper(10, 10);
+        const f = new Formation([], 'Test Formation', FormationType.REGIONS, m);
 
         f.setPositionOf(1, new Point(1, 2));
         f.setPositionOf(2, new Point(2, 3));
@@ -63,7 +63,7 @@ describe('Core/Formation', () => {
     });
 
     test('DEVE lançar um erro ao tentar pegar o mapper de uma formação sem mapper', () => {
-        const f = new Formation([], 'Test Formation', Side.HOME, FormationType.POINTS);
+        const f = new Formation([], 'Test Formation', FormationType.POINTS);
         expect(() => f.getMapper()).toThrow(ErrFormationMapperNotDefined);
     });
 });

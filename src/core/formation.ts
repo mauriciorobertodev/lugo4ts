@@ -11,16 +11,17 @@ import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } fr
 export type FormationPositions = Record<number, Point>;
 
 export class Formation implements IFormation {
+    private side: Side = Side.HOME;
+
     constructor(
         private positions: FormationPositions = {},
         private name: string = '??????',
-        private side: Side = Side.HOME,
         private type: FormationType = FormationType.POINTS,
         private mapper: Mapper | null = null,
         private id: string = randomUUID()
     ) {
         if (this.mapper) {
-            this.side = this.mapper.getSide();
+            this.side = this.mapper.getViewSide();
             this.type = FormationType.REGIONS;
         }
 
@@ -36,7 +37,7 @@ export class Formation implements IFormation {
         return this;
     }
 
-    getSide(): Side {
+    getViewSide(): Side {
         return this.side;
     }
 
@@ -55,7 +56,7 @@ export class Formation implements IFormation {
 
     setMapper(mapper: Mapper): this {
         this.mapper = mapper;
-        this.side = mapper.getSide();
+        this.side = mapper.getViewSide();
         this.type = FormationType.REGIONS;
         return this;
     }
@@ -69,15 +70,20 @@ export class Formation implements IFormation {
         return this;
     }
 
-    setSide(side: Side): this {
+    setViewSide(side: Side): this {
         this.side = side;
-        if (this.mapper) this.mapper.setSide(side);
+        if (this.mapper) this.mapper.setViewSide(side);
         return this;
     }
 
     getPositionOf(playerNumber: number): Point {
-        const position = this.tryGetPositionOf(playerNumber);
+        const position = this.positions[playerNumber];
         if (!position) throw new ErrFormationPlayerPositionNotDefined(playerNumber);
+
+        if (this.type === FormationType.REGIONS) {
+            return this.getMapper().getRegion(position.getX(), position.getY()).getCenter();
+        }
+
         return this.side === Side.AWAY ? Mapper.mirrorCoordsToAway(position) : position;
     }
 
@@ -131,7 +137,6 @@ export class Formation implements IFormation {
         return new Formation(
             clonedPositions,
             this.name,
-            this.side,
             this.type,
             this.mapper ? this.mapper.clone() : null,
             randomUUID()
@@ -147,10 +152,9 @@ export class Formation implements IFormation {
         return {
             id: this.id,
             name: this.name,
-            side: this.side,
             type: this.type,
             positions,
-            mapper: this.mapper ? this.mapper.toObject() : null,
+            mapper: this.mapper?.toObject(),
         };
     }
 }

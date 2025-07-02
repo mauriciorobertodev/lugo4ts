@@ -8,8 +8,8 @@ import { Side } from '@/core/side.js';
 
 import { randomInt } from '@/utils/random.js';
 
-export function FromMapperObject(obj: MapperObject): Mapper {
-    return new Mapper(obj.cols, obj.rows, obj.side);
+export function fromMapperObject(obj: MapperObject): Mapper {
+    return new Mapper(obj.cols, obj.rows);
 }
 
 // ------------------------------------------------------------
@@ -17,7 +17,7 @@ export function FromMapperObject(obj: MapperObject): Mapper {
 // ------------------------------------------------------------
 
 export function zeroedMapper(): Mapper {
-    return new Mapper(4, 2, Side.HOME);
+    return new Mapper(4, 2);
 }
 
 export function randomMapper({
@@ -33,5 +33,5 @@ export function randomMapper({
     maxRows?: number;
     side?: Side;
 } = {}): Mapper {
-    return new Mapper(randomInt(minCols, maxCols), randomInt(minRows, maxRows), side);
+    return new Mapper(randomInt(minCols, maxCols), randomInt(minRows, maxRows));
 }

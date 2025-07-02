@@ -13,8 +13,8 @@ export interface IMapper {
     getRegionWidth(): number;
     getRegionHeight(): number;
 
-    getSide(): Side;
-    setSide(side: Side): this;
+    getViewSide(): Side;
+    setViewSide(side: Side): this;
 
     getRegion(col: number, row: number): IRegion;
     getRegionFromPoint(point: IPoint): IRegion;
@@ -31,5 +31,4 @@ export interface IMapper {
 export type MapperObject = {
     cols: number;
     rows: number;
-    side: Side;
 };

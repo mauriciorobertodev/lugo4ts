@@ -20,6 +20,8 @@ import { Side } from '@/core/side.js';
 import { SPECS } from '@/core/specs.js';
 import { Velocity } from '@/core/velocity.js';
 
+import { logger } from '@/utils/logger.js';
+// import { danger, debug, info, success, warn } from '@/utils/logger.js';
 import { intToSide, sideToInt } from '@/utils/side.js';
 
 import {
@@ -73,9 +75,10 @@ export class GameController implements IGameController {
     async nextTurn(): Promise<void> {
         try {
             await this.remote.nextTurn({});
-            console.log('[CONTROLLER] Turn avançado com sucesso');
+            logger.debug('[CONTROLLER] Turn avançado com sucesso');
         } catch (error) {
-            console.error('[CONTROLLER] Erro ao avançar turno:', error);
+            logger.error('[CONTROLLER] ❌ Erro ao avançar turno');
+            console.error(error);
         }
     }
 
@@ -83,7 +86,8 @@ export class GameController implements IGameController {
         try {
             await this.remote.nextOrder({});
         } catch (error) {
-            console.error('[CONTROLLER] Erro ao avançar ordem:', error);
+            logger.error('[CONTROLLER] ❌ Erro ao avançar ordem');
+            console.error(error);
         }
     }
 
@@ -91,7 +95,8 @@ export class GameController implements IGameController {
         try {
             await this.remote.pauseOrResume({});
         } catch (error) {
-            console.error('[CONTROLLER] Erro ao iniciar jogo:', error);
+            logger.error('[CONTROLLER] ❌ Erro ao iniciar jogo');
+            console.error(error);
         }
     }
 
@@ -106,7 +111,8 @@ export class GameController implements IGameController {
                 const lugoSnapshot = call.response.gameSnapshot;
                 resolve(lugoSnapshot ? fromLugoGameSnapshot(lugoSnapshot) : null);
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao obter snapshot do jogo:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao obter snapshot do jogo');
+                console.error(error);
                 reject(error);
             }
         });
@@ -117,10 +123,11 @@ export class GameController implements IGameController {
             try {
                 const res = await this.remote.resetPlayerPositions({});
                 const lugoSnapshot = res.response.gameSnapshot;
-                console.log('[CONTROLLER] ✅ Jogadores resetados com sucesso');
+                logger.debug('[CONTROLLER] ✅ Posições resetadas com sucesso');
                 resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao resetar posições dos jogadores:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao resetar posições dos jogadores');
+                console.error(error);
                 reject(error);
             }
         });
@@ -142,7 +149,10 @@ export class GameController implements IGameController {
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao resetar posições dos jogadores:', error);
+                logger.error(
+                    `[CONTROLLER] ❌ Erro definir jogador "${player.getNumber()}" do lado "${player.getTeamSide()}"`
+                );
+                console.error(error);
                 reject(error);
             }
         });
@@ -157,7 +167,8 @@ export class GameController implements IGameController {
                     position: toLugoPoint(position),
                 });
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao definir posição do jogador:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao definir posição do jogador');
+                console.error(error);
                 reject(error);
             }
         });
@@ -174,7 +185,8 @@ export class GameController implements IGameController {
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao definir velocidade do jogador:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao definir velocidade do jogador');
+                console.error(error);
                 reject(error);
             }
         });
@@ -191,7 +203,8 @@ export class GameController implements IGameController {
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao definir velocidade do jogador:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao definir velocidade do jogador');
+                console.error(error);
                 reject(error);
             }
         });
@@ -208,7 +221,8 @@ export class GameController implements IGameController {
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao definir propriedades da bola:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao definir propriedades da bola');
+                console.error(error);
                 reject(error);
             }
         });
@@ -221,7 +235,8 @@ export class GameController implements IGameController {
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao definir posição da bola:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao definir posição da bola');
+                console.error(error);
                 reject(error);
             }
         });
@@ -234,7 +249,8 @@ export class GameController implements IGameController {
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao definir velocidade da bola:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao definir velocidade da bola');
+                console.error(error);
                 reject(error);
             }
         });
@@ -247,7 +263,8 @@ export class GameController implements IGameController {
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao definir velocidade da bola:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao definir velocidade da bola');
+                console.error(error);
                 reject(error);
             }
         });
@@ -256,9 +273,9 @@ export class GameController implements IGameController {
     async resumeListeningPhase(): Promise<void> {
         try {
             await this.remote.resumeListeningPhase({});
-            // console.log('[CONTROLLER] ✅ Fase de resumida');
         } catch (error) {
-            console.error('[CONTROLLER] ❌ Erro ao resumir fase:', error);
+            logger.error('[CONTROLLER] ❌ Erro ao resumir fase de escuta');
+            console.error(error);
         }
     }
 
@@ -316,29 +333,31 @@ export class GameController implements IGameController {
                     }
                     break;
                 default:
-                    console.warn('[EVENT] Evento desconhecido:', event.event?.oneofKind);
+                    logger.warn(`[EVENT] Evento desconhecido: ${event.event?.oneofKind}`);
             }
         });
 
         responses.onError((err) => {
-            console.error('[EVENT] Erro no stream:', err);
+            logger.error('[EVENT] Erro no stream de eventos:');
+            console.error(err);
         });
 
         responses.onComplete(() => {
-            console.warn('[EVENT] ⚠️ Stream finalizada.');
+            logger.warn('[EVENT] ⚠️ Stream finalizada.');
         });
 
-        console.log('[EVENT] ✅ Stream iniciado');
+        logger.debug('[EVENT] ✅ Stream iniciado');
     }
 
     async startGame(): Promise<GameSetup> {
         return new Promise<GameSetup>(async (resolve, reject) => {
             try {
                 const call = await this.broadcast.startGame({ watcherUuid: this.uuid });
-                console.log('[CONTROLLER] ✅ Jogo iniciado');
+                logger.debug('[CONTROLLER] ✅ Jogo iniciado');
                 resolve(call.response);
             } catch (error) {
-                console.error('[CONTROLLER] ❌ Erro ao iniciar jogo:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao iniciar jogo');
+                console.error(error);
                 reject(error);
             }
         });
@@ -348,10 +367,11 @@ export class GameController implements IGameController {
         return new Promise<GameSetup>(async (resolve, reject) => {
             try {
                 const call = await this.broadcast.getGameSetup({ uuid: this.uuid });
-                console.log('[GAME SETUP] ✅ Recebido');
+                logger.debug('[GAME SETUP] ✅ Recebido');
                 resolve(call.response);
             } catch (error) {
-                console.error('[GAME SETUP] ❌ Erro ao obter:', error);
+                logger.error('[GAME SETUP] ❌ Erro ao obter configuração do jogo');
+                console.error(error);
                 reject(error);
             }
         });
@@ -371,7 +391,7 @@ export class GameController implements IGameController {
     public applyEnvironment(environment: Environment): Promise<GameSnapshot> {
         return new Promise<GameSnapshot>(async (resolve, reject) => {
             try {
-                console.log('[CONTROLLER] Aplicando ambiente:', environment.getName());
+                logger.debug(`[CONTROLLER] 🚀 Aplicando ambiente "${environment.getName()}"...`);
 
                 const ball = environment.getBall();
                 const homeTeam = environment.getHomePlayers();
@@ -381,29 +401,24 @@ export class GameController implements IGameController {
                 const turn = environment.getTurn();
 
                 if (ball) {
-                    console.log('[CONTROLLER] Definindo bola...');
                     await this.setBall(ball);
+                    logger.debug('[CONTROLLER] ⚽️ Bola definida.');
                 }
 
                 if (homeTeam) {
-                    console.log('[CONTROLLER] Definindo jogadores do time da HOME...');
                     for (const player of homeTeam) {
-                        console.log(`[CONTROLLER] Definindo jogador HOME ${player.getNumber()}...`);
                         await this.addPlayer(player);
-                        console.log(`[CONTROLLER] Jogador HOME ${player.getNumber()} definido.`);
+                        logger.debug(`[CONTROLLER] 🏃 Jogador HOME ${player.getNumber()} definido.`);
                     }
                 }
 
                 if (awayTeam) {
-                    console.log('[CONTROLLER] Definindo jogadores do time da AWAY...');
                     for (const player of awayTeam) {
-                        console.log(`[CONTROLLER] Definindo jogador AWAY ${player.getNumber()}...`);
                         await this.addPlayer(player);
-                        console.log(`[CONTROLLER] Jogador AWAY ${player.getNumber()} definido.`);
+                        logger.debug(`[CONTROLLER] 🏃 Jogador AWAY ${player.getNumber()} definido.`);
                     }
                 }
 
-                console.log('[CONTROLLER] Definindo propriedades do jogo...');
                 await this.remote.setGameProperties({
                     turn: turn ?? 0,
                     homeScore: homeScore ?? 0,
@@ -414,11 +429,13 @@ export class GameController implements IGameController {
 
                 const snapshot = await this.getGameSnapshot();
 
-                console.log('[CONTROLLER] ✅ Ambiente aplicado com sucesso');
+                logger.debug('[CONTROLLER] ✅ Ambiente aplicado com sucesso');
+                logger.debug(`########################################################`);
 
                 resolve(snapshot!);
             } catch (error) {
-                console.error('[CONTROLLER] ❌ Erro ao aplicar ambiente:', error);
+                logger.error('[CONTROLLER] ❌ Erro ao aplicar ambiente');
+                console.error(error);
                 reject(error);
             }
         });
@@ -432,7 +449,8 @@ export class GameController implements IGameController {
                 const lugoSnapshot = res.response.gameSnapshot;
                 return resolve(fromLugoGameSnapshot(lugoSnapshot!));
             } catch (error) {
-                console.error('[CONTROLLER] Erro ao definir turno:', error);
+                logger.error(`[CONTROLLER] Erro ao definir turno como ${turn}:`);
+                console.error(error);
                 reject(error);
             }
         });

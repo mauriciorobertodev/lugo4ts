@@ -1,31 +1,31 @@
+import { GameInspector, PlayerState } from '@/index.js';
+
 import { Order } from '@/generated/server.js';
 
 import { IBot } from '@/interfaces/bot.js';
 
-import { IGameInspector, PlayerState } from '@/core.js';
-
 export class MyBot implements IBot {
-    onHolding(inspector: IGameInspector): Order[] {
+    onHolding(inspector: GameInspector): Order[] {
         return [];
     }
 
-    onDisputing(inspector: IGameInspector): Order[] {
+    onDisputing(inspector: GameInspector): Order[] {
         return [];
     }
 
-    onDefending(inspector: IGameInspector): Order[] {
+    onDefending(inspector: GameInspector): Order[] {
         return [];
     }
 
-    onSupporting(inspector: IGameInspector): Order[] {
+    onSupporting(inspector: GameInspector): Order[] {
         return [];
     }
 
-    asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
+    asGoalkeeper(inspector: GameInspector, state: PlayerState): Order[] {
         return [];
     }
 
-    beforeActions(inspector: IGameInspector): void {}
-    afterActions(inspector: IGameInspector): void {}
-    onReady(inspector: IGameInspector): void {}
+    beforeActions(inspector: GameInspector): void {}
+    afterActions(inspector: GameInspector): void {}
+    onReady(inspector: GameInspector): void {}
 }

@@ -13,7 +13,7 @@ import { Point } from '@/core/point.js';
 import { Side } from '@/core/side.js';
 
 import { fromGameSnapshot } from '@/utils/game-inspector.js';
-import { setLogPlayer } from '@/utils/logger.js';
+import { logger } from '@/utils/logger.js';
 import { sideToInt } from '@/utils/side.js';
 
 import { fromLugoGameSnapshot, toLugoPoint } from '@/lugo.js';
@@ -54,8 +54,8 @@ export class GameClient implements IGameClient {
          */
         this.client = new LugoGameClient(transport);
 
-        console.log(
-            `[GRPC] Conectando no jogo do lado ${this.side} com o número ${this.number} e posição inicial ${this.initPosition.toString()}...`
+        logger.debug(
+            `[CLIENT] Conectando no jogo do lado ${this.side} com o número ${this.number} e posição inicial ${this.initPosition.toString()}...`
         );
 
         const stream = this.client.joinATeam({
@@ -69,15 +69,15 @@ export class GameClient implements IGameClient {
         const startTimeout = setTimeout(() => this.playing(onJoin), 100);
 
         stream.responses.onError((error: Error & { code?: string }) => {
-            console.error(
-                `[GRPC] Erro na conexão com servidor do jogo, no lado ${this.side} e número ${this.number} com posição inicial ${this.initPosition.toString()}`
+            logger.error(
+                `[CLIENT] Erro na conexão com servidor do jogo, no lado ${this.side} e número ${this.number} com posição inicial ${this.initPosition.toString()}`
             );
 
             clearTimeout(startTimeout);
         });
 
         stream.responses.onComplete(() => {
-            console.log(`[GRPC] Conexão com o jogo do lado ${this.side} e número ${this.number} concluída.`);
+            logger.debug(`[CLIENT] Conexão com o jogo do lado ${this.side} e número ${this.number} concluída.`);
         });
 
         for await (const snapshot of stream.responses as AsyncIterable<GameSnapshot>) {
@@ -102,13 +102,13 @@ export class GameClient implements IGameClient {
              * O jogo pode terminar após qualquer fase.
              */
             if (snapshot.state === GameSnapshot_State.OVER) {
-                console.log('Game is over!');
+                logger.debug('Game is over!');
             }
             /**
              * O jogo executa as ordens dos jogadores na mesma sequência em que foram recebidas.
              */
             if (snapshot.state === GameSnapshot_State.PLAYING) {
-                console.log('Game is now playing!');
+                logger.debug('Game is now playing!');
             }
             /**
              * O jogo interrompe a partida para mudar a posse de bola.
@@ -116,14 +116,14 @@ export class GameClient implements IGameClient {
              * e o próximo estado será "ouvindo", então os bots não terão tempo de se reorganizar antes do próximo turno.
              */
             if (snapshot.state === GameSnapshot_State.SHIFTING) {
-                console.log('Game is shifting...');
+                logger.debug('Game is shifting...');
             }
             /**
              * O jogo está esperando que todos os jogadores estejam conectados.
              * Há um limite de tempo configurável para esperar os jogadores. Após esse limite expirar, a partida é considerada encerrada.
              */
             if (snapshot.state === GameSnapshot_State.WAITING) {
-                console.log('Game is waiting for players...');
+                logger.debug('Game is waiting for players...');
             }
         }
     }
@@ -148,8 +148,8 @@ export class GameClient implements IGameClient {
          */
         this.client = new LugoGameClient(transport);
 
-        console.log(
-            `[GRPC] Conectando no jogo do lado ${this.side} com o número ${this.number} e posição inicial ${this.initPosition.toString()}...`
+        logger.debug(
+            `[CLIENT] Conectando no jogo do lado ${this.side} com o número ${this.number} e posição inicial ${this.initPosition.toString()}...`
         );
 
         const stream = this.client.joinATeam({
@@ -163,13 +163,13 @@ export class GameClient implements IGameClient {
         setTimeout(() => this.playing(onJoin), 100);
 
         stream.responses.onError((error: Error & { code?: string }) => {
-            console.error(
-                `[GRPC] Erro na conexão com servidor do jogo, no lado ${this.side} e número ${this.number}: ${error.message}`
+            logger.error(
+                `[CLIENT] Erro na conexão com servidor do jogo, no lado ${this.side} e número ${this.number}: ${error.message}`
             );
         });
 
         stream.responses.onComplete(() => {
-            console.log(`[GRPC] Conexão com o jogo do lado ${this.side} e número ${this.number} concluída.`);
+            logger.debug(`[CLIENT] Conexão com o jogo do lado ${this.side} e número ${this.number} concluída.`);
         });
 
         for await (const snapshot of stream.responses as AsyncIterable<GameSnapshot>) {
@@ -200,13 +200,13 @@ export class GameClient implements IGameClient {
              * O jogo pode terminar após qualquer fase.
              */
             if (snapshot.state === GameSnapshot_State.OVER) {
-                console.log('Game is over!');
+                logger.debug('Game is over!');
             }
             /**
              * O jogo executa as ordens dos jogadores na mesma sequência em que foram recebidas.
              */
             if (snapshot.state === GameSnapshot_State.PLAYING) {
-                console.log('Game is now playing!');
+                logger.debug('Game is now playing!');
             }
             /**
              * O jogo interrompe a partida para mudar a posse de bola.
@@ -214,14 +214,14 @@ export class GameClient implements IGameClient {
              * e o próximo estado será "ouvindo", então os bots não terão tempo de se reorganizar antes do próximo turno.
              */
             if (snapshot.state === GameSnapshot_State.SHIFTING) {
-                console.log('Game is shifting...');
+                logger.debug('Game is shifting...');
             }
             /**
              * O jogo está esperando que todos os jogadores estejam conectados.
              * Há um limite de tempo configurável para esperar os jogadores. Após esse limite expirar, a partida é considerada encerrada.
              */
             if (snapshot.state === GameSnapshot_State.WAITING) {
-                console.log('Game is waiting for players...');
+                logger.debug('Game is waiting for players...');
             }
         }
     }
@@ -236,20 +236,20 @@ export class GameClient implements IGameClient {
 
             const orderSet = OrderSet.create({
                 orders: orders,
-                debugMessage: 'Orders generated by bot',
+                debugMessage: undefined,
                 turn: inspector.getTurn(),
             });
 
             await this.client?.sendOrders(orderSet);
         } catch (error) {
-            console.error('Error sending orders:', error);
+            logger.error('❌ Error sending orders:', error);
         }
     }
 
     private playing(onJoin?: () => void): void {
         this.isConnected = true;
-        console.log(
-            `[GRPC] Conectado ao jogo do lado ${this.side} com o número ${this.number}. Aguardando inicio do jogo...`
+        logger.debug(
+            `[CLIENT] Conectado ao jogo do lado ${this.side} com o número ${this.number}. Aguardando inicio do jogo...`
         );
 
         onJoin?.();
@@ -270,7 +270,7 @@ export function generateOrdersForBot(bot: IBot, inspector: GameInspector): Order
     const playerState = inspector.getMyState();
     const me = inspector.getMe();
 
-    setLogPlayer({ playerState });
+    logger.setPlayer({ playerState });
 
     let orders: (Order | null | undefined)[];
 

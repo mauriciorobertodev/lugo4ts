@@ -91,7 +91,7 @@ describe('Core/Ball', () => {
     });
 
     test('DEVE retornar a direção e distancia para uma região', () => {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
         const region = mapper.getRandomRegion();
         const ball = randomBall();
 

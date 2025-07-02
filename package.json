@@ -1,6 +1,6 @@
 {
     "name": "@mauricioroberto/lugo4ts",
-    "version": "0.0.23-beta",
+    "version": "0.0.24-beta",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "module",
@@ -12,26 +12,22 @@
         ".": {
             "import": "./dist/index.js",
             "require": "./dist/index.js",
-            "default": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "default": "./dist/index.js"
         },
         "./gym": {
             "import": "./dist/gym.js",
             "require": "./dist/gym.js",
-            "default": "./dist/gym.js",
-            "types": "./dist/gym.d.ts"
+            "default": "./dist/gym.js"
         },
         "./stress": {
             "import": "./dist/stress.js",
             "require": "./dist/stress.js",
-            "default": "./dist/stress.js",
-            "types": "./dist/stress.d.ts"
+            "default": "./dist/stress.js"
         },
         "./runtime": {
             "import": "./dist/runtime.js",
             "require": "./dist/runtime.js",
-            "default": "./dist/runtime.js",
-            "types": "./dist/runtime.d.ts"
+            "default": "./dist/runtime.js"
         }
     },
     "files": [
@@ -63,8 +59,7 @@
     "description": "Um pacote para facilitar o desenvolvimento de aplicações Lugo Bots em TypeScript.",
     "dependencies": {
         "@grpc/grpc-js": "^1.13.4",
-        "@protobuf-ts/grpc-transport": "^2.11.0",
-        "@tensorflow/tfjs-node": "^4.22.0"
+        "@protobuf-ts/grpc-transport": "^2.11.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.28.0",
@@ -85,6 +80,9 @@
         "grpc_tools_node_protoc_ts": "^5.3.3",
         "grpc-tools": "^1.13.0",
         "madge": "^8.0.0",
+        "pino": "^9.7.0",
+        "pino-pretty": "^13.0.0",
+        "@tensorflow/tfjs-node": "^4.22.0",
         "prettier": "^3.5.3",
         "rxjs": "^7.8.2",
         "seedrandom": "^3.0.5",

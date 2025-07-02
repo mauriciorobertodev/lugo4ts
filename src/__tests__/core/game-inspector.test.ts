@@ -243,7 +243,7 @@ describe('Core/GameInspector', () => {
     test('DEVE retornar uma ordem de movimentação para uma região X', function () {
         const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
         let region = mapper.getRandomRegion();
 
         let order = inspector.makeOrderMoveToRegion(region);
@@ -270,7 +270,7 @@ describe('Core/GameInspector', () => {
     test('DEVE retornar uma ordem de chute para uma região X', function () {
         const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
 
         let region = mapper.getRandomRegion();
         let order = inspector.makeOrderKickToRegion(region);
@@ -565,7 +565,7 @@ describe('Core/GameInspector', () => {
         const me = inspector.getMe();
         const myPosition = me.getPosition();
 
-        let mapper = new Mapper(10, 10, Side.HOME);
+        let mapper = new Mapper(10, 10);
         let region = mapper.getRandomRegion();
 
         let order = inspector.tryMakeOrderMoveToRegion(region);
@@ -595,7 +595,7 @@ describe('Core/GameInspector', () => {
         const me = inspector.getMe();
         const myPosition = me.getPosition();
 
-        let mapper = new Mapper(10, 10, Side.HOME);
+        let mapper = new Mapper(10, 10);
         let region = mapper.getRandomRegion();
 
         let order = inspector.tryMakeOrderKickToRegion(region);

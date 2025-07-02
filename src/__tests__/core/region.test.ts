@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest';
 
 describe('Core/Region', () => {
     test('DEVE retornar a coluna e linha da região', function () {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
         const region = mapper.getRegion(3, 4);
 
         expect(region.getCol()).toEqual(3);
@@ -11,7 +11,7 @@ describe('Core/Region', () => {
     });
 
     test('DEVE retornar se a região é igual a outra', function () {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
         const regionA = mapper.getRegion(3, 4);
         const regionB = mapper.getRegion(4, 6);
         const regionC = mapper.getRegion(3, 4);
@@ -27,7 +27,7 @@ describe('Core/Region', () => {
     });
 
     test('DEVE retornar o ponto central da região', function () {
-        let mapper = new Mapper(10, 10, Side.HOME);
+        let mapper = new Mapper(10, 10);
 
         let region = mapper.getRegion(0, 0);
         let center = region.getCenter();
@@ -39,7 +39,8 @@ describe('Core/Region', () => {
         expect(center.getX()).toEqual(9000);
         expect(center.getY()).toEqual(4500);
 
-        mapper = new Mapper(10, 10, Side.AWAY);
+        mapper = new Mapper(10, 10);
+        mapper.setViewSide(Side.AWAY);
 
         region = mapper.getRegion(0, 0);
         center = region.getCenter();
@@ -53,7 +54,7 @@ describe('Core/Region', () => {
     });
 
     test('DEVE retornar as regiões ao redor', function () {
-        let mapper = new Mapper(10, 10, Side.HOME);
+        let mapper = new Mapper(10, 10);
 
         let region = mapper.getRegion(5, 5);
 
@@ -91,7 +92,7 @@ describe('Core/Region', () => {
     });
 
     test('DEVE um Point com as coordenadas da região', function () {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
         const region = mapper.getRandomRegion();
         const point = region.coordinates();
 
@@ -100,7 +101,7 @@ describe('Core/Region', () => {
     });
 
     test('DEVE retornar as coordenadas quando for usado em string', function () {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
         const region = mapper.getRegion(7, 8);
         const string = region.toString();
 
@@ -108,7 +109,7 @@ describe('Core/Region', () => {
     });
 
     test('DEVE retornar a distância entre regiões', function () {
-        let mapper = new Mapper(10, 10, Side.HOME);
+        let mapper = new Mapper(10, 10);
 
         let regionA = mapper.getRegion(0, 0);
         let regionB = mapper.getRegion(3, 4);
@@ -122,7 +123,8 @@ describe('Core/Region', () => {
         regionB = mapper.getRegion(3, 5);
         expect(regionA.distanceToRegion(regionB)).toEqual(5);
 
-        mapper = new Mapper(10, 10, Side.AWAY);
+        mapper = new Mapper(10, 10);
+        mapper.setViewSide(Side.AWAY);
 
         regionA = mapper.getRegion(0, 0);
         regionB = mapper.getRegion(3, 4);
@@ -138,7 +140,7 @@ describe('Core/Region', () => {
     });
 
     test('DEVE retornar a distância entre o centro da região e um ponto', function () {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
 
         let regionA = mapper.getRegion(0, 0);
         let regionB = mapper.getRegion(4, 4);
@@ -154,7 +156,7 @@ describe('Core/Region', () => {
     });
 
     test('DEVE retornar se o player x está dentro da região', function () {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
         const player = new Player(
             1,
             false,

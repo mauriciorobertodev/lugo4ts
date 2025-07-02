@@ -126,7 +126,7 @@ describe('Core/Player', () => {
         const side = Side.HOME;
         const position = new Point(10, 20);
         const player = new Player(7, true, side, position, randomPoint(), randomVelocity());
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
         const region = mapper.getRandomRegion();
 
         const direction = player.directionToRegion(region);

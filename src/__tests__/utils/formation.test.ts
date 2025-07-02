@@ -20,15 +20,14 @@ describe('Utils/Formation', () => {
         test('DEVE converter um objeto em uma formação', () => {
             const obj: FormationObject = {
                 name: 'Test',
-                side: Side.HOME,
                 type: FormationType.POINTS,
                 positions: { 1: [10, 20] as [number, number], 2: [30, 40] as [number, number] },
-                mapper: { cols: 4, rows: 2, side: Side.HOME },
+                // mapper: { cols: 4, rows: 2 },
             };
             const formation = fromFormationObject(obj);
             expect(formation).toBeInstanceOf(Formation);
             expect(formation.getName()).toBe('Test');
-            expect(formation.getSide()).toBe(Side.HOME);
+            expect(formation.getViewSide()).toBe(Side.HOME);
             expect(formation.getType()).toBe(FormationType.POINTS);
             expect(formation.getPositionOf(1).getX()).toBe(10);
             expect(formation.getPositionOf(1).getY()).toBe(20);
@@ -39,10 +38,9 @@ describe('Utils/Formation', () => {
         test('DEVE lançar erro se número de jogador inválido', () => {
             const obj: FormationObject = {
                 name: 'Test',
-                side: Side.HOME,
                 type: FormationType.POINTS,
                 positions: { 0: [10, 20] as [number, number] }, // 0 é inválido
-                mapper: { cols: 4, rows: 2, side: Side.HOME },
+                mapper: { cols: 4, rows: 2 },
             };
             expect(() => fromFormationObject(obj)).toThrow(ErrFormationInvalidPlayerNumber);
         });
@@ -57,14 +55,13 @@ describe('Utils/Formation', () => {
         test('DEVE criar uma formação a partir de objeto', () => {
             const obj = {
                 name: 'Test',
-                side: Side.HOME,
                 type: FormationType.POINTS,
                 positions: { 1: [10, 20] as [number, number], 2: [30, 40] as [number, number] },
-                mapper: { cols: 4, rows: 2, side: Side.HOME },
+                // mapper: { cols: 4, rows: 2 },
             };
             const f = fromFormationObject(obj);
             expect(f).toBeInstanceOf(Formation);
-            expect(f.getSide()).toBe(Side.HOME);
+            expect(f.getViewSide()).toBe(Side.HOME);
             expect(f.getType()).toBe(FormationType.POINTS);
             expect(f.getPositionOf(1).getX()).toBe(10);
             expect(f.getPositionOf(1).getY()).toBe(20);

@@ -10,14 +10,14 @@ import {
 
 describe('Core/Mapper', () => {
     test('Getters e Setters', () => {
-        const mapper = new Mapper(10, 8, Side.HOME);
+        const mapper = new Mapper(10, 8);
 
         expect(mapper.getCols()).toEqual(10);
         expect(mapper.getRows()).toEqual(8);
-        expect(mapper.getSide()).toEqual(Side.HOME);
+        expect(mapper.getViewSide()).toEqual(Side.HOME);
 
-        expect(mapper.setSide(Side.AWAY)).toEqual(mapper);
-        expect(mapper.getSide()).toEqual(Side.AWAY);
+        expect(mapper.setViewSide(Side.AWAY)).toEqual(mapper);
+        expect(mapper.getViewSide()).toEqual(Side.AWAY);
 
         expect(mapper.setCols(12)).toEqual(mapper);
         expect(mapper.getCols()).toEqual(12);
@@ -27,11 +27,11 @@ describe('Core/Mapper', () => {
     });
 
     test('DEVE definir e retornar as colunas e linhas corretamente', () => {
-        const mapper = new Mapper(10, 8, Side.HOME);
+        const mapper = new Mapper(10, 8);
 
         expect(mapper.getCols()).toEqual(10);
         expect(mapper.getRows()).toEqual(8);
-        expect(mapper.getSide()).toEqual(Side.HOME);
+        expect(mapper.getViewSide()).toEqual(Side.HOME);
 
         mapper.setCols(22).setRows(33);
         expect(mapper.getCols()).toEqual(22);
@@ -39,7 +39,7 @@ describe('Core/Mapper', () => {
     });
 
     test('DEVE retornar a largura e altura das regiões', () => {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
 
         expect(mapper.getRegionWidth()).toEqual(SPECS.MAX_X_COORDINATE / 10);
         expect(mapper.getRegionHeight()).toEqual(SPECS.MAX_Y_COORDINATE / 10);
@@ -50,13 +50,14 @@ describe('Core/Mapper', () => {
     });
 
     test('DEVE retornar a região correta dado as coordenadas', () => {
-        let mapper = new Mapper(10, 10, Side.HOME);
+        let mapper = new Mapper(10, 10);
         let region = mapper.getRegion(1, 2);
 
         expect(region.getCol()).toEqual(1);
         expect(region.getRow()).toEqual(2);
 
-        mapper = new Mapper(10, 10, Side.AWAY);
+        mapper = new Mapper(10, 10);
+        mapper.setViewSide(Side.AWAY);
         region = mapper.getRegion(4, 9);
 
         expect(region.getCol()).toEqual(4);
@@ -67,7 +68,7 @@ describe('Core/Mapper', () => {
         const cols = 20;
         const rows = 15;
 
-        const mapper = new Mapper(cols, rows, Side.HOME);
+        const mapper = new Mapper(cols, rows);
 
         for (let i = 0; i < 1000; i++) {
             const region = mapper.getRandomRegion();
@@ -80,7 +81,7 @@ describe('Core/Mapper', () => {
     });
 
     test('DEVE retornar uma região onde se encontra o ponto dado', () => {
-        let mapper = new Mapper(10, 10, Side.HOME);
+        let mapper = new Mapper(10, 10);
 
         let region = mapper.getRegionFromPoint(new Point(0, 0));
         expect(region.getCol()).toEqual(0);
@@ -95,34 +96,37 @@ describe('Core/Mapper', () => {
         expect(region.getRow()).toEqual(4);
 
         // o campo se inverte mas o 0x0 sempre é a esquerda do jogador em direção ao gol adversário como é quando está do lado HOME
-        mapper = new Mapper(10, 10, Side.AWAY);
+        mapper = new Mapper(10, 10);
+
+        // 20_000 / 10; // 2000
+        // 10_000 / 10; // 1000
 
         region = mapper.getRegionFromPoint(new Point(0, 0));
-        expect(region.getCol()).toEqual(9);
-        expect(region.getRow()).toEqual(9);
+        expect(region.getCol()).toEqual(0);
+        expect(region.getRow()).toEqual(0);
 
-        region = mapper.getRegionFromPoint(new Point(100, 100));
-        expect(region.getCol()).toEqual(9);
-        expect(region.getRow()).toEqual(9);
+        region = mapper.getRegionFromPoint(new Point(2001, 1001));
+        expect(region.getCol()).toEqual(1);
+        expect(region.getRow()).toEqual(1);
 
         region = mapper.getRegionFromPoint(new Point(5000, 4000));
-        expect(region.getCol()).toEqual(7);
-        expect(region.getRow()).toEqual(6);
+        expect(region.getCol()).toEqual(2);
+        expect(region.getRow()).toEqual(4);
     });
 
     test('DEVE estourar erros ao tentar definir um mapper muito pequeno ou muito grande', () => {
-        expect(() => new Mapper(3, 10, Side.HOME)).toThrow(ErrMapperColsOutOfRange);
-        expect(() => new Mapper(201, 10, Side.HOME)).toThrow(ErrMapperColsOutOfRange);
-        expect(() => new Mapper(10, 1, Side.HOME)).toThrow(ErrMapperRowsOutOfRange);
-        expect(() => new Mapper(10, 101, Side.HOME)).toThrow(ErrMapperRowsOutOfRange);
+        expect(() => new Mapper(3, 10)).toThrow(ErrMapperColsOutOfRange);
+        expect(() => new Mapper(201, 10)).toThrow(ErrMapperColsOutOfRange);
+        expect(() => new Mapper(10, 1)).toThrow(ErrMapperRowsOutOfRange);
+        expect(() => new Mapper(10, 101)).toThrow(ErrMapperRowsOutOfRange);
     });
 
     test('DEVE estourar erros ao tentar pegar uma região fora dos limites mapeados', () => {
-        const mapper = new Mapper(10, 10, Side.HOME);
+        const mapper = new Mapper(10, 10);
 
         expect(() => mapper.getRegion(-1, 0)).toThrow(ErrMapperColOutOfMapped);
         expect(() => mapper.getRegion(0, -1)).toThrow(ErrMapperRowOutOfMapped);
-        expect(() => mapper.getRegion(11, 10)).toThrow(ErrMapperColOutOfMapped);
-        expect(() => mapper.getRegion(10, 11)).toThrow(ErrMapperRowOutOfMapped);
+        expect(() => mapper.getRegion(10, 9)).toThrow(ErrMapperColOutOfMapped);
+        expect(() => mapper.getRegion(9, 10)).toThrow(ErrMapperRowOutOfMapped);
     });
 });

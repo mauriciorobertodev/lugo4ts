@@ -13,14 +13,14 @@ import { randomSide } from '@/utils/side.js';
 
 import { ErrFormationInvalidPlayerNumber } from '@/errors.js';
 
-import { FromMapperObject } from './mapper.js';
+import { fromMapperObject } from './mapper.js';
 
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
 
-export function fromFormationObject({ name, side, positions, type, mapper, id }: FormationObject): Formation {
-    const formation = new Formation({}, name, side, type, mapper ? FromMapperObject(mapper) : undefined, id);
+export function fromFormationObject({ name, positions, type, mapper, id }: FormationObject): Formation {
+    const formation = new Formation({}, name, type, mapper ? fromMapperObject(mapper) : undefined, id);
 
     for (const keyStr in positions) {
         const playerNumber = parseInt(keyStr, 10);
@@ -33,6 +33,8 @@ export function fromFormationObject({ name, side, positions, type, mapper, id }:
 
         formation.definePositionOf(playerNumber, position[0], position[1]);
     }
+
+    if (mapper) formation.setType(FormationType.REGIONS);
 
     return formation;
 }
@@ -48,7 +50,6 @@ export function zeroedFormation() {
 export function randomFormation({
     id = randomUUID(),
     name = '?????',
-    side = randomSide(),
     positions = {},
     maxX = SPECS.MAX_X_COORDINATE,
     maxY = SPECS.MAX_Y_COORDINATE,
@@ -61,7 +62,6 @@ export function randomFormation({
 }: {
     id?: string;
     name?: string;
-    side?: Side;
     positions?: Record<number, [number, number]>;
     maxX?: number;
     maxY?: number;
@@ -72,7 +72,15 @@ export function randomFormation({
     type?: FormationType;
     mapper?: Mapper | null;
 } = {}): Formation {
-    const formation = new Formation(undefined, name, side, type, mapper, id);
+    const formation = new Formation(undefined, name, type, mapper, id);
+
+    if (mapper) {
+        formation.setType(FormationType.REGIONS);
+        maxX = mapper.getCols() - 1;
+        minX = Math.max(minX, 0);
+        maxY = mapper.getRows() - 1;
+        minY = Math.max(minY, 0);
+    }
 
     const playerCount = randomInt(minPlayers, maxPlayers);
 
@@ -99,7 +107,6 @@ export function randomStartFormation(side: Side = randomSide()): Formation {
 }
 
 export function makeFormation({
-    side = randomSide(),
     positions = {},
     type = FormationType.POINTS,
     mapper = undefined,
@@ -107,7 +114,6 @@ export function makeFormation({
     id = randomUUID(),
 }: {
     id?: string;
-    side?: Side;
     positions?: Record<number, [number, number]>;
     type?: FormationType;
     mapper?: Mapper | null;
@@ -117,5 +123,5 @@ export function makeFormation({
     for (const [playerNumber, [x, y]] of Object.entries(positions)) {
         points[parseInt(playerNumber, 10)] = new Point(x, y);
     }
-    return new Formation(points, name, side, type, mapper, id);
+    return new Formation(points, name, type, mapper, id);
 }

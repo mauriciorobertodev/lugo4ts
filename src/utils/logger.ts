@@ -1,79 +1,115 @@
 import { Side } from '@/core/side.js';
 
-type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'success';
+type LogLevel = 'debug' | 'info' | 'success' | 'warn' | 'error';
+type LogLevelSetting = LogLevel;
 
-// Estado interno
-let _enabled = false;
-let _playerNumber: number | undefined = undefined;
-let _playerSide: Side | undefined = undefined;
-let _playerState: string | undefined = undefined;
-
-export function setLogPlayer({
-    playerNumber,
-    playerSide,
-    playerState,
-}: {
-    playerNumber?: number;
-    playerSide?: Side;
-    playerState?: string;
-}) {
-    _playerNumber = playerNumber;
-    _playerSide = playerSide;
-    _playerState = playerState;
-}
-
-export function enableLogs() {
-    _enabled = true;
-}
-
-export function disableLogs() {
-    _enabled = false;
-}
-
-const colors = {
-    reset: '\x1b[0m',
-    debug: '\x1b[90m', // cinza
-    info: '\x1b[34m', // azul
-    success: '\x1b[32m', // verde
-    warn: '\x1b[33m', // amarelo
-    error: '\x1b[31m', // vermelho
+const LEVEL_PRIORITY: Record<LogLevel, number> = {
+    debug: 0,
+    info: 1,
+    success: 2,
+    warn: 3,
+    error: 4,
 };
 
-function formatPrefix(): string {
-    const parts = [
-        _playerNumber !== undefined ? `[${_playerNumber}]` : null,
-        _playerSide !== undefined ? `[${_playerSide}]` : null,
-        _playerState !== undefined ? `[${_playerState.toUpperCase()}]` : null,
-    ].filter(Boolean);
-    return parts.join(' ');
+const colors: Record<LogLevel | 'reset', string> = {
+    reset: '\x1b[0m',
+    debug: '\x1b[90m',
+    info: '\x1b[34m',
+    success: '\x1b[32m',
+    warn: '\x1b[33m',
+    error: '\x1b[31m',
+};
+
+class Logger {
+    private enabled = true;
+    private level: LogLevelSetting = 'debug';
+
+    private playerNumber?: number;
+    private playerSide?: Side;
+    private playerState?: string;
+
+    enable() {
+        this.enabled = true;
+    }
+
+    disable() {
+        this.enabled = false;
+    }
+
+    setLevel(level: LogLevelSetting) {
+        this.level = level;
+    }
+
+    isEnabled(): boolean {
+        return this.enabled;
+    }
+
+    setPlayer({
+        playerNumber,
+        playerSide,
+        playerState,
+    }: {
+        playerNumber?: number;
+        playerSide?: Side;
+        playerState?: string;
+    }) {
+        this.playerNumber = playerNumber;
+        this.playerSide = playerSide;
+        this.playerState = playerState;
+    }
+
+    private getPrefix(): string {
+        const parts = [
+            this.playerNumber !== undefined ? `[${this.playerNumber}]` : null,
+            this.playerSide !== undefined ? `[${this.playerSide}]` : null,
+            this.playerState !== undefined ? `[${this.playerState.toUpperCase()}]` : null,
+        ].filter(Boolean);
+        return parts.join(' ');
+    }
+
+    private formatTime(): string {
+        const now = new Date();
+        return now.toLocaleTimeString('pt-BR', { hour12: false });
+    }
+
+    private shouldLog(level: LogLevel): boolean {
+        return this.enabled && LEVEL_PRIORITY[level] >= LEVEL_PRIORITY[this.level];
+    }
+
+    private log(level: LogLevel, message: any, ...args: any[]) {
+        if (!this.shouldLog(level)) return;
+        const time = this.formatTime();
+        const prefix = this.getPrefix();
+        const color = colors[level];
+        const reset = colors.reset;
+
+        const label = `${color}${time} ${prefix}${reset}`;
+        console.log(label, message, ...args);
+    }
+
+    debug(msg: any, ...args: any[]) {
+        this.log('debug', msg, ...args);
+    }
+
+    info(msg: any, ...args: any[]) {
+        this.log('info', msg, ...args);
+    }
+
+    success(msg: any, ...args: any[]) {
+        this.log('success', msg, ...args);
+    }
+
+    warn(msg: any, ...args: any[]) {
+        this.log('warn', msg, ...args);
+    }
+
+    danger(msg: any, ...args: any[]) {
+        this.log('error', msg, ...args);
+    }
+
+    error(msg: any, ...args: any[]) {
+        this.danger(msg, ...args);
+    }
 }
 
-function baseLog(level: LogLevel, msg: string) {
-    if (!_enabled) return;
-
-    const prefix = formatPrefix();
-    const color = colors[level];
-    const output = `${color}${prefix} ${msg}${colors.reset}`;
-    console.log(output);
-}
-
-// Funções de log direto
-export function debug(msg: string) {
-    baseLog('debug', msg);
-}
-
-export function info(msg: string) {
-    baseLog('info', msg);
-}
-
-export function success(msg: string) {
-    baseLog('success', msg);
-}
-
-export function warn(msg: string) {
-    baseLog('warn', msg);
-}
-
-export function error(msg: string) {
-    baseLog('error', msg);
-}
+export const logger = new Logger();

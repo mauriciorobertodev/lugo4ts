@@ -18,11 +18,11 @@ import {
 export class Mapper implements IMapper {
     private regionWidth: number;
     private regionHeight: number;
+    private side: Side = Side.HOME;
 
     constructor(
         private cols: number,
-        private rows: number,
-        private side: Side
+        private rows: number
     ) {
         if (cols < 4) throw new ErrMapperColsOutOfRange(cols, 4, 200);
         if (cols > 200) throw new ErrMapperColsOutOfRange(cols, 4, 200);
@@ -33,7 +33,7 @@ export class Mapper implements IMapper {
         this.regionHeight = SPECS.MAX_Y_COORDINATE / rows;
     }
 
-    setSide(side: Side): this {
+    setViewSide(side: Side): this {
         this.side = side;
         return this;
     }
@@ -58,7 +58,7 @@ export class Mapper implements IMapper {
         return this;
     }
 
-    getSide(): Side {
+    getViewSide(): Side {
         return this.side;
     }
 
@@ -104,8 +104,8 @@ export class Mapper implements IMapper {
     }
 
     getRandomRegion(): Region {
-        const randomCol = randomInt(0, this.cols);
-        const randomRow = randomInt(0, this.rows);
+        const randomCol = randomInt(0, this.cols - 1);
+        const randomRow = randomInt(0, this.rows - 1);
         return this.getRegion(randomCol, randomRow);
     }
 
@@ -129,14 +129,13 @@ export class Mapper implements IMapper {
     }
 
     clone(): Mapper {
-        return new Mapper(this.cols, this.rows, this.side);
+        return new Mapper(this.cols, this.rows);
     }
 
     toObject(): MapperObject {
         return {
             cols: this.cols,
             rows: this.rows,
-            side: this.side,
         };
     }
 }

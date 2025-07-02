@@ -1,15 +1,15 @@
-import { FromMapperObject, Mapper, Side, randomMapper, zeroedMapper } from '@/index.js';
+import { Mapper, Side, fromMapperObject, randomMapper, zeroedMapper } from '@/index.js';
 import { describe, expect, test } from 'vitest';
 
 describe('Utils/Mapper', () => {
     describe('Converters', () => {
         test('DEVE criar um Mapper a partir de um objeto', () => {
-            const obj = { cols: 10, rows: 5, side: Side.AWAY };
-            const m = FromMapperObject(obj);
+            const obj = { cols: 10, rows: 5 };
+            const m = fromMapperObject(obj);
             expect(m).toBeInstanceOf(Mapper);
             expect(m.getCols()).toBe(10);
             expect(m.getRows()).toBe(5);
-            expect(m.getSide()).toBe(Side.AWAY);
+            expect(m.getViewSide()).toBe(Side.HOME);
         });
     });
 
@@ -19,7 +19,7 @@ describe('Utils/Mapper', () => {
             expect(m).toBeInstanceOf(Mapper);
             expect(m.getCols()).toBe(4);
             expect(m.getRows()).toBe(2);
-            expect(m.getSide()).toBe(Side.HOME);
+            expect(m.getViewSide()).toBe(Side.HOME);
         });
 
         test('DEVE criar um Mapper aleatório válido', () => {
@@ -30,7 +30,7 @@ describe('Utils/Mapper', () => {
                 expect(m.getCols()).toBeLessThanOrEqual(200);
                 expect(m.getRows()).toBeGreaterThanOrEqual(2);
                 expect(m.getRows()).toBeLessThanOrEqual(100);
-                expect([Side.HOME, Side.AWAY]).toContain(m.getSide());
+                expect([Side.HOME, Side.AWAY]).toContain(m.getViewSide());
             }
         });
     });

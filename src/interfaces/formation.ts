@@ -16,8 +16,8 @@ export interface IFormation {
     getMapper(): IMapper | null;
     setMapper(mapper: IMapper): this;
 
-    getSide(): Side;
-    setSide(side: Side): this;
+    getViewSide(): Side;
+    setViewSide(side: Side): this;
 
     hasPositionOf(playerNumber: number): boolean;
 
@@ -38,10 +38,9 @@ export interface IFormation {
 export type FormationObject = {
     id?: string;
     name?: string;
-    side: Side;
     positions: Record<number, [number, number]>;
     type: FormationType;
-    mapper?: MapperObject | null;
+    mapper?: MapperObject;
 };
 
 export enum FormationType {

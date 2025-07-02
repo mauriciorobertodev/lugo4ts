@@ -1,10 +1,9 @@
-import { GymSession, IGymSession, IGymTrainer } from '@/gym.js';
+import { GymSession, IGymTrainer } from '@/gym.js';
+import { GameInspector, SPECS } from '@/index.js';
 import * as tf from '@tensorflow/tfjs-node';
 import * as fs from 'fs';
 
 import { Order } from '@/generated/server.js';
-
-import { IGameInspector, SPECS } from '@/core.js';
 
 // ──────────────────────────────────────────────────────────────
 // Tipos
@@ -84,7 +83,7 @@ export class RLGoalkeeperTrainer implements IGymTrainer<State, Action> {
     }
 
     // ───────── RL interface ─────────
-    async state(g: IGameInspector): Promise<State> {
+    async state(g: GameInspector): Promise<State> {
         return [
             g.getMe().getPosition().getX() / SPECS.MAX_X_COORDINATE,
             g.getMe().getPosition().getY() / SPECS.MAX_Y_COORDINATE,
@@ -108,7 +107,7 @@ export class RLGoalkeeperTrainer implements IGymTrainer<State, Action> {
         return a;
     }
 
-    async play(act: GKAction, g: IGameInspector): Promise<Order[]> {
+    async play(act: GKAction, g: GameInspector): Promise<Order[]> {
         const orders: (Order | null)[] = [];
         const goal = g.getDefenseGoal();
 
@@ -128,7 +127,7 @@ export class RLGoalkeeperTrainer implements IGymTrainer<State, Action> {
         return orders.filter(Boolean) as Order[];
     }
 
-    async evaluate(prev: IGameInspector, curr: IGameInspector): Promise<{ reward: number; done: boolean }> {
+    async evaluate(prev: GameInspector, curr: GameInspector): Promise<{ reward: number; done: boolean }> {
         // ──────────────────────────────────────────────────────────
         // 1. Recompensa máxima: pegou a bola
         // ──────────────────────────────────────────────────────────
@@ -193,7 +192,7 @@ export class RLGoalkeeperTrainer implements IGymTrainer<State, Action> {
         return { reward, done: false };
     }
 
-    async train(session: IGymSession): Promise<void> {
+    async train(session: GymSession): Promise<void> {
         const BATCH = 64;
         let step = 0;
 

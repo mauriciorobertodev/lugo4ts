@@ -1,4 +1,4 @@
-import { Formation, FormationType, Mapper, Point, Side } from '../../../../src/index.js';
+import { Formation, FormationType, Mapper, Point, Side } from '@/index.js';
 
 export class DefaultFormation extends Formation {
     constructor() {

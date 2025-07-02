@@ -1,9 +1,8 @@
-import { GymSession, IGymSession, IGymTrainer } from '@/gym.js';
+import { GymSession, IGymTrainer } from '@/gym.js';
 import { BotTrainer } from '@/gym/bot-trainer.js';
+import { GameInspector, PlayerState } from '@/index.js';
 
 import { IBot } from '@/interfaces/bot.js';
-
-import { IGameInspector, PlayerState } from '@/core.js';
 
 import { MyBot } from '../bot.js';
 
@@ -21,7 +20,7 @@ export class BotGoalkeeperTrainer extends BotTrainer {
         return this.bot;
     }
 
-    async evaluate(prev: IGameInspector, curr: IGameInspector): Promise<{ reward: number; done: boolean }> {
+    async evaluate(prev: GameInspector, curr: GameInspector): Promise<{ reward: number; done: boolean }> {
         const holder = curr.getBallHolder();
         if (holder && holder.is(curr.getMe())) {
             // Pegou => termina o episódio com grande recompensa
@@ -38,7 +37,7 @@ export class BotGoalkeeperTrainer extends BotTrainer {
         return { reward: 0, done: false };
     }
 
-    async train(session: IGymSession): Promise<void> {
+    async train(session: GymSession): Promise<void> {
         const GAMES = 100; // número de jogos para treinar
         console.log(`Treinando goleiro por ${GAMES} jogos...`);
         const MAX_TURNS = 100; // número máximo de turnos por jogo

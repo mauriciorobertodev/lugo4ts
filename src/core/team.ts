@@ -135,7 +135,7 @@ export class Team implements ITeam {
     }
 
     setPositionsByFormation(formation: Formation): this {
-        formation.setSide(this.side);
+        formation.setViewSide(this.side);
         this.players.forEach((player, index) => {
             const position = formation.tryGetPositionOf(player.getNumber());
             if (position) player.setPosition(position);

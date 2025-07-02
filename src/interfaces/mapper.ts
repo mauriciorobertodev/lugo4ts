@@ -26,6 +26,7 @@ export interface IMapper {
 
     clone(): IMapper;
     toObject(): MapperObject;
+    toJsonString(): string;
 }
 
 export type MapperObject = {

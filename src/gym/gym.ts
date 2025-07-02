@@ -22,8 +22,8 @@ import { DummyStatue } from '@/playground/dummies/statue.js';
 import { StartInlineFormation } from '@/playground/formations/start-inline.js';
 
 export class Gym {
-    private trainingPlayerNumber: number = 10;
-    private trainingSide: Side = Side.HOME;
+    private traineeNumber: number = 10;
+    private traineeSide: Side = Side.HOME;
     private serverAddress: string = 'localhost:5000';
     private myBotsFactory: (number: number, side: Side) => IBot = (number: number, side: Side) => new DummyStatue();
     private opBotsFactory: (number: number, side: Side) => IBot = (number: number, side: Side) => new DummyStatue();
@@ -31,6 +31,15 @@ export class Gym {
     private trainerFactory: (() => IGymTrainer) | null = null;
     private myInitialFormationFactory: () => Formation = () => new StartInlineFormation();
     private opInitialFormationFactory: () => Formation = () => new StartInlineFormation();
+    private turnDuration: number = 50; // Default turn duration in milliseconds
+
+    withTurnDuration(milliseconds: number): this {
+        if (milliseconds <= 0) {
+            throw new Error('Turn duration must be a positive number.');
+        }
+        this.turnDuration = milliseconds;
+        return this;
+    }
 
     withMyInitialFormation(factory: () => Formation): this {
         this.myInitialFormationFactory = factory;
@@ -52,16 +61,16 @@ export class Gym {
         return this;
     }
 
-    withPlayerNumber(playerNumber: number): this {
+    withTraineeNumber(playerNumber: number): this {
         if (!isValidPlayerNumber(playerNumber)) {
             throw new ErrBotInvalidNumber(String(playerNumber));
         }
-        this.trainingPlayerNumber = playerNumber;
+        this.traineeNumber = playerNumber;
         return this;
     }
 
-    withTrainingSide(side: Side): this {
-        this.trainingSide = side;
+    withTraineeSide(side: Side): this {
+        this.traineeSide = side;
         return this;
     }
 
@@ -96,20 +105,20 @@ export class Gym {
 
         const mysBots: Record<number, IBot> = {};
         Array.from({ length: SPECS.MAX_PLAYERS }).forEach((_, index) => {
-            mysBots[index + 1] = this.myBotsFactory(index + 1, this.trainingSide);
+            mysBots[index + 1] = this.myBotsFactory(index + 1, this.traineeSide);
         });
 
         const myInitialFormation = this.myInitialFormationFactory();
-        myInitialFormation.setViewSide(this.trainingSide);
+        myInitialFormation.setViewSide(this.traineeSide);
 
         const opInitialFormation = this.opInitialFormationFactory();
-        opInitialFormation.setViewSide(flipSide(this.trainingSide));
+        opInitialFormation.setViewSide(flipSide(this.traineeSide));
 
         for (const [number, bot] of Object.entries(mysBots)) {
-            const side = this.trainingSide;
+            const side = this.traineeSide;
             const position = myInitialFormation.tryGetPositionOf(Number(number)) ?? randomInitialPosition(side);
 
-            if (this.trainingPlayerNumber === Number(number)) {
+            if (this.traineeNumber === Number(number)) {
                 continue;
             }
 
@@ -124,11 +133,11 @@ export class Gym {
 
         const opBots: Record<number, IBot> = {};
         Array.from({ length: SPECS.MAX_PLAYERS }).forEach((_, index) => {
-            opBots[index + 1] = this.opBotsFactory(index + 1, flipSide(this.trainingSide));
+            opBots[index + 1] = this.opBotsFactory(index + 1, flipSide(this.traineeSide));
         });
 
         for (const [number, bot] of Object.entries(opBots)) {
-            const side = flipSide(this.trainingSide);
+            const side = flipSide(this.traineeSide);
             const position = opInitialFormation.tryGetPositionOf(Number(number)) ?? randomInitialPosition(side);
 
             const client = new GameClient(this.serverAddress, '', side, Number(number), position);
@@ -143,14 +152,14 @@ export class Gym {
         const client = new GameClient(
             this.serverAddress,
             '',
-            this.trainingSide,
-            this.trainingPlayerNumber,
-            myInitialFormation.tryGetPositionOf(this.trainingPlayerNumber) ?? randomInitialPosition(this.trainingSide)
+            this.traineeSide,
+            this.traineeNumber,
+            myInitialFormation.tryGetPositionOf(this.traineeNumber) ?? randomInitialPosition(this.traineeSide)
         );
 
         const trainer = this.trainerFactory();
 
-        const session = new GymSession(trainer, controller, client, this.environmentFactory);
+        const session = new GymSession(trainer, controller, client, this.environmentFactory, this.turnDuration);
 
         await session.start();
     }

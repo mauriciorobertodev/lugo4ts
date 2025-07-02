@@ -1,3 +1,5 @@
+import { EnvironmentObject, IEnvironment } from '@/interfaces/environment.js';
+
 import { Ball } from '@/core/ball.js';
 import { Formation } from '@/core/formation.js';
 import { Player } from '@/core/player.js';
@@ -12,8 +14,8 @@ import { zeroedBall } from '@/utils/ball.js';
 import { randomPlayer } from '@/utils/player.js';
 import { randomTeam } from '@/utils/team.js';
 
-export class Environment {
-    private name: string = '';
+export class Environment implements IEnvironment {
+    private name: string = 'Sem nome';
     private turn: number | null = null;
     private ball: Ball | null = null;
     private homeTeam: Team | null = null;
@@ -92,6 +94,10 @@ export class Environment {
         return this.getHomeTeamOrCreate().getPlayer(number);
     }
 
+    tryGetHomePlayer(number: number): Player | null {
+        return this.getHomeTeamOrCreate().tryGetPlayer(number);
+    }
+
     setHomeScore(score: number): this {
         this.getHomeTeamOrCreate().setScore(score);
         return this;
@@ -110,6 +116,10 @@ export class Environment {
 
     getAwayPlayer(number: number): Player {
         return this.getAwayTeamOrCreate().getPlayer(number);
+    }
+
+    tryGetAwayPlayer(number: number): Player | null {
+        return this.getAwayTeamOrCreate().tryGetPlayer(number);
     }
 
     setHomeTeamPositionsByFormation(formation: Formation): this {
@@ -206,5 +216,25 @@ export class Environment {
     private getBallOrCreate(): Ball {
         if (!this.ball) this.ball = zeroedBall();
         return this.ball!;
+    }
+
+    setShotClock(shotClock: ShotClock): this {
+        this.shotClock = shotClock;
+        return this;
+    }
+
+    toObject(): EnvironmentObject {
+        return {
+            name: this.name,
+            turn: this.turn ?? undefined,
+            ball: this.ball?.toObject(),
+            homeTeam: this.homeTeam?.toObject(),
+            awayTeam: this.awayTeam?.toObject(),
+            shotClock: this.shotClock?.toObject(),
+        };
+    }
+
+    toJsonString(): string {
+        return JSON.stringify(this.toObject(), null, 4);
     }
 }

@@ -425,4 +425,8 @@ export class GameInspector implements IGameInspector {
             ballTurnsInGoalZone: this.ballTurnsInGoalZone || 0,
         };
     }
+
+    toJsonString(): string {
+        return JSON.stringify(this.toObject(), null, 4);
+    }
 }

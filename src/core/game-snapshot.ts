@@ -135,4 +135,8 @@ export class GameSnapshot implements IGameSnapshot {
             ballTurnsInGoalZone: this.ballTurnsInGoalZone || 0,
         };
     }
+
+    toJsonString(): string {
+        return JSON.stringify(this.toObject(), null, 4);
+    }
 }

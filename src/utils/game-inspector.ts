@@ -46,6 +46,11 @@ export function fromGameInspectorObject(obj: GameInspectorObject): GameInspector
     );
 }
 
+export function fromGameInspectorJsonString(json: string): GameInspector {
+    const obj = JSON.parse(json) as GameInspectorObject;
+    return fromGameInspectorObject(obj);
+}
+
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------

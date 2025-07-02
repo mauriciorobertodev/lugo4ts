@@ -138,4 +138,8 @@ export class Mapper implements IMapper {
             rows: this.rows,
         };
     }
+
+    toJsonString(): string {
+        return JSON.stringify(this.toObject(), null, 4);
+    }
 }

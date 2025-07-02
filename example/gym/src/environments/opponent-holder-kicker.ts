@@ -23,6 +23,7 @@ export class EnvironmentOpponentHolder extends Environment {
                         number: index + 1,
                         side: Side.HOME,
                         position: randomInitialPosition(side),
+                        speed: 0,
                     })
                 ),
             })
@@ -38,6 +39,7 @@ export class EnvironmentOpponentHolder extends Environment {
                         number: index + 1,
                         side: Side.AWAY,
                         position: randomInitialPosition(side),
+                        speed: 0,
                     })
                 ),
             })
@@ -45,7 +47,7 @@ export class EnvironmentOpponentHolder extends Environment {
         // this.setAwayTeamPositionsByFormation(new DefaultFormation());
 
         const opponent = side === Side.HOME ? this.getAwayTeam() : this.getHomeTeam();
-        const holder = opponent?.getRandomPlayer() ?? null;
+        const holder = opponent?.getRandomPlayer([1]) ?? null;
         this.setBall(randomBall({ holder, position: fieldCenterPoint(), direction: zeroedVector(), speed: 0 }));
     }
 }

@@ -18,7 +18,10 @@ export interface IFieldZone {
     containsPlayer(player: IPlayer): boolean;
     getFormation(): IFormation;
     setFormation(formation: IFormation): this;
+
+    clone(): IFieldZone;
     toObject(): FieldZoneObject;
+    toJsonString(): string;
 }
 
 export type FieldZoneObject = {

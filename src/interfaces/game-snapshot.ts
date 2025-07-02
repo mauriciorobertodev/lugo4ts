@@ -46,6 +46,7 @@ export interface IGameSnapshot {
 
     clone(): IGameSnapshot;
     toObject(): GameSnapshotObject;
+    toJsonString(): string;
 }
 
 export type GameSnapshotObject = {

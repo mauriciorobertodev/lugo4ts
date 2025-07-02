@@ -33,6 +33,7 @@ export interface IFormation {
 
     clone(): IFormation;
     toObject(): FormationObject;
+    toJsonString(): string;
 }
 
 export type FormationObject = {

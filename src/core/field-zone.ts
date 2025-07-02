@@ -112,4 +112,8 @@ export class FieldZone implements IFieldZone {
             formation: this.formation.toObject(),
         };
     }
+
+    toJsonString(): string {
+        return JSON.stringify(this.toObject(), null, 4);
+    }
 }

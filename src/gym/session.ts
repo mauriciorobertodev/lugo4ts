@@ -14,26 +14,46 @@ import { fromGameSnapshot } from '@/utils/game-inspector.js';
 import { sleep } from '@/utils/time.js';
 
 export class GymSession implements IGymSession {
-    private trainer: IGymTrainer;
-    private remote: GameController;
     private running: boolean = false;
     private initialEnvironment: Environment | null = null;
-    private environmentFactory: () => Environment;
     private lastSnapshot: GameInspector | null = null;
-    private client: GameClient;
     private state: unknown = null;
     private action: unknown = null;
+    private isListening: boolean = false;
 
     constructor(
-        trainer: IGymTrainer,
-        remote: GameController,
-        client: GameClient,
-        environmentFactory: () => Environment
+        private trainer: IGymTrainer,
+        private remote: GameController,
+        private client: GameClient,
+        private environmentFactory: () => Environment,
+        private turnDuration: number = 50 // Default turn duration in milliseconds
     ) {
-        this.trainer = trainer;
-        this.remote = remote;
-        this.client = client;
-        this.environmentFactory = environmentFactory;
+        // this.remote.on('goal', async (data) => {
+        //     await this.applyEnvironment((this.initialEnvironment = this.environmentFactory()));
+        // });
+
+        // this.remote.on('state-changed', (data) => {
+        //     // console.debug('Estado do servidor alterado:', data.prevState, '->', data.newState);
+        //     if (data.newState === ServerState.LISTENING || data.newState === ServerState.READY) {
+        //         this.isListening = true;
+        //         logger.debug('Fase de escuta iniciada');
+        //     } else {
+        //         this.isListening = false;
+        //         logger.debug('Fase de escuta encerrada');
+        //     }
+        // });
+
+        // this.remote.on('pause', (data) => {
+        //     this.isListening = false;
+        //     logger.debug('Jogo pausado');
+        // });
+
+        // this.remote.on('play', (data) => {
+        //     this.isListening = true;
+        //     logger.debug('Jogo retomado');
+        // });
+
+        this.remote.setupEventListeners();
     }
 
     // Novo: define e aplica o environment inicial
@@ -83,8 +103,8 @@ export class GymSession implements IGymSession {
     async reset(): Promise<GameSnapshot> {
         const environment = this.environmentFactory();
         if (!environment) throw new Error('Ambiente inicial não definido');
+
         this.initialEnvironment = environment;
-        this.initialEnvironment.setTurn(1);
         const snapshot = await this.applyEnvironment(this.initialEnvironment);
         this.lastSnapshot = fromGameSnapshot(this.client.getSide(), this.client.getNumber(), snapshot);
         return snapshot;
@@ -98,14 +118,13 @@ export class GymSession implements IGymSession {
     async update(): Promise<{ input: unknown; output: unknown; reward: number; done: boolean }> {
         if (!this.running) throw new Error('Sessão não está rodando');
         if (!this.lastSnapshot) throw new Error('Snapshot do jogo não disponível');
-        if (!this.initialEnvironment) throw new Error('Ambiente inicial não definido');
+
+        const prevSnapshot = this.lastSnapshot;
+        await sleep(this.turnDuration);
 
         await this.remote.setTurn(this.lastSnapshot.getTurn());
         await this.remote.resumeListeningPhase();
 
-        await sleep(15);
-
-        const prevSnapshot = this.lastSnapshot;
         const newSnapshot = await this.remote.getGameSnapshot();
 
         if (!newSnapshot) {
@@ -116,7 +135,7 @@ export class GymSession implements IGymSession {
 
         if (!this.running) return { input: this.state, output: this.action, done: true, reward: 0 };
 
-        const { reward, done } = await this.trainer.evaluate(prevSnapshot!, this.lastSnapshot!);
+        const { reward, done } = await this.trainer.evaluate(prevSnapshot, this.lastSnapshot!);
 
         return { input: this.state, output: this.action, reward, done };
     }

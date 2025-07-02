@@ -8,6 +8,7 @@ import { IPoint } from '@/interfaces/positionable.js';
 import { Point } from '@/core/point.js';
 import { SPECS } from '@/core/specs.js';
 
+import { logger } from '@/utils/logger.js';
 import { randomInt } from '@/utils/random.js';
 
 export class DummyKicker implements IBot {
@@ -18,6 +19,7 @@ export class DummyKicker implements IBot {
     onReady(inspector: IGameInspector): void {}
 
     onHolding(inspector: IGameInspector): Order[] {
+        logger.warn(`Eu sou o bot número ${inspector.getMe().getNumber()} e estou segurando a bola!`);
         const orders: Order[] = [];
 
         const me = inspector.getMe();

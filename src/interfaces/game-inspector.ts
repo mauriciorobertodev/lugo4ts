@@ -98,6 +98,7 @@ export interface IGameInspector {
 
     clone(): IGameInspector;
     toObject(): GameInspectorObject;
+    toJsonString(): string;
 }
 
 export type GameInspectorObject = {

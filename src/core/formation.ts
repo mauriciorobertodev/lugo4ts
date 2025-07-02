@@ -157,4 +157,8 @@ export class Formation implements IFormation {
             mapper: this.mapper?.toObject(),
         };
     }
+
+    toJsonString(): string {
+        return JSON.stringify(this.toObject(), null, 4);
+    }
 }

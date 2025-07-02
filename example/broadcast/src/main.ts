@@ -1,4 +1,4 @@
-import { GameController } from '../../../src/core/controller.js';
+import { GameController } from '../../../src/core/game-controller.js';
 
 const controller = new GameController('localhost:6000');
 

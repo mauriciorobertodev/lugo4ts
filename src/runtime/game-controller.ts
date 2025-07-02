@@ -8,7 +8,8 @@ import { RemoteClient } from '@/generated/remote.client.js';
 import { GameProperties } from '@/generated/remote.js';
 import { GameSnapshot_State } from '@/generated/server.js';
 
-import { IGameController } from '@/interfaces/controller.js';
+import { IGameController } from '@/interfaces/game-controller.js';
+import { IGameSnapshot } from '@/interfaces/game-snapshot.js';
 
 import { Ball } from '@/core/ball.js';
 import { Environment } from '@/core/environment.js';
@@ -26,6 +27,7 @@ import { intToSide, sideToInt } from '@/utils/side.js';
 
 import {
     fromLugoGameSnapshot,
+    fromLugoGameState,
     fromLugoPlayer,
     toLugoPlayer,
     toLugoPoint,
@@ -321,16 +323,13 @@ export class GameController implements IGameController {
                     }
                     break;
                 case 'stateChange':
-                    if (event.event.stateChange.newState === GameSnapshot_State.PLAYING) {
-                        if (!event.gameSnapshot) {
-                            this.listener?.('turn', {});
-                            return;
-                        } else {
-                            this.listener?.('turn', {
-                                snapshot: fromLugoGameSnapshot(event.gameSnapshot),
-                            });
-                        }
-                    }
+                    const data = {
+                        prevState: fromLugoGameState(event.event.stateChange.previousState),
+                        newState: fromLugoGameState(event.event.stateChange.newState),
+                        snapshot: event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined,
+                    };
+                    this.listener?.('state-changed', data);
+                    this.listeners['state-changed']?.forEach((callback) => callback(data));
                     break;
                 default:
                     logger.warn(`[EVENT] Evento desconhecido: ${event.event?.oneofKind}`);

@@ -1,6 +1,6 @@
 import { GymSession, IGymTrainer } from '@/gym.js';
 import { BotTrainer } from '@/gym/bot-trainer.js';
-import { GameInspector, PlayerState } from '@/index.js';
+import { GameInspector, PlayerState, logger } from '@/index.js';
 
 import { IBot } from '@/interfaces/bot.js';
 
@@ -30,6 +30,7 @@ export class BotGoalkeeperTrainer extends BotTrainer {
         const prevScore = prev.getOpponentTeam().getScore();
         const currScore = curr.getOpponentTeam().getScore();
         if (currScore > prevScore) {
+            console.debug('Oponente marcou um gol!');
             // Tomou gol => termina o episódio com grande penalidade
             return { reward: -1.0, done: true };
         }
@@ -51,7 +52,10 @@ export class BotGoalkeeperTrainer extends BotTrainer {
                 if (reward > 0) defenses++;
                 if (reward < 0) goals++;
 
-                if (done) break; // fim do jogo
+                if (done) {
+                    // console.log(`Jogo ${game} concluído. Defesas: ${defenses}, Gols sofridos: ${goals}`);
+                    break; // fim do jogo
+                }
             }
 
             await session.reset();

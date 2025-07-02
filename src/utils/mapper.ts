@@ -1,6 +1,3 @@
-// ------------------------------------------------------------
-// Converters
-// ------------------------------------------------------------
 import { MapperObject } from '@/interfaces/mapper.js';
 
 import { Mapper } from '@/core/mapper.js';
@@ -8,8 +5,17 @@ import { Side } from '@/core/side.js';
 
 import { randomInt } from '@/utils/random.js';
 
+// ------------------------------------------------------------
+// Converters
+// ------------------------------------------------------------
+
 export function fromMapperObject(obj: MapperObject): Mapper {
     return new Mapper(obj.cols, obj.rows);
+}
+
+export function fromMapperJsonString(json: string): Mapper {
+    const obj = JSON.parse(json) as MapperObject;
+    return fromMapperObject(obj);
 }
 
 // ------------------------------------------------------------

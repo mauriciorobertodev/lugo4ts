@@ -27,6 +27,11 @@ export function fromGameSnapshotObject(obj: GameSnapshotObject): GameSnapshot {
     );
 }
 
+export function fromGameSnapshotJsonString(json: string): GameSnapshot {
+    const obj = JSON.parse(json) as GameSnapshotObject;
+    return fromGameSnapshotObject(obj);
+}
+
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------

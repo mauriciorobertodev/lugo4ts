@@ -1,10 +1,9 @@
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
-import { TacticsObject } from "@/interfaces/tactics.js";
 
-import { FieldZone } from "@/core/field-zone.js";
 import { Tactics } from "@/core/tactics.js";
+import type { TacticsObject } from "@/interfaces/tactics.js";
 
 import { fromFieldZoneObject } from "@/utils/field-zone.js";
 import { fromFormationObject } from "@/utils/formation.js";

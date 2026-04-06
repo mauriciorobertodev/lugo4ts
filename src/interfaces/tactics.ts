@@ -1,8 +1,8 @@
-import { IBall } from "@/interfaces/ball.js";
-import { FieldZoneObject, IFieldZone } from "@/interfaces/field-zone.js";
-import { FormationObject, IFormation } from "@/interfaces/formation.js";
-import { IPlayer } from "@/interfaces/player.js";
-import { IPoint } from "@/interfaces/positionable.js";
+import type { IBall } from "@/interfaces/ball.js";
+import type { FieldZoneObject, IFieldZone } from "@/interfaces/field-zone.js";
+import type { FormationObject, IFormation } from "@/interfaces/formation.js";
+import type { IPlayer } from "@/interfaces/player.js";
+import type { IPoint } from "@/interfaces/positionable.js";
 
 export interface ITactics<ZoneIdentifier extends string = string, FormationIdentifier extends string = string> {
 	getFormations(): IFormation[];

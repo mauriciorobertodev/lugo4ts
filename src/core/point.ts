@@ -1,6 +1,5 @@
-import { IPoint, IPositionable, PointObject } from "@/interfaces/positionable.js";
-
 import { Vector2D } from "@/core/vector.js";
+import type { IPoint, IPositionable, PointObject } from "@/interfaces/positionable.js";
 
 export class Point implements IPoint {
 	constructor(

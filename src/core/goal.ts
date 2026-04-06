@@ -1,9 +1,7 @@
-import { GoalObject, IGoal } from "@/interfaces/goal.js";
-import { IPoint } from "@/interfaces/positionable.js";
-
 import { Point } from "@/core/point.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
+import type { GoalObject, IGoal } from "@/interfaces/goal.js";
 
 export class Goal implements IGoal {
 	constructor(

@@ -1,14 +1,11 @@
-import { TeamObject } from "@/interfaces/team.js";
-
-import { Player } from "@/core/player.js";
+import type { Player } from "@/core/player.js";
 import { Side } from "@/core/side.js";
 import { Team } from "@/core/team.js";
-
+import { ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from "@/errors.js";
+import type { TeamObject } from "@/interfaces/team.js";
 import { fromPlayerObject, randomPlayer } from "@/utils/player.js";
 import { randomInt } from "@/utils/random.js";
 import { randomSide } from "@/utils/side.js";
-
-import { ErrTeamDuplicatePlayer, ErrTeamInvalidSide } from "@/errors.js";
 
 // ------------------------------------------------------------
 // Converters

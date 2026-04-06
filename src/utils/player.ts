@@ -1,11 +1,10 @@
-import { PlayerObject, PlayerState } from "@/interfaces/player.js";
-
 import { Player } from "@/core/player.js";
 import { Point } from "@/core/point.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 import { Vector2D } from "@/core/vector.js";
 import { Velocity } from "@/core/velocity.js";
+import { type PlayerObject, PlayerState } from "@/interfaces/player.js";
 
 import { goalFromSide } from "@/utils/goal.js";
 import { fromPointObject, randomInitialPosition, randomPointBetweenGoalPoles, randomPointInField } from "@/utils/point.js";

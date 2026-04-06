@@ -1,7 +1,6 @@
-import { Formation, FormationType, Mapper, Point, Side, randomMapper } from "@/index.js";
 import { describe, expect, test } from "vitest";
-
 import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } from "@/errors.js";
+import { Formation, FormationType, Mapper, Point, randomMapper, Side } from "@/index.js";
 
 describe("Core/Formation", () => {
 	test("Getters e Setters", () => {
@@ -42,7 +41,7 @@ describe("Core/Formation", () => {
 	});
 
 	test("DEVE deve alterar também a side do mapper quando existe", () => {
-		const m = randomMapper({ side: Side.HOME });
+		const m = randomMapper();
 		const f = new Formation([], "Test Formation", FormationType.REGIONS, m);
 
 		expect(f.getViewSide()).toBe(m.getViewSide());

@@ -1,6 +1,4 @@
-import { Side } from "@/index.js";
 import { expect, test } from "vitest";
-
 import {
 	ErrBallNotFound,
 	ErrBotInvalidNumber,
@@ -29,6 +27,7 @@ import {
 	ErrTeamInvalidSide,
 	ErrTeamNotFound,
 } from "@/errors.js";
+import { Side } from "@/index.js";
 
 test("ErrPlayerNotFound", () => {
 	const error = new ErrPlayerNotFound(Side.HOME, 10);

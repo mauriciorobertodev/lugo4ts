@@ -1,31 +1,24 @@
-import { Event, EventData, GenericEventListener } from "@/runtime/events.js";
 import { credentials } from "@grpc/grpc-js";
 import { GrpcTransport } from "@protobuf-ts/grpc-transport";
-
-import { BroadcastClient } from "@/generated/broadcast.client.js";
-import { GameEvent, GameSetup } from "@/generated/broadcast.js";
-import { RemoteClient } from "@/generated/remote.client.js";
-import { GameProperties } from "@/generated/remote.js";
-import { GameSnapshot_State } from "@/generated/server.js";
-
-import { IGameController } from "@/interfaces/game-controller.js";
-import { IGameSnapshot } from "@/interfaces/game-snapshot.js";
-
-import { Ball } from "@/core/ball.js";
-import { Environment } from "@/core/environment.js";
-import { Formation } from "@/core/formation.js";
-import { GameSnapshot } from "@/core/game-snapshot.js";
-import { Player } from "@/core/player.js";
+import type { Ball } from "@/core/ball.js";
+import type { Environment } from "@/core/environment.js";
+import type { Formation } from "@/core/formation.js";
+import type { GameSnapshot } from "@/core/game-snapshot.js";
+import type { Player } from "@/core/player.js";
 import { Point } from "@/core/point.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-import { Velocity } from "@/core/velocity.js";
-
+import type { Velocity } from "@/core/velocity.js";
+import { BroadcastClient } from "@/generated/broadcast.client.js";
+import type { GameEvent, GameSetup } from "@/generated/broadcast.js";
+import { RemoteClient } from "@/generated/remote.client.js";
+import { GameProperties } from "@/generated/remote.js";
+import type { IGameController } from "@/interfaces/game-controller.js";
+import { fromLugoGameSnapshot, fromLugoGameState, fromLugoPlayer, toLugoPlayer, toLugoPoint, toLugoShotClock, toLugoVelocity } from "@/lugo.js";
+import type { Event, EventData, GenericEventListener } from "@/runtime/events.js";
 import { logger } from "@/utils/logger.js";
 // import { danger, debug, info, success, warn } from '@/utils/logger.js';
 import { intToSide, sideToInt } from "@/utils/side.js";
-
-import { fromLugoGameSnapshot, fromLugoGameState, fromLugoPlayer, toLugoPlayer, toLugoPoint, toLugoShotClock, toLugoVelocity } from "@/lugo.js";
 
 export class GameController implements IGameController {
 	private uuid: string = crypto.randomUUID();
@@ -151,7 +144,7 @@ export class GameController implements IGameController {
 	}
 
 	async setPlayerPosition(player: Player, position: Point): Promise<GameSnapshot> {
-		return new Promise<GameSnapshot>(async (resolve, reject) => {
+		return new Promise<GameSnapshot>(async (_resolve, reject) => {
 			try {
 				await this.remote.setPlayerProperties({
 					number: player.getNumber(),
@@ -274,35 +267,36 @@ export class GameController implements IGameController {
 	async setupEventListeners(): Promise<void> {
 		const { responses } = this.broadcast.onEvent({ uuid: this.uuid });
 
-		responses.onNext((event) => {
+		responses.onNext((_event) => {
 			// console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
 		});
 
 		responses.onMessage((event: GameEvent) => {
 			switch (event.event?.oneofKind) {
 				case "breakpoint":
-					this.listener?.("pause", {});
-					this.listeners["pause"]?.forEach((callback) => callback({}));
+					this.listener?.("pause", null);
+					this.listeners.pause?.map((callback) => callback(null));
 					break;
-				case "goal":
+				case "goal": {
 					const side = intToSide(event.event.goal.side);
 					this.listener?.("goal", { side });
-					this.listeners["goal"]?.forEach((callback) => callback({ side }));
+					this.listeners.goal?.map((callback) => callback({ side }));
 
 					break;
+				}
 				case "debugReleased":
-					this.listener?.("play", {});
-					this.listeners["play"]?.forEach((callback) => callback({}));
+					this.listener?.("play", null);
+					this.listeners.play?.map((callback) => callback(null));
 					break;
 				case "gameOver":
-					this.listener?.("over", {});
-					this.listeners["over"]?.forEach((callback) => callback({}));
+					this.listener?.("over", null);
+					this.listeners.over?.map((callback) => callback(null));
 					break;
 				case "newPlayer":
 					if (event.event.newPlayer.player) {
 						const player = fromLugoPlayer(event.event.newPlayer.player);
 						this.listener?.("player-join", { player });
-						this.listeners["player-join"]?.forEach((callback) => callback({ player }));
+						this.listeners["player-join"]?.map((callback) => callback({ player }));
 					}
 					break;
 				case "lostPlayer":
@@ -312,15 +306,16 @@ export class GameController implements IGameController {
 						});
 					}
 					break;
-				case "stateChange":
+				case "stateChange": {
 					const data = {
 						prevState: fromLugoGameState(event.event.stateChange.previousState),
 						newState: fromLugoGameState(event.event.stateChange.newState),
 						snapshot: event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined,
 					};
 					this.listener?.("state-changed", data);
-					this.listeners["state-changed"]?.forEach((callback) => callback(data));
+					this.listeners["state-changed"]?.map((callback) => callback(data));
 					break;
+				}
 				default:
 					logger.warn(`[EVENT] Evento desconhecido: ${event.event?.oneofKind}`);
 			}
@@ -374,7 +369,7 @@ export class GameController implements IGameController {
 		if (!this.listeners[event]) {
 			this.listeners[event] = [];
 		}
-		this.listeners[event]!.push(callback);
+		this.listeners[event]?.push(callback);
 	}
 
 	public applyEnvironment(environment: Environment): Promise<GameSnapshot> {

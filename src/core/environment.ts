@@ -1,14 +1,13 @@
-import { EnvironmentObject, IEnvironment } from "@/interfaces/environment.js";
-
-import { Ball } from "@/core/ball.js";
-import { Formation } from "@/core/formation.js";
-import { Player } from "@/core/player.js";
-import { Point } from "@/core/point.js";
-import { ShotClock } from "@/core/shot-clock.js";
+import type { Ball } from "@/core/ball.js";
+import type { Formation } from "@/core/formation.js";
+import type { Player } from "@/core/player.js";
+import type { Point } from "@/core/point.js";
+import type { ShotClock } from "@/core/shot-clock.js";
 import { Side } from "@/core/side.js";
-import { Team } from "@/core/team.js";
-import { Vector2D } from "@/core/vector.js";
-import { Velocity } from "@/core/velocity.js";
+import type { Team } from "@/core/team.js";
+import type { Vector2D } from "@/core/vector.js";
+import type { Velocity } from "@/core/velocity.js";
+import type { EnvironmentObject, IEnvironment } from "@/interfaces/environment.js";
 
 import { zeroedBall } from "@/utils/ball.js";
 import { randomPlayer } from "@/utils/player.js";

@@ -1,10 +1,10 @@
+import { describe, expect, test } from "vitest";
+import { ErrGameInvalidPlayerState } from "@/errors.js";
 import {
 	Ball,
+	fromGameSnapshot,
 	GameInspector,
 	PlayerState,
-	Side,
-	Team,
-	fromGameSnapshot,
 	randomGameInspector,
 	randomGameInspectorInAsGoalKeeper,
 	randomGameInspectorInOnDefending,
@@ -12,16 +12,15 @@ import {
 	randomGameInspectorInOnHolding,
 	randomGameInspectorInOnSupporting,
 	randomGameSnapshot,
+	Side,
+	Team,
 } from "@/index.js";
-import { describe, expect, test } from "vitest";
-
-import { ErrGameInvalidPlayerState } from "@/errors.js";
 
 describe("Utils/GameInspector", () => {
 	describe("Factories", () => {
 		test("DEVE criar um GameInspector a partir de snapshot", () => {
 			const snap = randomGameSnapshot();
-			const player = snap.getHomeTeam().getPlayer(1);
+			const _player = snap.getHomeTeam().getPlayer(1);
 			const gi = fromGameSnapshot(Side.HOME, 1, snap);
 			expect(gi).toBeInstanceOf(GameInspector);
 			expect(gi.getMyNumber()).toBe(1);

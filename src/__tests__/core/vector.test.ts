@@ -1,5 +1,5 @@
-import { Point, Vector2D } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { Point, Vector2D } from "@/index.js";
 
 describe("Core/Vector", () => {
 	test("DEVE definir, adicionar, subtrair, escalar e dividir o eixo X", () => {
@@ -116,7 +116,7 @@ describe("Core/Vector", () => {
 		expect(vec.getY()).toEqual(8);
 	});
 
-	test("DEVE retornar um clone da classe", function () {
+	test("DEVE retornar um clone da classe", () => {
 		const vec = new Vector2D(0, 0);
 		expect(vec).toBe(vec);
 

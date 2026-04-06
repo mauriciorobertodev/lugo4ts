@@ -1,14 +1,11 @@
-import { GameClient } from "@/runtime/game-client.js";
-import { GameController } from "@/runtime/game-controller.js";
-
-import { Order } from "@/generated/server.js";
-
-import { IGymSession } from "@/interfaces/gym-session.js";
-import { IGymTrainer } from "@/interfaces/gym-trainer.js";
-
-import { Environment } from "@/core/environment.js";
-import { GameInspector } from "@/core/game-inspector.js";
-import { GameSnapshot } from "@/core/game-snapshot.js";
+import type { Environment } from "@/core/environment.js";
+import type { GameInspector } from "@/core/game-inspector.js";
+import type { GameSnapshot } from "@/core/game-snapshot.js";
+import type { Order } from "@/generated/server.js";
+import type { IGymSession } from "@/interfaces/gym-session.js";
+import type { IGymTrainer } from "@/interfaces/gym-trainer.js";
+import type { GameClient } from "@/runtime/game-client.js";
+import type { GameController } from "@/runtime/game-controller.js";
 
 import { fromGameSnapshot } from "@/utils/game-inspector.js";
 import { sleep } from "@/utils/time.js";
@@ -19,7 +16,6 @@ export class GymSession implements IGymSession {
 	private lastSnapshot: GameInspector | null = null;
 	private state: unknown = null;
 	private action: unknown = null;
-	private isListening: boolean = false;
 
 	constructor(
 		private trainer: IGymTrainer,

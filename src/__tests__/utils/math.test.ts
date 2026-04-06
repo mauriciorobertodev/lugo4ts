@@ -1,7 +1,6 @@
-import { Point, isBetween, lerp2D, randomInt } from "@/index.js";
 import { describe, expect, test } from "vitest";
-
 import { ErrMathInterpolationFactor } from "@/errors.js";
+import { isBetween, lerp2D, Point, randomInt } from "@/index.js";
 
 describe("Utils/Math", () => {
 	test("DEVE retornar um ponto deslocado entre dois pontos", () => {

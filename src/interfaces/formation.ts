@@ -1,7 +1,6 @@
+import type { Side } from "@/core/side.js";
 import type { IMapper, MapperObject } from "@/interfaces/mapper.js";
 import type { IPoint } from "@/interfaces/positionable.js";
-
-import type { Side } from "@/core/side.js";
 
 export interface IFormation {
 	getId(): string;

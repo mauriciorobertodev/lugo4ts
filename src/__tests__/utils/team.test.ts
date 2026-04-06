@@ -1,11 +1,6 @@
-import { Side, Team, randomPlayer, randomTeam, zeroedTeam } from "@/index.js";
 import { describe, expect, test } from "vitest";
-
 import { ErrTeamInvalidSide } from "@/errors.js";
-
-function getPlayerSide(p: any) {
-	return typeof p.getTeamSide === "function" ? p.getTeamSide() : typeof p.getSide === "function" ? p.getSide() : undefined;
-}
+import { randomPlayer, randomTeam, Side, Team, zeroedTeam } from "@/index.js";
 
 describe("Utils/Team", () => {
 	describe("Factories", () => {
@@ -29,7 +24,7 @@ describe("Utils/Team", () => {
 				expect(Array.isArray(t.getPlayers())).toBe(true);
 				expect(t.getPlayers().length).toBe(11);
 				t.getPlayers().forEach((p, idx) => {
-					expect(getPlayerSide(p)).toBe(t.getSide());
+					expect(p.getTeamSide()).toBe(t.getSide());
 					expect(p.getNumber()).toBe(idx + 1);
 				});
 			}

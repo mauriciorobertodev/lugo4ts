@@ -1,4 +1,4 @@
-import { Side } from "@/core/side.js";
+import type { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 
 export class ErrPlayerNotFound extends Error {
@@ -212,7 +212,7 @@ export class ErrTeamEmpty extends Error {
 // MATH
 export class ErrMathInterpolationFactor extends Error {
 	constructor(factor: number) {
-		super("O fator de interpolação deve estar entre 0 e 1, recebido: " + factor);
+		super(`O fator de interpolação deve estar entre 0 e 1, recebido: ${factor}`);
 		this.name = "ErrMathInterpolationFactor";
 		Object.setPrototypeOf(this, ErrMathInterpolationFactor.prototype);
 	}

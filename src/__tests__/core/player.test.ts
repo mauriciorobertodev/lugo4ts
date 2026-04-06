@@ -1,5 +1,5 @@
-import { Mapper, Player, Point, SPECS, Side, Vector2D, Velocity, randomPlayer, randomPoint, randomVelocity } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { Mapper, Player, Point, randomPlayer, randomPoint, randomVelocity, Side, SPECS, Vector2D, Velocity } from "@/index.js";
 
 describe("Core/Player", () => {
 	test("Getter e Setter", () => {
@@ -17,7 +17,7 @@ describe("Core/Player", () => {
 		expect(player.getPosition()).toEqual(new Point(10, 20));
 	});
 
-	test("DEVE criar um Player com os atributos corretos", function () {
+	test("DEVE criar um Player com os atributos corretos", () => {
 		const side = Side.HOME;
 		const position = new Point(10, 20); // Supondo que Point aceita esses valores
 		const initPosition = new Point(5, 10);
@@ -35,7 +35,7 @@ describe("Core/Player", () => {
 		expect(player.getIsJumping()).toBe(true);
 	});
 
-	test("DEVE verificar se o jogador é o goleiro com base no número", function () {
+	test("DEVE verificar se o jogador é o goleiro com base no número", () => {
 		const side = Side.AWAY;
 		const position = new Point(10, 20);
 		const initPosition = new Point(5, 10);
@@ -48,7 +48,7 @@ describe("Core/Player", () => {
 		expect(nonGoalkeeper.isGoalkeeper()).toBe(false);
 	});
 
-	test("DEVE verificar a igualdade entre jogadores", function () {
+	test("DEVE verificar a igualdade entre jogadores", () => {
 		const side = Side.HOME;
 		const position = new Point(10, 20);
 		const initPosition = new Point(5, 10);
@@ -64,7 +64,7 @@ describe("Core/Player", () => {
 		expect(player1.is(player3)).toBe(false);
 	});
 
-	test("DEVE retornar corretamente se está no campo de defesa ou ataque", function () {
+	test("DEVE retornar corretamente se está no campo de defesa ou ataque", () => {
 		let side = Side.HOME;
 		let position = new Point(10, 20);
 		let player = new Player(7, true, side, position, randomPoint(), randomVelocity());
@@ -78,7 +78,7 @@ describe("Core/Player", () => {
 		expect(player.isInDefenseSide()).toBe(false);
 	});
 
-	test("DEVE retornar a direção e distancia para um player", function () {
+	test("DEVE retornar a direção e distancia para um player", () => {
 		const side = Side.HOME;
 		const position = new Point(10, 20);
 		const player = new Player(7, true, side, position, randomPoint(), randomVelocity());
@@ -91,7 +91,7 @@ describe("Core/Player", () => {
 		expect(distance).toEqual(player.getPosition().distanceTo(player2.getPosition()));
 	});
 
-	test("DEVE retornar a direção e distancia para um ponto", function () {
+	test("DEVE retornar a direção e distancia para um ponto", () => {
 		const side = Side.HOME;
 		const position = new Point(10, 20);
 		const player = new Player(7, true, side, position, randomPoint(), randomVelocity());
@@ -104,7 +104,7 @@ describe("Core/Player", () => {
 		expect(distance).toEqual(player.getPosition().distanceTo(point));
 	});
 
-	test("DEVE retornar a direção e distancia para uma região", function () {
+	test("DEVE retornar a direção e distancia para uma região", () => {
 		const side = Side.HOME;
 		const position = new Point(10, 20);
 		const player = new Player(7, true, side, position, randomPoint(), randomVelocity());

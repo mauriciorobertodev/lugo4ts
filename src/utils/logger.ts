@@ -1,4 +1,4 @@
-import { Side } from "@/core/side.js";
+import type { Side } from "@/core/side.js";
 
 type LogLevel = "debug" | "info" | "success" | "warn" | "error";
 type LogLevelSetting = LogLevel;
@@ -68,7 +68,7 @@ class Logger {
 		return this.enabled && LEVEL_PRIORITY[level] >= LEVEL_PRIORITY[this.level];
 	}
 
-	private log(level: LogLevel, message: any, ...args: any[]) {
+	private log(level: LogLevel, message: unknown, ...args: unknown[]) {
 		if (!this.shouldLog(level)) return;
 		const time = this.formatTime();
 		const prefix = this.getPrefix();
@@ -79,27 +79,27 @@ class Logger {
 		console.log(label, message, ...args);
 	}
 
-	debug(msg: any, ...args: any[]) {
+	debug(msg: unknown, ...args: unknown[]) {
 		this.log("debug", msg, ...args);
 	}
 
-	info(msg: any, ...args: any[]) {
+	info(msg: unknown, ...args: unknown[]) {
 		this.log("info", msg, ...args);
 	}
 
-	success(msg: any, ...args: any[]) {
+	success(msg: unknown, ...args: unknown[]) {
 		this.log("success", msg, ...args);
 	}
 
-	warn(msg: any, ...args: any[]) {
+	warn(msg: unknown, ...args: unknown[]) {
 		this.log("warn", msg, ...args);
 	}
 
-	danger(msg: any, ...args: any[]) {
+	danger(msg: unknown, ...args: unknown[]) {
 		this.log("error", msg, ...args);
 	}
 
-	error(msg: any, ...args: any[]) {
+	error(msg: unknown, ...args: unknown[]) {
 		this.danger(msg, ...args);
 	}
 }

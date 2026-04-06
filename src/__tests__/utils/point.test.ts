@@ -1,12 +1,10 @@
+import { describe, expect, test } from "vitest";
 import {
 	AWAY_GOAL,
-	HOME_GOAL,
-	Point,
-	SPECS,
-	Side,
-	Vector2D,
 	fieldCenterPoint,
+	HOME_GOAL,
 	isValidInitialPosition,
+	Point,
 	pointToVector2D,
 	randomInitialPosition,
 	randomPoint,
@@ -14,9 +12,11 @@ import {
 	randomPointBetweenGoalPoles,
 	randomPointInField,
 	randomPointInSide,
+	Side,
+	SPECS,
+	Vector2D,
 	zeroedPoint,
 } from "@/index.js";
-import { describe, expect, test } from "vitest";
 
 describe("Utils/Point", () => {
 	describe("Converters", () => {

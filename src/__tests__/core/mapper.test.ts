@@ -1,7 +1,6 @@
-import { Mapper, Point, SPECS, Side } from "@/index.js";
 import { describe, expect, test } from "vitest";
-
 import { ErrMapperColOutOfMapped, ErrMapperColsOutOfRange, ErrMapperRowOutOfMapped, ErrMapperRowsOutOfRange } from "@/errors.js";
+import { Mapper, Point, Side, SPECS } from "@/index.js";
 
 describe("Core/Mapper", () => {
 	test("Getters e Setters", () => {

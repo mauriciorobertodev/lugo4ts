@@ -1,11 +1,8 @@
-import { IEnv } from "@/interfaces/env.js";
-
-import { Side } from "@/core/side.js";
-
+import type { Side } from "@/core/side.js";
+import { ErrBotInvalidNumber, ErrEnvNeedToken } from "@/errors.js";
+import type { IEnv } from "@/interfaces/env.js";
 import { isValidPlayerNumber } from "@/utils/player.js";
 import { stringToSide } from "@/utils/side.js";
-
-import { ErrBotInvalidNumber, ErrEnvNeedToken } from "@/errors.js";
 
 export class Env implements IEnv {
 	private grpcUrl: string;

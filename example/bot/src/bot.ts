@@ -1,8 +1,8 @@
-import { GameInspector } from "../../../src/core/inspector.js";
+import type { GameInspector } from "../../../src/core/inspector.js";
 import { FormationFactory } from "../../../src/factories/formation.factory.js";
-import { Order } from "../../../src/generated/server.js";
-import { Mapper, PlayerState, Point } from "../../../src/index.js";
-import { IBot } from "../../../src/interfaces/bot.js";
+import type { Order } from "../../../src/generated/server.js";
+import { type Mapper, PlayerState, type Point } from "../../../src/index.js";
+import type { IBot } from "../../../src/interfaces/bot.js";
 import { DEFENSIVE, NORMAL, OFFENSIVE } from "./settings.js";
 
 export class BotTester implements IBot {
@@ -116,9 +116,9 @@ export class BotTester implements IBot {
 		return expectedRegion.getCenter();
 	}
 
-	onReady(inspector: GameInspector): void {}
+	onReady(_inspector: GameInspector): void {}
 
-	beforeActions(inspector: GameInspector): void {}
+	beforeActions(_inspector: GameInspector): void {}
 
-	afterActions(inspector: GameInspector): void {}
+	afterActions(_inspector: GameInspector): void {}
 }

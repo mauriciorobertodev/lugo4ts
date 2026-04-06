@@ -1,8 +1,7 @@
-import { VelocityObject } from "@/interfaces/velocity.js";
-
 import { SPECS } from "@/core/specs.js";
 import { Vector2D } from "@/core/vector.js";
 import { Velocity } from "@/core/velocity.js";
+import type { VelocityObject } from "@/interfaces/velocity.js";
 
 import { randomFloat } from "@/utils/random.js";
 import { fromVector2DObject, randomVector2D } from "@/utils/vector.js";
@@ -19,7 +18,7 @@ export function fromVelocityObject(obj: VelocityObject): Velocity {
 // Factories
 // ------------------------------------------------------------
 
-export function zeroedVelocity({}: { direction?: Vector2D; speed?: number; maxSpeed?: number } = {}): Velocity {
+export function zeroedVelocity(): Velocity {
 	return new Velocity(new Vector2D(0, 0), 0);
 }
 

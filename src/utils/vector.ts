@@ -1,7 +1,6 @@
-import { Vector2DObject } from "@/interfaces/positionable.js";
-
 import { Point } from "@/core/point.js";
 import { Vector2D } from "@/core/vector.js";
+import type { Vector2DObject } from "@/interfaces/positionable.js";
 
 import { randomFloat } from "@/utils/random.js";
 

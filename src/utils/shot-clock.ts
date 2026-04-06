@@ -1,8 +1,7 @@
-import { ShotClockObject } from "@/interfaces/shot-clock.js";
-
 import { ShotClock } from "@/core/shot-clock.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
+import type { ShotClockObject } from "@/interfaces/shot-clock.js";
 
 import { randomInt } from "@/utils/random.js";
 import { randomSide } from "@/utils/side.js";

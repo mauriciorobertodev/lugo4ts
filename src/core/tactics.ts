@@ -1,10 +1,9 @@
-import { ITactics, TacticsObject } from "@/interfaces/tactics.js";
-
-import { Ball } from "@/core/ball.js";
-import { FieldZone } from "@/core/field-zone.js";
-import { Formation } from "@/core/formation.js";
-import { Player } from "@/core/player.js";
-import { Point } from "@/core/point.js";
+import type { Ball } from "@/core/ball.js";
+import type { FieldZone } from "@/core/field-zone.js";
+import type { Formation } from "@/core/formation.js";
+import type { Player } from "@/core/player.js";
+import type { Point } from "@/core/point.js";
+import type { ITactics, TacticsObject } from "@/interfaces/tactics.js";
 
 export class Tactics<ZoneIdentifier extends string = string, FormationIdentifier extends string = string> implements ITactics {
 	constructor(

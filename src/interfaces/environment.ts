@@ -1,12 +1,11 @@
-import { BallObject, IBall } from "@/interfaces/ball.js";
-import { IFormation } from "@/interfaces/formation.js";
-import { IPlayer } from "@/interfaces/player.js";
-import { IPoint, IVector2D } from "@/interfaces/positionable.js";
-import { IShotClock, ShotClockObject } from "@/interfaces/shot-clock.js";
-import { ITeam, TeamObject } from "@/interfaces/team.js";
-import { IVelocity } from "@/interfaces/velocity.js";
-
-import { Side } from "@/core/side.js";
+import type { Side } from "@/core/side.js";
+import type { BallObject, IBall } from "@/interfaces/ball.js";
+import type { IFormation } from "@/interfaces/formation.js";
+import type { IPlayer } from "@/interfaces/player.js";
+import type { IPoint, IVector2D } from "@/interfaces/positionable.js";
+import type { IShotClock, ShotClockObject } from "@/interfaces/shot-clock.js";
+import type { ITeam, TeamObject } from "@/interfaces/team.js";
+import type { IVelocity } from "@/interfaces/velocity.js";
 
 export interface IEnvironment {
 	getName(): string;

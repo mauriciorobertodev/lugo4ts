@@ -1,32 +1,27 @@
-import { GymSession } from "@/gym/session.js";
-import { GameClient } from "@/runtime/game-client.js";
-import { GameController } from "@/runtime/game-controller.js";
-
-import { IBot } from "@/interfaces/bot.js";
-import { IGymTrainer } from "@/interfaces/gym-trainer.js";
-
 import { Environment } from "@/core/environment.js";
-import { Formation } from "@/core/formation.js";
+import type { Formation } from "@/core/formation.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-
+import { ErrBotInvalidNumber } from "@/errors.js";
+import { GymSession } from "@/gym/session.js";
+import type { IBot } from "@/interfaces/bot.js";
+import type { IGymTrainer } from "@/interfaces/gym-trainer.js";
+import { DummyStatue } from "@/playground/dummies/statue.js";
+import { StartInlineFormation } from "@/playground/formations/start-inline.js";
+import { GameClient } from "@/runtime/game-client.js";
+import { GameController } from "@/runtime/game-controller.js";
 import { logger } from "@/utils/logger.js";
 import { isValidPlayerNumber } from "@/utils/player.js";
 import { randomInitialPosition } from "@/utils/point.js";
 import { flipSide } from "@/utils/side.js";
 import { sleep } from "@/utils/time.js";
 
-import { ErrBotInvalidNumber } from "@/errors.js";
-
-import { DummyStatue } from "@/playground/dummies/statue.js";
-import { StartInlineFormation } from "@/playground/formations/start-inline.js";
-
 export class Gym {
 	private traineeNumber: number = 10;
 	private traineeSide: Side = Side.HOME;
 	private serverAddress: string = "localhost:5000";
-	private myBotsFactory: (number: number, side: Side) => IBot = (number: number, side: Side) => new DummyStatue();
-	private opBotsFactory: (number: number, side: Side) => IBot = (number: number, side: Side) => new DummyStatue();
+	private myBotsFactory: (number: number, side: Side) => IBot = (_number: number, _side: Side) => new DummyStatue();
+	private opBotsFactory: (number: number, side: Side) => IBot = (_number: number, _side: Side) => new DummyStatue();
 	private environmentFactory: () => Environment = () => new Environment();
 	private trainerFactory: (() => IGymTrainer) | null = null;
 	private myInitialFormationFactory: () => Formation = () => new StartInlineFormation();

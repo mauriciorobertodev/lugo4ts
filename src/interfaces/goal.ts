@@ -1,6 +1,5 @@
-import type { IPoint, PointObject } from "@/interfaces/positionable.js";
-
 import type { Side } from "@/core/side.js";
+import type { IPoint, PointObject } from "@/interfaces/positionable.js";
 
 export interface IGoal {
 	getCenter(): IPoint;

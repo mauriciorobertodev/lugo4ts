@@ -1,9 +1,9 @@
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
-import { FieldZoneObject } from "@/interfaces/field-zone.js";
 
 import { FieldZone } from "@/core/field-zone.js";
+import type { FieldZoneObject } from "@/interfaces/field-zone.js";
 
 import { fromFormationObject } from "./formation.js";
 import { randomUUID } from "./random.js";

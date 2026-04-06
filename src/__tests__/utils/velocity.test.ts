@@ -1,5 +1,5 @@
-import { SPECS, Vector2D, Velocity, randomVelocity, zeroedVelocity } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { randomVelocity, SPECS, Vector2D, Velocity, zeroedVelocity } from "@/index.js";
 
 describe("Utils/Velocity", () => {
 	describe("Factories", () => {

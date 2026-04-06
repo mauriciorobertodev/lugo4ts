@@ -1,17 +1,14 @@
-import { FormationObject, FormationType } from "@/interfaces/formation.js";
-
 import { Formation } from "@/core/formation.js";
-import { Mapper } from "@/core/mapper.js";
+import type { Mapper } from "@/core/mapper.js";
 import { Point } from "@/core/point.js";
-import { Side } from "@/core/side.js";
+import type { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-
+import { ErrFormationInvalidPlayerNumber } from "@/errors.js";
+import { type FormationObject, FormationType } from "@/interfaces/formation.js";
 import { isValidPlayerNumber } from "@/utils/player.js";
 import { randomInitialPosition } from "@/utils/point.js";
 import { randomInt, randomUUID } from "@/utils/random.js";
 import { randomSide } from "@/utils/side.js";
-
-import { ErrFormationInvalidPlayerNumber } from "@/errors.js";
 
 import { fromMapperObject } from "./mapper.js";
 

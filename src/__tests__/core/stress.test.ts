@@ -1,9 +1,8 @@
-import { IBot, PlayerState, Side } from "@/index.js";
-import { BotPerformanceTester } from "@/stress.js";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-
 import { Velocity } from "@/generated/physics.js";
 import { Move, Order } from "@/generated/server.js";
+import { type IBot, Side } from "@/index.js";
+import { BotPerformanceTester } from "@/stress.js";
 
 // Mock do console para evitar output durante os testes
 const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});

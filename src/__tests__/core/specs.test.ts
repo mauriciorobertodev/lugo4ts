@@ -1,76 +1,76 @@
-import { SPECS } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { SPECS } from "@/index.js";
 
 describe("Core/Specs", () => {
-	test("DEVE ter a constante BASE_UNIT igual a 100", function () {
+	test("DEVE ter a constante BASE_UNIT igual a 100", () => {
 		expect(SPECS.BASE_UNIT).toBe(100);
 	});
 
-	test("DEVE calcular PLAYER_SIZE como 4 vezes BASE_UNIT", function () {
+	test("DEVE calcular PLAYER_SIZE como 4 vezes BASE_UNIT", () => {
 		expect(SPECS.PLAYER_SIZE).toBe(4 * SPECS.BASE_UNIT);
 	});
 
-	test("DEVE calcular PLAYER_RADIUS como metade do PLAYER_SIZE", function () {
+	test("DEVE calcular PLAYER_RADIUS como metade do PLAYER_SIZE", () => {
 		expect(SPECS.PLAYER_RADIUS).toBe(SPECS.PLAYER_SIZE / 2);
 	});
 
-	test("DEVE ter PLAYER_RECONNECTION_WAIT_TIME igual a 20", function () {
+	test("DEVE ter PLAYER_RECONNECTION_WAIT_TIME igual a 20", () => {
 		expect(SPECS.PLAYER_RECONNECTION_WAIT_TIME).toBe(20);
 	});
 
-	test("DEVE ter MAX_PLAYERS igual a 11", function () {
+	test("DEVE ter MAX_PLAYERS igual a 11", () => {
 		expect(SPECS.MAX_PLAYERS).toBe(11);
 	});
 
-	test("DEVE ter MIN_PLAYERS igual a 6", function () {
+	test("DEVE ter MIN_PLAYERS igual a 6", () => {
 		expect(SPECS.MIN_PLAYERS).toBe(6);
 	});
 
-	test("DEVE ter PLAYER_MAX_SPEED igual a 100.0", function () {
+	test("DEVE ter PLAYER_MAX_SPEED igual a 100.0", () => {
 		expect(SPECS.PLAYER_MAX_SPEED).toBe(100.0);
 	});
 
-	test("DEVE calcular MAX_X_COORDINATE como 200 vezes BASE_UNIT", function () {
+	test("DEVE calcular MAX_X_COORDINATE como 200 vezes BASE_UNIT", () => {
 		expect(SPECS.MAX_X_COORDINATE).toBe(200 * SPECS.BASE_UNIT);
 	});
 
-	test("DEVE calcular MAX_Y_COORDINATE como 100 vezes BASE_UNIT", function () {
+	test("DEVE calcular MAX_Y_COORDINATE como 100 vezes BASE_UNIT", () => {
 		expect(SPECS.MAX_Y_COORDINATE).toBe(100 * SPECS.BASE_UNIT);
 	});
 
-	test("DEVE calcular BALL_SIZE como 2 vezes BASE_UNIT", function () {
+	test("DEVE calcular BALL_SIZE como 2 vezes BASE_UNIT", () => {
 		expect(SPECS.BALL_SIZE).toBe(2 * SPECS.BASE_UNIT);
 	});
 
-	test("DEVE ter BALL_DECELERATION igual a 10.0", function () {
+	test("DEVE ter BALL_DECELERATION igual a 10.0", () => {
 		expect(SPECS.BALL_DECELERATION).toBe(10.0);
 	});
 
-	test("DEVE calcular BALL_MAX_SPEED como 4 vezes BASE_UNIT", function () {
+	test("DEVE calcular BALL_MAX_SPEED como 4 vezes BASE_UNIT", () => {
 		expect(SPECS.BALL_MAX_SPEED).toBe(4.0 * SPECS.BASE_UNIT);
 	});
 
-	test("DEVE ter BALL_MIN_SPEED igual a 2", function () {
+	test("DEVE ter BALL_MIN_SPEED igual a 2", () => {
 		expect(SPECS.BALL_MIN_SPEED).toBe(2);
 	});
 
-	test("DEVE calcular GOAL_WIDTH como 30 vezes BASE_UNIT", function () {
+	test("DEVE calcular GOAL_WIDTH como 30 vezes BASE_UNIT", () => {
 		expect(SPECS.GOAL_SIZE).toBe(30 * SPECS.BASE_UNIT);
 	});
 
-	test("DEVE calcular GOAL_MIN_Y corretamente", function () {
+	test("DEVE calcular GOAL_MIN_Y corretamente", () => {
 		expect(SPECS.GOAL_MIN_Y).toBe((100 * SPECS.BASE_UNIT - 30 * SPECS.BASE_UNIT) / 2);
 	});
 
-	test("DEVE calcular GOAL_MAX_Y corretamente", function () {
+	test("DEVE calcular GOAL_MAX_Y corretamente", () => {
 		expect(SPECS.GOAL_MAX_Y).toBe((100 * SPECS.BASE_UNIT - 30 * SPECS.BASE_UNIT) / 2 + 30 * SPECS.BASE_UNIT);
 	});
 
-	test("DEVE calcular FIELD_WIDTH como 200 vezes BASE_UNIT + 1", function () {
+	test("DEVE calcular FIELD_WIDTH como 200 vezes BASE_UNIT + 1", () => {
 		expect(SPECS.FIELD_WIDTH).toBe(200 * SPECS.BASE_UNIT + 1);
 	});
 
-	test("DEVE calcular FIELD_HEIGHT como 100 vezes BASE_UNIT + 1", function () {
+	test("DEVE calcular FIELD_HEIGHT como 100 vezes BASE_UNIT + 1", () => {
 		expect(SPECS.FIELD_HEIGHT).toBe(100 * SPECS.BASE_UNIT + 1);
 	});
 });

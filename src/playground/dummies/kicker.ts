@@ -1,12 +1,10 @@
-import { Order } from "@/generated/server.js";
-
-import { IBot } from "@/interfaces/bot.js";
-import { IGameInspector } from "@/interfaces/game-inspector.js";
-import { PlayerState } from "@/interfaces/player.js";
-import { IPoint } from "@/interfaces/positionable.js";
-
 import { Point } from "@/core/point.js";
 import { SPECS } from "@/core/specs.js";
+import type { Order } from "@/generated/server.js";
+import type { IBot } from "@/interfaces/bot.js";
+import type { IGameInspector } from "@/interfaces/game-inspector.js";
+import type { PlayerState } from "@/interfaces/player.js";
+import type { IPoint } from "@/interfaces/positionable.js";
 
 import { logger } from "@/utils/logger.js";
 import { randomInt } from "@/utils/random.js";
@@ -14,15 +12,15 @@ import { randomInt } from "@/utils/random.js";
 export class DummyKicker implements IBot {
 	private distanceToKick: number = this.generateDistanceToKick();
 
-	beforeActions(inspector: IGameInspector): void {}
-	afterActions(inspector: IGameInspector): void {}
-	onReady(inspector: IGameInspector): void {}
+	beforeActions(_inspector: IGameInspector): void {}
+	afterActions(_inspector: IGameInspector): void {}
+	onReady(_inspector: IGameInspector): void {}
 
 	onHolding(inspector: IGameInspector): Order[] {
 		logger.warn(`Eu sou o bot número ${inspector.getMe().getNumber()} e estou segurando a bola!`);
 		const orders: Order[] = [];
 
-		const me = inspector.getMe();
+		const _me = inspector.getMe();
 		const ball = inspector.getBall();
 		const goal = inspector.getAttackGoal();
 		const distance = ball.distanceToPoint(goal.getCenter());
@@ -42,25 +40,25 @@ export class DummyKicker implements IBot {
 		return orders;
 	}
 
-	onDisputing(inspector: IGameInspector): Order[] {
+	onDisputing(_inspector: IGameInspector): Order[] {
 		const orders: Order[] = [];
 
 		return orders;
 	}
 
-	onDefending(inspector: IGameInspector): Order[] {
+	onDefending(_inspector: IGameInspector): Order[] {
 		const orders: Order[] = [];
 
 		return orders;
 	}
 
-	onSupporting(inspector: IGameInspector): Order[] {
+	onSupporting(_inspector: IGameInspector): Order[] {
 		const orders: Order[] = [];
 
 		return orders;
 	}
 
-	asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
+	asGoalkeeper(_inspector: IGameInspector, _state: PlayerState): Order[] {
 		const orders: Order[] = [];
 
 		return orders;

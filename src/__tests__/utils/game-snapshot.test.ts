@@ -1,5 +1,5 @@
-import { Ball, GameSnapshot, ServerState, Side, Team } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { Ball, GameSnapshot, ServerState, Side, Team } from "@/index.js";
 
 import { createZeroedSnapshot, randomGameSnapshot } from "@/utils/game-snapshot.js";
 

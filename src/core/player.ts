@@ -1,11 +1,10 @@
-import { IPlayer, PlayerObject } from "@/interfaces/player.js";
-
-import { Point } from "@/core/point.js";
-import { Region } from "@/core/region.js";
+import type { Point } from "@/core/point.js";
+import type { Region } from "@/core/region.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-import { Vector2D } from "@/core/vector.js";
-import { Velocity } from "@/core/velocity.js";
+import type { Vector2D } from "@/core/vector.js";
+import type { Velocity } from "@/core/velocity.js";
+import type { IPlayer, PlayerObject } from "@/interfaces/player.js";
 
 export class Player implements IPlayer {
 	constructor(

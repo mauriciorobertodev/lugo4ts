@@ -1,5 +1,5 @@
-import { AWAY_GOAL, Goal, HOME_GOAL, SPECS, Side, goalFromSide, randomGoal } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { AWAY_GOAL, Goal, goalFromSide, HOME_GOAL, randomGoal, Side, SPECS } from "@/index.js";
 
 describe("Utils/Goal", () => {
 	test("DEVE criar um novo gol de ambas as sides", () => {

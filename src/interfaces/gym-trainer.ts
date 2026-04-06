@@ -3,7 +3,7 @@ import type { Order } from "@/generated/server.js";
 import type { IGameInspector } from "@/interfaces/game-inspector.js";
 import type { IGymSession } from "@/interfaces/gym-session.js";
 
-export interface IGymTrainer<State = any, Action = any> {
+export interface IGymTrainer<State = unknown, Action = unknown> {
 	state(game: IGameInspector): Promise<State>;
 	action(state: State, game: IGameInspector): Promise<Action>;
 	play(action: Action, game: IGameInspector): Promise<Order[]>;

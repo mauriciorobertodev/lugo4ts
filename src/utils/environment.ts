@@ -1,9 +1,9 @@
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
-import { EnvironmentObject } from "@/interfaces/environment.js";
 
 import { Environment } from "@/core/environment.js";
+import type { EnvironmentObject } from "@/interfaces/environment.js";
 
 import { fromBallObject } from "@/utils/ball.js";
 import { fromShotClockObject } from "@/utils/shot-clock.js";

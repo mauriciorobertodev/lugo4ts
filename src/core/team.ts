@@ -1,13 +1,10 @@
-import { ITeam, TeamObject } from "@/interfaces/team.js";
-
-import { Formation } from "@/core/formation.js";
-import { Player } from "@/core/player.js";
-import { Side } from "@/core/side.js";
+import type { Formation } from "@/core/formation.js";
+import type { Player } from "@/core/player.js";
+import type { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-
-import { randomElement } from "@/utils/random.js";
-
 import { ErrPlayerNotFound, ErrTeamDuplicatePlayer, ErrTeamEmpty, ErrTeamInvalidScore, ErrTeamInvalidSide } from "@/errors.js";
+import type { ITeam, TeamObject } from "@/interfaces/team.js";
+import { randomElement } from "@/utils/random.js";
 
 export class Team implements ITeam {
 	constructor(
@@ -130,7 +127,7 @@ export class Team implements ITeam {
 
 	setPositionsByFormation(formation: Formation): this {
 		formation.setViewSide(this.side);
-		this.players.forEach((player, index) => {
+		this.players.forEach((player, _index) => {
 			const position = formation.tryGetPositionOf(player.getNumber());
 			if (position) player.setPosition(position);
 		});

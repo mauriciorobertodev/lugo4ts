@@ -1,14 +1,11 @@
-import { IMapper, MapperObject } from "@/interfaces/mapper.js";
-
 import { Point } from "@/core/point.js";
 import { Region } from "@/core/region.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-
+import { ErrMapperColOutOfMapped, ErrMapperColsOutOfRange, ErrMapperRowOutOfMapped, ErrMapperRowsOutOfRange } from "@/errors.js";
+import type { IMapper, MapperObject } from "@/interfaces/mapper.js";
 import { clamp } from "@/utils/math.js";
 import { randomInt } from "@/utils/random.js";
-
-import { ErrMapperColOutOfMapped, ErrMapperColsOutOfRange, ErrMapperRowOutOfMapped, ErrMapperRowsOutOfRange } from "@/errors.js";
 
 export class Mapper implements IMapper {
 	private regionWidth: number;

@@ -1,20 +1,17 @@
+import { describe, expect, test } from "vitest";
+import { ErrJumpZeroDirection, ErrKickZeroDirection, ErrMoveZeroDirection, ErrPlayerNotFound, ErrTeamNotFound } from "@/errors.js";
+
+import { Catch, Jump, Kick, Move, Order } from "@/generated/server.js";
 import {
 	AWAY_GOAL,
-	Ball,
 	Compass,
+	fromGameSnapshot,
 	GameInspector,
 	GameSnapshot,
 	HOME_GOAL,
 	Mapper,
 	PlayerState,
-	Point,
 	Region,
-	SPECS,
-	ServerState,
-	ShotClock,
-	Side,
-	Vector2D,
-	fromGameSnapshot,
 	randomGameInspectorInAsGoalKeeper,
 	randomGameInspectorInOnDefending,
 	randomGameInspectorInOnDisputing,
@@ -24,26 +21,26 @@ import {
 	randomPlayer,
 	randomPoint,
 	randomTeam,
+	ServerState,
+	ShotClock,
+	Side,
+	SPECS,
+	Vector2D,
 } from "@/index.js";
-import { describe, expect, test } from "vitest";
-
-import { Catch, Jump, Kick, Move, Order } from "@/generated/server.js";
-
-import { ErrJumpZeroDirection, ErrKickZeroDirection, ErrMoveZeroDirection, ErrPlayerNotFound, ErrTeamNotFound } from "@/errors.js";
 
 import { toLugoVector } from "@/lugo.js";
 
 describe("Core/GameInspector", () => {
-	test("DEVE lançar exceção se o jogador não for encontrado", function () {
+	test("DEVE lançar exceção se o jogador não for encontrado", () => {
 		const side = Side.HOME;
-		const number = 1;
+		const _number = 1;
 
 		const homeTeam = randomTeam({ side, populate: 0 });
 
 		expect(() => new GameInspector(side, 1, homeTeam).getMe()).toThrow(ErrPlayerNotFound);
 	});
 
-	test("DEVE retornar corretamente as propriedades do game", function () {
+	test("DEVE retornar corretamente as propriedades do game", () => {
 		const playerSide = Side.HOME;
 		const playerNumber = 1;
 		const snapshot = randomGameSnapshot();
@@ -118,7 +115,7 @@ describe("Core/GameInspector", () => {
 		expect(inspector.getShotClock()).toBeNull();
 	});
 
-	test('DEVE retornar null quando o método contém "try" e não foi possível executar a ação', function () {
+	test('DEVE retornar null quando o método contém "try" e não foi possível executar a ação', () => {
 		const me = randomPlayer({ side: Side.HOME, number: 2 });
 		const inspector = fromGameSnapshot(
 			Side.HOME,
@@ -136,7 +133,7 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryGetPlayer(Side.HOME, 10)).toBeNull();
 	});
 
-	test("DEVE retornar uma ordem de movimentação para um ponto X", function () {
+	test("DEVE retornar uma ordem de movimentação para um ponto X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 		const me = inspector.getMe();
 
@@ -160,7 +157,7 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de chute para um ponto X", function () {
+	test("DEVE retornar uma ordem de chute para um ponto X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
 		const point = randomPoint();
@@ -183,7 +180,7 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de movimentação para uma direção X", function () {
+	test("DEVE retornar uma ordem de movimentação para uma direção X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
 		const direction = Compass.randomDirection();
@@ -207,7 +204,7 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de chute para uma direção X", function () {
+	test("DEVE retornar uma ordem de chute para uma direção X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
 		const direction = Compass.randomDirection();
@@ -230,7 +227,7 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de movimentação para uma região X", function () {
+	test("DEVE retornar uma ordem de movimentação para uma região X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
 		const mapper = new Mapper(10, 10);
@@ -255,7 +252,7 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de chute para uma região X", function () {
+	test("DEVE retornar uma ordem de chute para uma região X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
 		const mapper = new Mapper(10, 10);
@@ -280,7 +277,7 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de movimentação para um player X", function () {
+	test("DEVE retornar uma ordem de movimentação para um player X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
 		let otherPlayer = randomPlayer();
@@ -304,7 +301,7 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de chute para um player X", function () {
+	test("DEVE retornar uma ordem de chute para um player X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 10, randomGameSnapshot());
 
 		let otherPlayer = randomPlayer();
@@ -328,14 +325,14 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de pulo para um ponto X", function () {
+	test("DEVE retornar uma ordem de pulo para um ponto X", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
-		let point = randomPoint();
+		const point = randomPoint();
 		let order = inspector.makeOrderJumpToPoint(point);
 
-		let direction = inspector.getMyPosition().directionTo(point);
-		let upOrDown = direction.getY() > 0 ? new Vector2D(0, 1) : new Vector2D(0, -1);
+		const direction = inspector.getMyPosition().directionTo(point);
+		const upOrDown = direction.getY() > 0 ? new Vector2D(0, 1) : new Vector2D(0, -1);
 
 		expect(order).toBeTypeOf(typeof Order);
 		expect(order.action.oneofKind).toBe("jump");
@@ -353,10 +350,10 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de movimentação para um ponto X com velocidade 0", function () {
+	test("DEVE retornar uma ordem de movimentação para um ponto X com velocidade 0", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
-		let point = randomPoint();
-		let order = inspector.makeOrderLookAtPoint(point);
+		const point = randomPoint();
+		const order = inspector.makeOrderLookAtPoint(point);
 
 		expect(order).toBeTypeOf(typeof Order);
 		expect(order.action.oneofKind).toBe("move");
@@ -370,11 +367,11 @@ describe("Core/GameInspector", () => {
 		expect(() => inspector.makeOrderLookAtPoint(inspector.getMyPosition())).toThrow(ErrMoveZeroDirection);
 	});
 
-	test("DEVE retornar uma ordem de movimentação para uma direção X com velocidade 0", function () {
+	test("DEVE retornar uma ordem de movimentação para uma direção X com velocidade 0", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
-		let direction = Compass.randomDirection();
-		let order = inspector.makeOrderLookAtDirection(direction);
+		const direction = Compass.randomDirection();
+		const order = inspector.makeOrderLookAtDirection(direction);
 
 		expect(order).toBeTypeOf(typeof Order);
 		expect(order.action.oneofKind).toBe("move");
@@ -388,7 +385,7 @@ describe("Core/GameInspector", () => {
 		expect(() => inspector.makeOrderLookAtDirection(new Vector2D(0, 0))).toThrow(ErrMoveZeroDirection);
 	});
 
-	test("DEVE retornar corretamente o estado do jogador", function () {
+	test("DEVE retornar corretamente o estado do jogador", () => {
 		let inspector = randomGameInspectorInOnDefending({ playerSide: Side.HOME, playerNumber: 10 });
 		expect(inspector.getMyState()).toBe(PlayerState.DEFENDING);
 
@@ -411,10 +408,10 @@ describe("Core/GameInspector", () => {
 		expect(inspector.getMyState()).toBe(PlayerState.DISPUTING);
 	});
 
-	test("DEVE retornar uma ordem de pegar a bola", function () {
+	test("DEVE retornar uma ordem de pegar a bola", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
-		let order = inspector.makeOrderCatch();
+		const order = inspector.makeOrderCatch();
 
 		expect(order).toBeTypeOf(typeof Order);
 		expect(order.action.oneofKind).toBe("catch");
@@ -423,10 +420,10 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de movimentação para a direção atual com velocidade 0", function () {
+	test("DEVE retornar uma ordem de movimentação para a direção atual com velocidade 0", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
-		let order = inspector.makeOrderStop();
+		const order = inspector.makeOrderStop();
 
 		expect(order).toBeTypeOf(typeof Order);
 		expect(order.action.oneofKind).toBe("move");
@@ -439,13 +436,13 @@ describe("Core/GameInspector", () => {
 	});
 
 	// ##########################
-	test("DEVE retornar uma ordem de movimentação para um ponto X ou null", function () {
+	test("DEVE retornar uma ordem de movimentação para um ponto X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
 		const me = inspector.getMe();
 		const myPosition = me.getPosition();
 
-		let point = randomPoint();
+		const point = randomPoint();
 		let order = inspector.tryMakeOrderMoveToPoint(point);
 
 		expect(order).toBeTypeOf(typeof Order);
@@ -465,12 +462,12 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryMakeOrderMoveToPoint(inspector.getMyPosition())).toBeNull();
 	});
 
-	test("DEVE retornar uma ordem de chute para um ponto X ou null", function () {
+	test("DEVE retornar uma ordem de chute para um ponto X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 		const me = inspector.getMe();
-		const myPosition = me.getPosition();
+		const _myPosition = me.getPosition();
 
-		let point = randomPoint();
+		const point = randomPoint();
 		let order = inspector.tryMakeOrderKickToPoint(point);
 
 		expect(order).toBeTypeOf(typeof Order);
@@ -489,10 +486,10 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryMakeOrderKickToPoint(inspector.getBallPosition())).toBeNull();
 	});
 
-	test("DEVE retornar uma ordem de movimentação para uma direção X ou null", function () {
+	test("DEVE retornar uma ordem de movimentação para uma direção X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
-		let direction = Compass.randomDirection();
+		const direction = Compass.randomDirection();
 		let order = inspector.tryMakeOrderMoveToDirection(direction);
 
 		expect(order).toBeTypeOf(typeof Order);
@@ -512,10 +509,10 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryMakeOrderMoveToDirection(new Vector2D(0, 0))).toBeNull();
 	});
 
-	test("DEVE retornar uma ordem de chute para uma direção X ou null", function () {
+	test("DEVE retornar uma ordem de chute para uma direção X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
-		let direction = Compass.randomDirection();
+		const direction = Compass.randomDirection();
 		let order = inspector.tryMakeOrderKickToDirection(direction);
 
 		expect(order).toBeTypeOf(typeof Order);
@@ -535,13 +532,13 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryMakeOrderKickToDirection(new Vector2D(0, 0))).toBeNull();
 	});
 
-	test("DEVE retornar uma ordem de movimentação para uma região X ou null", function () {
+	test("DEVE retornar uma ordem de movimentação para uma região X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
 		const me = inspector.getMe();
 		const myPosition = me.getPosition();
 
-		let mapper = new Mapper(10, 10);
+		const mapper = new Mapper(10, 10);
 		let region = mapper.getRandomRegion();
 
 		let order = inspector.tryMakeOrderMoveToRegion(region);
@@ -564,12 +561,12 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryMakeOrderMoveToRegion(region)).toBeNull();
 	});
 
-	test("DEVE retornar uma ordem de chute para uma região X ou null", function () {
+	test("DEVE retornar uma ordem de chute para uma região X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 		const me = inspector.getMe();
-		const myPosition = me.getPosition();
+		const _myPosition = me.getPosition();
 
-		let mapper = new Mapper(10, 10);
+		const mapper = new Mapper(10, 10);
 		let region = mapper.getRandomRegion();
 
 		let order = inspector.tryMakeOrderKickToRegion(region);
@@ -592,7 +589,7 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryMakeOrderKickToRegion(region)).toBeNull();
 	});
 
-	test("DEVE retornar uma ordem de movimentação para um player X ou null", function () {
+	test("DEVE retornar uma ordem de movimentação para um player X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 		const me = inspector.getMe();
 		const myPosition = me.getPosition();
@@ -617,7 +614,7 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de chute para um player X ou null", function () {
+	test("DEVE retornar uma ordem de chute para um player X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
 		let otherPlayer = randomPlayer();
@@ -640,14 +637,14 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de pulo para um ponto X ou null", function () {
+	test("DEVE retornar uma ordem de pulo para um ponto X ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
-		let point = randomPoint();
+		const point = randomPoint();
 		let order = inspector.tryMakeOrderJumpToPoint(point);
 
-		let direction = inspector.getMyPosition().directionTo(point);
-		let upOrDown = direction.getY() > 0 ? new Vector2D(0, 1) : new Vector2D(0, -1);
+		const direction = inspector.getMyPosition().directionTo(point);
+		const upOrDown = direction.getY() > 0 ? new Vector2D(0, 1) : new Vector2D(0, -1);
 
 		expect(order).toBeTypeOf(typeof Order);
 		expect(order?.action.oneofKind).toBe("jump");
@@ -667,10 +664,10 @@ describe("Core/GameInspector", () => {
 		}
 	});
 
-	test("DEVE retornar uma ordem de movimentação para um ponto X com velocidade 0 ou null", function () {
+	test("DEVE retornar uma ordem de movimentação para um ponto X com velocidade 0 ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
-		let point = randomPoint();
-		let order = inspector.tryMakeOrderLookAtPoint(point);
+		const point = randomPoint();
+		const order = inspector.tryMakeOrderLookAtPoint(point);
 
 		expect(order).toBeTypeOf(typeof Order);
 		expect(order?.action.oneofKind).toBe("move");
@@ -684,11 +681,11 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryMakeOrderLookAtPoint(inspector.getMyPosition())).toBeNull();
 	});
 
-	test("DEVE retornar uma ordem de movimentação para uma direção X com velocidade 0 ou null", function () {
+	test("DEVE retornar uma ordem de movimentação para uma direção X com velocidade 0 ou null", () => {
 		const inspector = fromGameSnapshot(Side.HOME, 11, randomGameSnapshot());
 
-		let direction = Compass.randomDirection();
-		let order = inspector.tryMakeOrderLookAtDirection(direction);
+		const direction = Compass.randomDirection();
+		const order = inspector.tryMakeOrderLookAtDirection(direction);
 
 		expect(order).toBeTypeOf(typeof Order);
 		expect(order?.action.oneofKind).toBe("move");
@@ -702,7 +699,7 @@ describe("Core/GameInspector", () => {
 		expect(inspector.tryMakeOrderLookAtDirection(new Vector2D(0, 0))).toBeNull();
 	});
 
-	test("DEVE lançar um erro quando tentar pegar um team que não existe", function () {
+	test("DEVE lançar um erro quando tentar pegar um team que não existe", () => {
 		const snapshot = new GameSnapshot(ServerState.LISTENING, 0);
 		expect(() => fromGameSnapshot(Side.HOME, 11, snapshot)).toThrow(ErrTeamNotFound);
 		expect(() => fromGameSnapshot(Side.AWAY, 11, snapshot)).toThrow(ErrTeamNotFound);

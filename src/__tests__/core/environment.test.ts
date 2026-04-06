@@ -1,5 +1,5 @@
-import { Environment, Formation, Player, Point, Side, Team, Vector2D, Velocity, randomPlayer, randomTeam, zeroedBall } from "@/index.js";
 import { beforeEach, describe, expect, test } from "vitest";
+import { Environment, Formation, Point, randomPlayer, randomTeam, Side, Vector2D, Velocity, zeroedBall } from "@/index.js";
 
 describe("Core/Environment", () => {
 	let env: Environment;

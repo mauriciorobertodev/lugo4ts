@@ -1,10 +1,9 @@
-import { PointObject } from "@/interfaces/positionable.js";
-
-import { AWAY_GOAL, Goal, HOME_GOAL } from "@/core/goal.js";
+import { AWAY_GOAL, type Goal, HOME_GOAL } from "@/core/goal.js";
 import { Point } from "@/core/point.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 import { Vector2D } from "@/core/vector.js";
+import type { PointObject } from "@/interfaces/positionable.js";
 
 import { fieldCenterPoint } from "@/utils/field.js";
 import { randomInt } from "@/utils/random.js";

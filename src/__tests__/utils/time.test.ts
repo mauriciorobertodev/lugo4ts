@@ -1,5 +1,5 @@
-import { sleep } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { sleep } from "@/index.js";
 
 describe("Utils/Time", () => {
 	test("DEVE aguardar pelo tempo especificado", async () => {

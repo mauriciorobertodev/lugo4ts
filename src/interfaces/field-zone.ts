@@ -1,8 +1,7 @@
-import { FormationObject, IFormation } from "@/interfaces/formation.js";
-import { MapperObject } from "@/interfaces/mapper.js";
-import { IPlayer, PlayerNumber } from "@/interfaces/player.js";
-import { IPoint } from "@/interfaces/positionable.js";
-import { IRegion } from "@/interfaces/region.js";
+import type { FormationObject, IFormation } from "@/interfaces/formation.js";
+import type { IPlayer } from "@/interfaces/player.js";
+import type { IPoint } from "@/interfaces/positionable.js";
+import type { IRegion } from "@/interfaces/region.js";
 
 export interface IFieldZone {
 	getId(): string;

@@ -1,8 +1,8 @@
-import { GymSession, IGymTrainer } from "@/gym.js";
 import { BotTrainer } from "@/gym/bot-trainer.js";
-import { GameInspector, PlayerState, logger } from "@/index.js";
+import type { GymSession } from "@/gym.js";
+import type { GameInspector } from "@/index.js";
 
-import { IBot } from "@/interfaces/bot.js";
+import type { IBot } from "@/interfaces/bot.js";
 
 import { MyBot } from "../bot.js";
 
@@ -22,7 +22,7 @@ export class BotGoalkeeperTrainer extends BotTrainer {
 
 	async evaluate(prev: GameInspector, curr: GameInspector): Promise<{ reward: number; done: boolean }> {
 		const holder = curr.getBallHolder();
-		if (holder && holder.is(curr.getMe())) {
+		if (holder?.is(curr.getMe())) {
 			// Pegou => termina o episódio com grande recompensa
 			return { reward: 1.0, done: true };
 		}

@@ -1,13 +1,13 @@
-import { Order } from "@/generated/server.js";
+import type { Order } from "@/generated/server.js";
 
-import { IBot } from "@/interfaces/bot.js";
-import { IGameInspector } from "@/interfaces/game-inspector.js";
-import { PlayerState } from "@/interfaces/player.js";
+import type { IBot } from "@/interfaces/bot.js";
+import type { IGameInspector } from "@/interfaces/game-inspector.js";
+import type { PlayerState } from "@/interfaces/player.js";
 
 export class DummyChaser implements IBot {
-	beforeActions(inspector: IGameInspector): void {}
-	afterActions(inspector: IGameInspector): void {}
-	onReady(inspector: IGameInspector): void {}
+	beforeActions(_inspector: IGameInspector): void {}
+	afterActions(_inspector: IGameInspector): void {}
+	onReady(_inspector: IGameInspector): void {}
 
 	onHolding(inspector: IGameInspector): Order[] {
 		return this.chaseBall(inspector);
@@ -25,7 +25,7 @@ export class DummyChaser implements IBot {
 		return this.chaseBall(inspector);
 	}
 
-	asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
+	asGoalkeeper(inspector: IGameInspector, _state: PlayerState): Order[] {
 		return this.chaseBall(inspector);
 	}
 

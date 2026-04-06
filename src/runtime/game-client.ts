@@ -1,29 +1,23 @@
 import { credentials } from "@grpc/grpc-js";
 import { GrpcTransport } from "@protobuf-ts/grpc-transport";
-
+import type { GameInspector } from "@/core/game-inspector.js";
+import type { Point } from "@/core/point.js";
+import type { Side } from "@/core/side.js";
 import { GameClient as LugoGameClient } from "@/generated/server.client.js";
-import { GameSnapshot, GameSnapshot_State, Order, OrderSet } from "@/generated/server.js";
-
-import { IBot } from "@/interfaces/bot.js";
-import { IGameClient } from "@/interfaces/game-client.js";
+import { type GameSnapshot, GameSnapshot_State, type Order, OrderSet } from "@/generated/server.js";
+import type { IBot } from "@/interfaces/bot.js";
+import type { IGameClient } from "@/interfaces/game-client.js";
 import { PlayerState } from "@/interfaces/player.js";
-
-import { GameInspector } from "@/core/game-inspector.js";
-import { Point } from "@/core/point.js";
-import { Side } from "@/core/side.js";
-
+import { fromLugoGameSnapshot, toLugoPoint } from "@/lugo.js";
 import { fromGameSnapshot } from "@/utils/game-inspector.js";
 import { logger } from "@/utils/logger.js";
 import { sideToInt } from "@/utils/side.js";
 
-import { fromLugoGameSnapshot, toLugoPoint } from "@/lugo.js";
-
-type KnownErrorCode =
-	| "ALREADY_EXISTS" // Mesma conexão grpc tentando se conectar novamente
-	| "UNAVAILABLE"; // Servidor indisponível
+// type KnownErrorCode =
+// 	| "ALREADY_EXISTS" // Mesma conexão grpc tentando se conectar novamente
+// 	| "UNAVAILABLE"; // Servidor indisponível
 
 export class GameClient implements IGameClient {
-	private isConnected = false;
 	private client?: LugoGameClient;
 
 	constructor(
@@ -66,7 +60,7 @@ export class GameClient implements IGameClient {
 
 		const startTimeout = setTimeout(() => this.playing(onJoin), 100);
 
-		stream.responses.onError((error: Error & { code?: string }) => {
+		stream.responses.onError((_error: Error & { code?: string }) => {
 			logger.error(
 				`[CLIENT] Erro na conexão com servidor do jogo, no lado ${this.side} e número ${this.number} com posição inicial ${this.initPosition.toString()}`,
 			);
@@ -241,7 +235,6 @@ export class GameClient implements IGameClient {
 	}
 
 	private playing(onJoin?: () => void): void {
-		this.isConnected = true;
 		logger.debug(`[CLIENT] Conectado ao jogo do lado ${this.side} com o número ${this.number}. Aguardando inicio do jogo...`);
 
 		onJoin?.();

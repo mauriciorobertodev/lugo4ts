@@ -1,9 +1,7 @@
-import { FormationType } from "@/interfaces/formation.js";
-
 import { Formation } from "@/core/formation.js";
 import { Point } from "@/core/point.js";
-import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
+import { FormationType } from "@/interfaces/formation.js";
 
 import { lerp } from "@/utils/math.js";
 

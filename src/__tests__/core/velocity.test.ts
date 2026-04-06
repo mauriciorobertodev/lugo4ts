@@ -1,21 +1,21 @@
-import { Vector2D, Velocity, zeroedVelocity } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { Vector2D, Velocity, zeroedVelocity } from "@/index.js";
 
 describe("Core/Velocity", () => {
-	test("DEVE retornar uma velocity zerada", function () {
+	test("DEVE retornar uma velocity zerada", () => {
 		const velocity = zeroedVelocity();
 
 		expect(velocity.getDirection().is(new Vector2D(0, 0))).toBe(true);
 	});
 
-	test("DEVE retornar direção e velocidade ao ser usado em uma string", function () {
+	test("DEVE retornar direção e velocidade ao ser usado em uma string", () => {
 		const velocity = new Velocity(new Vector2D(555.5, 666.6), 222);
 		const string = velocity.toString();
 
 		expect(string).toBe("[555.5, 666.6, 222]");
 	});
 
-	test("DEVE definir a direção e velocidade", function () {
+	test("DEVE definir a direção e velocidade", () => {
 		const velocity = zeroedVelocity();
 
 		expect(velocity.getDirection()).toEqual(new Vector2D(0, 0));

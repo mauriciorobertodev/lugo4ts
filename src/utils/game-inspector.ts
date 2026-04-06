@@ -1,20 +1,16 @@
-import { GameInspectorObject } from "@/interfaces/game-inspector.js";
-import { GameSnapshotObject } from "@/interfaces/game-snapshot.js";
-import { PlayerState } from "@/interfaces/player.js";
-
 import { GameInspector } from "@/core/game-inspector.js";
-import { GameSnapshot } from "@/core/game-snapshot.js";
+import type { GameSnapshot } from "@/core/game-snapshot.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-
+import { ErrGameInvalidPlayerState } from "@/errors.js";
+import type { GameInspectorObject } from "@/interfaces/game-inspector.js";
+import { PlayerState } from "@/interfaces/player.js";
 import { fromBallObject, randomBall } from "@/utils/ball.js";
 import { randomPlayerState } from "@/utils/player.js";
 import { randomInt } from "@/utils/random.js";
 import { fromShotClockObject, randomShotClock } from "@/utils/shot-clock.js";
 import { randomSide } from "@/utils/side.js";
 import { fromTeamObject, randomTeam } from "@/utils/team.js";
-
-import { ErrGameInvalidPlayerState } from "@/errors.js";
 
 // ------------------------------------------------------------
 // Converters

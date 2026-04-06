@@ -1,5 +1,5 @@
-import { Player, PlayerState, SPECS, Side, isValidPlayerNumber, randomPlayer, randomPlayerState, zeroedPlayer } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { isValidPlayerNumber, Player, PlayerState, randomPlayer, randomPlayerState, Side, SPECS, zeroedPlayer } from "@/index.js";
 
 describe("Utils/Player", () => {
 	describe("Factories", () => {

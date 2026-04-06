@@ -1,10 +1,9 @@
-import { GameSnapshotObject, ServerState } from "@/interfaces/game-snapshot.js";
-
-import { Ball } from "@/core/ball.js";
+import type { Ball } from "@/core/ball.js";
 import { GameSnapshot } from "@/core/game-snapshot.js";
-import { ShotClock } from "@/core/shot-clock.js";
+import type { ShotClock } from "@/core/shot-clock.js";
 import { Side } from "@/core/side.js";
-import { Team } from "@/core/team.js";
+import type { Team } from "@/core/team.js";
+import { type GameSnapshotObject, ServerState } from "@/interfaces/game-snapshot.js";
 
 import { fromBallObject, randomBall } from "@/utils/ball.js";
 import { fromTeamObject, randomTeam } from "@/utils/team.js";

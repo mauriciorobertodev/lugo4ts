@@ -1,9 +1,8 @@
-import { GymSession, IGymTrainer } from "@/gym.js";
-import { GameInspector, SPECS } from "@/index.js";
+import * as fs from "node:fs";
 import * as tf from "@tensorflow/tfjs-node";
-import * as fs from "fs";
-
-import { Order } from "@/generated/server.js";
+import type { Order } from "@/generated/server.js";
+import type { GymSession, IGymTrainer } from "@/gym.js";
+import { type GameInspector, SPECS } from "@/index.js";
 
 // ──────────────────────────────────────────────────────────────
 // Tipos
@@ -43,13 +42,11 @@ export class RLGoalkeeperTrainer implements IGymTrainer<State, Action> {
 	private readonly MODEL_DIR = "./models/gk-catcher";
 	private readonly TARGET_DIR = "./models/gk-catcher-target";
 
-	constructor() {}
-
 	/** Deve ser chamado uma vez antes de treinar ou prever */
 	async init() {
-		if (fs.existsSync(this.MODEL_DIR + "/model.json")) {
-			this.model = await tf.loadLayersModel("file://" + this.MODEL_DIR + "/model.json");
-			this.target = await tf.loadLayersModel("file://" + this.TARGET_DIR + "/model.json");
+		if (fs.existsSync(`${this.MODEL_DIR}/model.json`)) {
+			this.model = await tf.loadLayersModel(`file://${this.MODEL_DIR}/model.json`);
+			this.target = await tf.loadLayersModel(`file://${this.TARGET_DIR}/model.json`);
 			console.log("Modelos carregados do disco.");
 
 			// precisa recompilar!
@@ -132,7 +129,7 @@ export class RLGoalkeeperTrainer implements IGymTrainer<State, Action> {
 		// 1. Recompensa máxima: pegou a bola
 		// ──────────────────────────────────────────────────────────
 		const holder = curr.getBallHolder();
-		if (holder && holder.is(curr.getMe())) {
+		if (holder?.is(curr.getMe())) {
 			// Pegou => termina o episódio com grande recompensa
 			return { reward: 1.0, done: true };
 		}
@@ -259,8 +256,8 @@ export class RLGoalkeeperTrainer implements IGymTrainer<State, Action> {
 		if (!fs.existsSync(this.MODEL_DIR)) fs.mkdirSync(this.MODEL_DIR, { recursive: true });
 		if (!fs.existsSync(this.TARGET_DIR)) fs.mkdirSync(this.TARGET_DIR, { recursive: true });
 
-		await this.model.save("file://" + this.MODEL_DIR);
-		await this.target.save("file://" + this.TARGET_DIR);
+		await this.model.save(`file://${this.MODEL_DIR}`);
+		await this.target.save(`file://${this.TARGET_DIR}`);
 		console.log("[DQN] Modelos salvos em disco.");
 	}
 }

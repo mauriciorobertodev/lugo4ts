@@ -1,10 +1,9 @@
-import { BallObject } from "@/interfaces/ball.js";
-
 import { Ball } from "@/core/ball.js";
-import { Player } from "@/core/player.js";
-import { Point } from "@/core/point.js";
+import type { Player } from "@/core/player.js";
+import type { Point } from "@/core/point.js";
 import { SPECS } from "@/core/specs.js";
-import { Vector2D } from "@/core/vector.js";
+import type { Vector2D } from "@/core/vector.js";
+import type { BallObject } from "@/interfaces/ball.js";
 
 import { fieldCenterPoint } from "@/utils/field.js";
 import { fromPlayerObject } from "@/utils/player.js";

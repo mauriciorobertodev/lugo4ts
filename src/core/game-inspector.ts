@@ -1,21 +1,18 @@
-import { Catch, Jump, Kick, Move, Order } from "@/generated/server.js";
-
-import { GameInspectorObject, IGameInspector } from "@/interfaces/game-inspector.js";
-import { PlayerState } from "@/interfaces/player.js";
-
-import { Ball } from "@/core/ball.js";
-import { AWAY_GOAL, Goal, HOME_GOAL } from "@/core/goal.js";
-import { Player } from "@/core/player.js";
-import { Point } from "@/core/point.js";
-import { Region } from "@/core/region.js";
-import { ShotClock } from "@/core/shot-clock.js";
+import type { Ball } from "@/core/ball.js";
+import { AWAY_GOAL, type Goal, HOME_GOAL } from "@/core/goal.js";
+import type { Player } from "@/core/player.js";
+import type { Point } from "@/core/point.js";
+import type { Region } from "@/core/region.js";
+import type { ShotClock } from "@/core/shot-clock.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-import { Team } from "@/core/team.js";
+import type { Team } from "@/core/team.js";
 import { Vector2D } from "@/core/vector.js";
 import { Velocity } from "@/core/velocity.js";
-
 import { ErrBallNotFound, ErrJumpZeroDirection, ErrKickZeroDirection, ErrMoveZeroDirection, ErrPlayerNotFound, ErrTeamNotFound } from "@/errors.js";
+import { Catch, Jump, Kick, Move, Order } from "@/generated/server.js";
+import type { GameInspectorObject, IGameInspector } from "@/interfaces/game-inspector.js";
+import { PlayerState } from "@/interfaces/player.js";
 
 import { toLugoVelocity } from "@/lugo.js";
 

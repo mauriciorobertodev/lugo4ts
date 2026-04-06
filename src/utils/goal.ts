@@ -1,7 +1,6 @@
-import { GoalObject } from "@/interfaces/goal.js";
-
-import { AWAY_GOAL, Goal, HOME_GOAL } from "@/core/goal.js";
+import { AWAY_GOAL, type Goal, HOME_GOAL } from "@/core/goal.js";
 import { Side } from "@/core/side.js";
+import type { GoalObject } from "@/interfaces/goal.js";
 
 // ------------------------------------------------------------
 // Converters

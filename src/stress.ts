@@ -1,14 +1,11 @@
+import { performance } from "node:perf_hooks";
 import chalk from "chalk";
-import { performance } from "perf_hooks";
-
-import { Order } from "@/generated/server.js";
-
-import { IBot } from "@/interfaces/bot.js";
-import { PlayerState } from "@/interfaces/player.js";
-
-import { GameInspector } from "@/core/game-inspector.js";
+import type { GameInspector } from "@/core/game-inspector.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
+import type { Order } from "@/generated/server.js";
+import type { IBot } from "@/interfaces/bot.js";
+import { PlayerState } from "@/interfaces/player.js";
 
 import { randomGameInspector } from "@/utils/game-inspector.js";
 
@@ -123,7 +120,7 @@ export class BotPerformanceTester {
 				const end = performance.now();
 				times.push(end - start);
 
-				console.log(chalk.gray(`   ➤ Execução [${i + 1}/${test.times}] levou ${chalk.green((end - start).toFixed(2) + "ms")}`));
+				console.log(chalk.gray(`   ➤ Execução [${i + 1}/${test.times}] levou ${chalk.green(`${(end - start).toFixed(2)}ms`)}`));
 			}
 
 			const totalTime = times.reduce((a, b) => a + b, 0);

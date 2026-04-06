@@ -1,9 +1,8 @@
+import type { Side } from "@/core/side.js";
 import type { IPlayer } from "@/interfaces/player.js";
 import type { IPoint, PointObject } from "@/interfaces/positionable.js";
 
-import { Side } from "@/core/side.js";
-
-import { MapperObject } from "./mapper.js";
+import type { MapperObject } from "./mapper.js";
 
 export interface IRegion {
 	eq(region: IRegion): boolean;

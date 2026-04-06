@@ -1,12 +1,9 @@
-import { FormationObject, FormationType, IFormation } from "@/interfaces/formation.js";
-
 import { Mapper } from "@/core/mapper.js";
 import { Point } from "@/core/point.js";
 import { Side } from "@/core/side.js";
-
-import { randomUUID } from "@/utils/random.js";
-
 import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } from "@/errors.js";
+import { type FormationObject, FormationType, type IFormation } from "@/interfaces/formation.js";
+import { randomUUID } from "@/utils/random.js";
 
 export type FormationPositions = Record<number, Point>;
 
@@ -42,7 +39,7 @@ export class Formation implements IFormation {
 	}
 
 	hasPositionOf(playerNumber: number): boolean {
-		return this.positions.hasOwnProperty(playerNumber);
+		return Object.hasOwn(this.positions, playerNumber);
 	}
 
 	getName(): string {

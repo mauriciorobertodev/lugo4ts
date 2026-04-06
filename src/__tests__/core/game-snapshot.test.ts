@@ -1,5 +1,5 @@
-import { GameSnapshot, SPECS, ServerState, Side, randomBall, randomShotClock, randomTeam } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { GameSnapshot, randomBall, randomShotClock, randomTeam, ServerState, Side, SPECS } from "@/index.js";
 
 describe("Core/GameSnapshot", () => {
 	test("Getters e Setters", () => {

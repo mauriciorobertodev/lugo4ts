@@ -1,5 +1,5 @@
-import { Point, SPECS, fieldCenterPoint, isValidInsideFieldPoint } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { fieldCenterPoint, isValidInsideFieldPoint, Point, SPECS } from "@/index.js";
 
 describe("Utils/Field", () => {
 	test("DEVE criar um novo Point representando o centro do campo", () => {

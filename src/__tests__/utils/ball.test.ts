@@ -1,5 +1,5 @@
-import { Ball, SPECS, randomBall, zeroedBall } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { Ball, randomBall, SPECS, zeroedBall } from "@/index.js";
 
 describe("Utils/Ball", () => {
 	describe("Factories", () => {

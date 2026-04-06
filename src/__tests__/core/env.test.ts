@@ -1,8 +1,7 @@
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import { ErrBotInvalidNumber, ErrEnvNeedToken } from "@/errors.js";
 import { Side } from "@/index.js";
 import { Env } from "@/runtime.js";
-import { afterEach, beforeEach, describe, expect, test } from "vitest";
-
-import { ErrBotInvalidNumber, ErrEnvNeedToken } from "@/errors.js";
 
 describe("Core/Env", () => {
 	beforeEach(() => {
@@ -38,7 +37,7 @@ describe("Core/Env", () => {
 	test("DEVE definir as propriedades padrões e erro nas que não existem um padrão", () => {
 		process.env.BOT_GRPC_URL = "";
 		process.env.BOT_GRPC_INSECURE = "";
-		let env = new Env();
+		const env = new Env();
 		expect(env.getGrpcUrl()).toBe("localhost:5000");
 		expect(env.getGrpcInsecure()).toBe(true);
 

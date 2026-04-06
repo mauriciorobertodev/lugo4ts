@@ -1,19 +1,4 @@
-import {
-	Ball,
-	Velocity as CoreVelocity,
-	GameSnapshot,
-	Player,
-	Point,
-	ServerState,
-	ShotClock,
-	Side,
-	Team,
-	Vector2D,
-	randomPoint,
-	randomVector2D,
-} from "@/index.js";
 import { expect, test } from "vitest";
-
 import { Point as LugoPoint, Vector as LugoVector, Velocity } from "@/generated/physics.js";
 import {
 	GameSnapshot_State,
@@ -24,6 +9,7 @@ import {
 	Team as LugoTeam,
 	Team_Side,
 } from "@/generated/server.js";
+import { Point, randomPoint, randomVector2D, ServerState, Side, Vector2D } from "@/index.js";
 
 import {
 	fromLugoBall,
@@ -48,7 +34,7 @@ import {
 
 test("DEVE criar um novo Point com base em um LugoPoint e ter os mesmos dados", () => {
 	const lp = toLugoPoint(randomPoint());
-	const lv = toLugoVector(randomVector2D());
+	const _lv = toLugoVector(randomVector2D());
 
 	let pos1 = fromLugoPoint(lp);
 
@@ -220,7 +206,7 @@ test("fromLugoGameState e toLugoGameState", () => {
 	expect(fromLugoGameState(GameSnapshot_State.PLAYING)).toBe(ServerState.PLAYING);
 	expect(fromLugoGameState(GameSnapshot_State.SHIFTING)).toBe(ServerState.SHIFTING);
 	expect(fromLugoGameState(GameSnapshot_State.OVER)).toBe(ServerState.OVER);
-	expect(() => fromLugoGameState(999 as any)).toThrow();
+	expect(() => fromLugoGameState(999 as GameSnapshot_State)).toThrow();
 
 	expect(toLugoGameState(ServerState.WAITING)).toBe(GameSnapshot_State.WAITING);
 	expect(toLugoGameState(ServerState.READY)).toBe(GameSnapshot_State.GET_READY);
@@ -228,7 +214,7 @@ test("fromLugoGameState e toLugoGameState", () => {
 	expect(toLugoGameState(ServerState.PLAYING)).toBe(GameSnapshot_State.PLAYING);
 	expect(toLugoGameState(ServerState.SHIFTING)).toBe(GameSnapshot_State.SHIFTING);
 	expect(toLugoGameState(ServerState.OVER)).toBe(GameSnapshot_State.OVER);
-	expect(() => toLugoGameState("INVALID" as any)).toThrow();
+	expect(() => toLugoGameState("INVALID" as ServerState)).toThrow();
 });
 
 test("fromLugoGameSnapshot e toLugoGameSnapshot", () => {

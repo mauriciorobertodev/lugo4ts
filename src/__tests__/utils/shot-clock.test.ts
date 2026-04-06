@@ -1,5 +1,5 @@
-import { SPECS, ShotClock, Side, randomShotClock, zeroedShotClock } from "@/index.js";
 import { describe, expect, test } from "vitest";
+import { randomShotClock, ShotClock, Side, SPECS, zeroedShotClock } from "@/index.js";
 
 describe("Utils/ShotClock", () => {
 	describe("Factories", () => {

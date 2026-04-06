@@ -35,8 +35,6 @@ export interface IVector2D extends IPositionable {
 	eq(positionable: IVector2D): boolean;
 	is(positionable: IVector2D): boolean;
 
-	clone(): IVector2D;
-
 	normalized(): IVector2D;
 
 	added(value: IPositionable | number): IVector2D;
@@ -54,8 +52,6 @@ export interface IVector2D extends IPositionable {
 export interface IPoint extends IPositionable {
 	eq(positionable: IPoint): boolean;
 	is(positionable: IPoint): boolean;
-
-	clone(): IPoint;
 
 	directionTo(to: IPoint): IVector2D;
 

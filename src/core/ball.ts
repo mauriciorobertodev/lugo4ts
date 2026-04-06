@@ -1,11 +1,10 @@
-import { BallObject, IBall } from "@/interfaces/ball.js";
-
-import { Player } from "@/core/player.js";
+import type { Player } from "@/core/player.js";
 import { Point } from "@/core/point.js";
-import { Region } from "@/core/region.js";
+import type { Region } from "@/core/region.js";
 import { SPECS } from "@/core/specs.js";
-import { Vector2D } from "@/core/vector.js";
-import { Velocity } from "@/core/velocity.js";
+import type { Vector2D } from "@/core/vector.js";
+import type { Velocity } from "@/core/velocity.js";
+import type { BallObject, IBall } from "@/interfaces/ball.js";
 
 import { zeroedVelocity } from "@/utils/velocity.js";
 

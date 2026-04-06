@@ -1,13 +1,12 @@
-import { GameSnapshotObject, IGameSnapshot, ServerState } from "@/interfaces/game-snapshot.js";
-
-import { Ball } from "@/core/ball.js";
-import { Player } from "@/core/player.js";
-import { Point } from "@/core/point.js";
-import { ShotClock } from "@/core/shot-clock.js";
+import type { Ball } from "@/core/ball.js";
+import type { Player } from "@/core/player.js";
+import type { Point } from "@/core/point.js";
+import type { ShotClock } from "@/core/shot-clock.js";
 import { SPECS } from "@/core/specs.js";
-import { Team } from "@/core/team.js";
-import { Vector2D } from "@/core/vector.js";
-import { Velocity } from "@/core/velocity.js";
+import type { Team } from "@/core/team.js";
+import type { Vector2D } from "@/core/vector.js";
+import type { Velocity } from "@/core/velocity.js";
+import type { GameSnapshotObject, IGameSnapshot, ServerState } from "@/interfaces/game-snapshot.js";
 
 export class GameSnapshot implements IGameSnapshot {
 	constructor(

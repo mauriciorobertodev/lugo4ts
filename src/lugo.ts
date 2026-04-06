@@ -1,22 +1,3 @@
-import { Point as LugoPoint, Vector as LugoVector, Velocity as LugoVelocity } from "@/generated/physics.js";
-import {
-	GameSnapshot_State,
-	Ball as LugoBall,
-	GameSnapshot as LugoGameSnapshot,
-	Player as LugoPlayer,
-	ShotClock as LugoShotClock,
-	Team as LugoTeam,
-	Team_Side,
-} from "@/generated/server.js";
-
-import { IBall } from "@/interfaces/ball.js";
-import { IGameSnapshot, ServerState } from "@/interfaces/game-snapshot.js";
-import { IPlayer } from "@/interfaces/player.js";
-import { IPoint, IVector2D } from "@/interfaces/positionable.js";
-import { IShotClock } from "@/interfaces/shot-clock.js";
-import { ITeam } from "@/interfaces/team.js";
-import { IVelocity } from "@/interfaces/velocity.js";
-
 import { Ball } from "@/core/ball.js";
 import { GameSnapshot } from "@/core/game-snapshot.js";
 import { Player } from "@/core/player.js";
@@ -27,6 +8,23 @@ import { SPECS } from "@/core/specs.js";
 import { Team } from "@/core/team.js";
 import { Vector2D } from "@/core/vector.js";
 import { Velocity } from "@/core/velocity.js";
+import { Point as LugoPoint, Vector as LugoVector, Velocity as LugoVelocity } from "@/generated/physics.js";
+import {
+	GameSnapshot_State,
+	Ball as LugoBall,
+	GameSnapshot as LugoGameSnapshot,
+	Player as LugoPlayer,
+	ShotClock as LugoShotClock,
+	Team as LugoTeam,
+	Team_Side,
+} from "@/generated/server.js";
+import type { IBall } from "@/interfaces/ball.js";
+import { type IGameSnapshot, ServerState } from "@/interfaces/game-snapshot.js";
+import type { IPlayer } from "@/interfaces/player.js";
+import type { IPoint, IVector2D } from "@/interfaces/positionable.js";
+import type { IShotClock } from "@/interfaces/shot-clock.js";
+import type { ITeam } from "@/interfaces/team.js";
+import type { IVelocity } from "@/interfaces/velocity.js";
 
 import { intToSide, sideToInt } from "@/utils/side.js";
 import { zeroedVelocity } from "@/utils/velocity.js";

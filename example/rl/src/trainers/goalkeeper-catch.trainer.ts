@@ -1,11 +1,11 @@
+import * as fs from "node:fs";
 import * as tf from "@tensorflow/tfjs-node";
-import * as fs from "fs";
 
-import { Order, OrderSet } from "../../../../src/generated/server.js";
-import { TrainingSession } from "../../../../src/gym/session.js";
+import { type Order, OrderSet } from "../../../../src/generated/server.js";
+import type { TrainingSession } from "../../../../src/gym/session.js";
 import { SPECS } from "../../../../src/index.js";
-import { IGameInspector } from "../../../../src/interfaces/game-inspector.js";
-import { IBotTrainer } from "../../../../src/rl/trainer.js";
+import type { IGameInspector } from "../../../../src/interfaces/game-inspector.js";
+import type { IBotTrainer } from "../../../../src/rl/trainer.js";
 
 // ──────────────────────────────────────────────────────────────
 // Tipos
@@ -45,13 +45,11 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 	private readonly MODEL_DIR = "./models/gk-catcher";
 	private readonly TARGET_DIR = "./models/gk-catcher-target";
 
-	constructor() {}
-
 	/** Deve ser chamado uma vez antes de treinar ou prever */
 	async init() {
-		if (fs.existsSync(this.MODEL_DIR + "/model.json")) {
-			this.model = await tf.loadLayersModel("file://" + this.MODEL_DIR + "/model.json");
-			this.target = await tf.loadLayersModel("file://" + this.TARGET_DIR + "/model.json");
+		if (fs.existsSync(`${this.MODEL_DIR}/model.json`)) {
+			this.model = await tf.loadLayersModel(`file://${this.MODEL_DIR}/model.json`);
+			this.target = await tf.loadLayersModel(`file://${this.TARGET_DIR}/model.json`);
 			console.log("Modelos carregados do disco.");
 
 			// precisa recompilar!
@@ -136,7 +134,7 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 		// 1. Recompensa máxima: pegou a bola
 		// ──────────────────────────────────────────────────────────
 		const holder = curr.getBallHolder();
-		if (holder && holder.is(curr.getMe())) {
+		if (holder?.is(curr.getMe())) {
 			// Pegou => termina o episódio com grande recompensa
 			return { reward: 1.0, done: true };
 		}
@@ -263,8 +261,8 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 		if (!fs.existsSync(this.MODEL_DIR)) fs.mkdirSync(this.MODEL_DIR, { recursive: true });
 		if (!fs.existsSync(this.TARGET_DIR)) fs.mkdirSync(this.TARGET_DIR, { recursive: true });
 
-		await this.model.save("file://" + this.MODEL_DIR);
-		await this.target.save("file://" + this.TARGET_DIR);
+		await this.model.save(`file://${this.MODEL_DIR}`);
+		await this.target.save(`file://${this.TARGET_DIR}`);
 		console.log("[DQN] Modelos salvos em disco.");
 	}
 }

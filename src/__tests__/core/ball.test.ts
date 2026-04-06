@@ -1,5 +1,5 @@
-import { Ball, Mapper, Player, Point, SPECS, Side, Vector2D, Velocity, randomBall, randomPlayer, randomPoint, zeroedBall } from "@/index.js";
 import { beforeEach, describe, expect, test } from "vitest";
+import { Ball, Mapper, Player, Point, randomBall, randomPlayer, randomPoint, Side, SPECS, Vector2D, Velocity, zeroedBall } from "@/index.js";
 
 let position: Point;
 let velocity: Velocity;

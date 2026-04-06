@@ -1,16 +1,13 @@
+import type { Side } from "@/core/side.js";
 import type { Order } from "@/generated/server.js";
-
 import type { BallObject, IBall } from "@/interfaces/ball.js";
-import type { GoalObject, IGoal } from "@/interfaces/goal.js";
-import type { IPlayer, PlayerObject } from "@/interfaces/player.js";
-import type { PlayerState } from "@/interfaces/player.js";
+import type { IGoal } from "@/interfaces/goal.js";
+import type { IPlayer, PlayerState } from "@/interfaces/player.js";
 import type { IPoint, IVector2D } from "@/interfaces/positionable.js";
 import type { IRegion } from "@/interfaces/region.js";
 import type { IShotClock, ShotClockObject } from "@/interfaces/shot-clock.js";
 import type { ITeam, TeamObject } from "@/interfaces/team.js";
 import type { IVelocity } from "@/interfaces/velocity.js";
-
-import type { Side } from "@/core/side.js";
 
 export interface IGameInspector {
 	getTurn(): number;

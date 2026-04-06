@@ -1,19 +1,18 @@
+import { describe, expect, test } from "vitest";
+import { ErrFormationInvalidPlayerNumber } from "@/errors.js";
 import {
 	Formation,
-	FormationObject,
+	type FormationObject,
 	FormationType,
-	SPECS,
-	Side,
 	fromFormationObject,
 	randomElement,
 	randomFormation,
 	randomMapper,
 	randomStartFormation,
+	Side,
+	SPECS,
 	zeroedFormation,
 } from "@/index.js";
-import { describe, expect, test } from "vitest";
-
-import { ErrFormationInvalidPlayerNumber } from "@/errors.js";
 
 describe("Utils/Formation", () => {
 	describe("Converters", () => {

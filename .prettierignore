@@ -1,7 +1,0 @@
-/dist
-/build
-/node_modules
-/.vscode
-/.idea
-/.DS_Store
-/src/generated

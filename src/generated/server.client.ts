@@ -15,18 +15,18 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  * @generated from protobuf service lugo.Game
  */
 export interface IGameClient {
-    /**
-     * JoinATeam allows the player to listen the server during the match.
-     *
-     * @generated from protobuf rpc: JoinATeam
-     */
-    joinATeam(input: JoinRequest, options?: RpcOptions): ServerStreamingCall<JoinRequest, GameSnapshot>;
-    /**
-     * SendOrders allows the player to send others to the server when the game is on listening state.
-     *
-     * @generated from protobuf rpc: SendOrders
-     */
-    sendOrders(input: OrderSet, options?: RpcOptions): UnaryCall<OrderSet, OrderResponse>;
+	/**
+	 * JoinATeam allows the player to listen the server during the match.
+	 *
+	 * @generated from protobuf rpc: JoinATeam
+	 */
+	joinATeam(input: JoinRequest, options?: RpcOptions): ServerStreamingCall<JoinRequest, GameSnapshot>;
+	/**
+	 * SendOrders allows the player to send others to the server when the game is on listening state.
+	 *
+	 * @generated from protobuf rpc: SendOrders
+	 */
+	sendOrders(input: OrderSet, options?: RpcOptions): UnaryCall<OrderSet, OrderResponse>;
 }
 /**
  * Service provided by the game service to the players (clients).
@@ -34,27 +34,28 @@ export interface IGameClient {
  * @generated from protobuf service lugo.Game
  */
 export class GameClient implements IGameClient, ServiceInfo {
-    typeName = Game.typeName;
-    methods = Game.methods;
-    options = Game.options;
-    constructor(private readonly _transport: RpcTransport) {
-    }
-    /**
-     * JoinATeam allows the player to listen the server during the match.
-     *
-     * @generated from protobuf rpc: JoinATeam
-     */
-    joinATeam(input: JoinRequest, options?: RpcOptions): ServerStreamingCall<JoinRequest, GameSnapshot> {
-        const method = this.methods[0], opt = this._transport.mergeOptions(options);
-        return stackIntercept<JoinRequest, GameSnapshot>("serverStreaming", this._transport, method, opt, input);
-    }
-    /**
-     * SendOrders allows the player to send others to the server when the game is on listening state.
-     *
-     * @generated from protobuf rpc: SendOrders
-     */
-    sendOrders(input: OrderSet, options?: RpcOptions): UnaryCall<OrderSet, OrderResponse> {
-        const method = this.methods[1], opt = this._transport.mergeOptions(options);
-        return stackIntercept<OrderSet, OrderResponse>("unary", this._transport, method, opt, input);
-    }
+	typeName = Game.typeName;
+	methods = Game.methods;
+	options = Game.options;
+	constructor(private readonly _transport: RpcTransport) {}
+	/**
+	 * JoinATeam allows the player to listen the server during the match.
+	 *
+	 * @generated from protobuf rpc: JoinATeam
+	 */
+	joinATeam(input: JoinRequest, options?: RpcOptions): ServerStreamingCall<JoinRequest, GameSnapshot> {
+		const method = this.methods[0],
+			opt = this._transport.mergeOptions(options);
+		return stackIntercept<JoinRequest, GameSnapshot>("serverStreaming", this._transport, method, opt, input);
+	}
+	/**
+	 * SendOrders allows the player to send others to the server when the game is on listening state.
+	 *
+	 * @generated from protobuf rpc: SendOrders
+	 */
+	sendOrders(input: OrderSet, options?: RpcOptions): UnaryCall<OrderSet, OrderResponse> {
+		const method = this.methods[1],
+			opt = this._transport.mergeOptions(options);
+		return stackIntercept<OrderSet, OrderResponse>("unary", this._transport, method, opt, input);
+	}
 }

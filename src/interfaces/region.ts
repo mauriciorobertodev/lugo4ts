@@ -1,47 +1,47 @@
-import type { IPlayer } from '@/interfaces/player.js';
-import type { IPoint, PointObject } from '@/interfaces/positionable.js';
+import type { IPlayer } from "@/interfaces/player.js";
+import type { IPoint, PointObject } from "@/interfaces/positionable.js";
 
-import { Side } from '@/core/side.js';
+import { Side } from "@/core/side.js";
 
-import { MapperObject } from './mapper.js';
+import { MapperObject } from "./mapper.js";
 
 export interface IRegion {
-    eq(region: IRegion): boolean;
-    is(region: IRegion): boolean;
+	eq(region: IRegion): boolean;
+	is(region: IRegion): boolean;
 
-    getCol(): number;
-    getRow(): number;
+	getCol(): number;
+	getRow(): number;
 
-    getSide(): Side;
+	getSide(): Side;
 
-    getCenter(): IPoint;
-    frontRight(): IRegion;
-    front(): IRegion;
-    frontLeft(): IRegion;
-    backRight(): IRegion;
-    back(): IRegion;
-    backLeft(): IRegion;
-    left(): IRegion;
-    right(): IRegion;
+	getCenter(): IPoint;
+	frontRight(): IRegion;
+	front(): IRegion;
+	frontLeft(): IRegion;
+	backRight(): IRegion;
+	back(): IRegion;
+	backLeft(): IRegion;
+	left(): IRegion;
+	right(): IRegion;
 
-    coordinates(): IPoint;
+	coordinates(): IPoint;
 
-    distanceToRegion(region: IRegion): number;
-    distanceToPoint(point: IPoint): number;
+	distanceToRegion(region: IRegion): number;
+	distanceToPoint(point: IPoint): number;
 
-    containsPlayer(player: IPlayer): boolean;
-    containsPoint(point: IPoint): boolean;
+	containsPlayer(player: IPlayer): boolean;
+	containsPoint(point: IPoint): boolean;
 
-    toString(): string;
+	toString(): string;
 
-    clone(): IRegion;
-    toObject(): RegionObject;
+	clone(): IRegion;
+	toObject(): RegionObject;
 }
 
 export type RegionObject = {
-    col: number;
-    row: number;
-    center: PointObject;
-    side: Side;
-    mapper: MapperObject;
+	col: number;
+	row: number;
+	center: PointObject;
+	side: Side;
+	mapper: MapperObject;
 };

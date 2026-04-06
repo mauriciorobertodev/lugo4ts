@@ -1,13 +1,13 @@
-import { Point } from '@/core/point.js';
+import { Point } from "@/core/point.js";
 
-import { ErrMathInterpolationFactor } from '@/errors.js';
+import { ErrMathInterpolationFactor } from "@/errors.js";
 
 export function clamp(value: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, value));
+	return Math.max(min, Math.min(max, value));
 }
 
 export function lerp(start: number, end: number, t: number): number {
-    return start + (end - start) * t;
+	return start + (end - start) * t;
 }
 
 /**
@@ -25,18 +25,18 @@ export function lerp(start: number, end: number, t: number): number {
  *  @see {@link https://en.wikipedia.org/wiki/Linear_interpolation}
  */
 export function lerp2D(a: Point, b: Point, t: number): Point {
-    if (t < 0 || t > 1) throw new ErrMathInterpolationFactor(t);
-    return new Point(lerp(a.getX(), b.getX(), t), lerp(a.getY(), b.getY(), t));
+	if (t < 0 || t > 1) throw new ErrMathInterpolationFactor(t);
+	return new Point(lerp(a.getX(), b.getX(), t), lerp(a.getY(), b.getY(), t));
 }
 
 export function isBetween(value: number, min: number, max: number): boolean {
-    return value >= Math.min(min, max) && value <= Math.max(min, max);
+	return value >= Math.min(min, max) && value <= Math.max(min, max);
 }
 
 export function radiansToDegrees(radians: number): number {
-    return radians * (180 / Math.PI);
+	return radians * (180 / Math.PI);
 }
 
 export function degreesToRadians(degrees: number): number {
-    return degrees * (Math.PI / 180);
+	return degrees * (Math.PI / 180);
 }

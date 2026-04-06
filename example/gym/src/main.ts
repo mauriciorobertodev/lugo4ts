@@ -1,16 +1,9 @@
-import { Gym } from '@/gym.js';
-import {
-    DummyKicker,
-    DummyStatue,
-    Side,
-    StartInlineFormation,
-    logger,
-    randomGameInspectorInOnHolding,
-} from '@/index.js';
+import { Gym } from "@/gym.js";
+import { DummyKicker, DummyStatue, Side, StartInlineFormation, logger, randomGameInspectorInOnHolding } from "@/index.js";
 
-import { MyBot } from './bot.js';
-import { EnvironmentOpponentHolder } from './environments/opponent-holder-kicker.js';
-import { BotGoalkeeperTrainer } from './trainers/bot-goalkeeper.trainer.js';
+import { MyBot } from "./bot.js";
+import { EnvironmentOpponentHolder } from "./environments/opponent-holder-kicker.js";
+import { BotGoalkeeperTrainer } from "./trainers/bot-goalkeeper.trainer.js";
 
 logger.enable();
 

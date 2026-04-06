@@ -1,14 +1,14 @@
 // ------------------------------------------------------------
 // Factories
 // ------------------------------------------------------------
-import { Point } from '@/core/point.js';
-import { SPECS } from '@/core/specs.js';
+import { Point } from "@/core/point.js";
+import { SPECS } from "@/core/specs.js";
 
 /**
  * Creates a new Point with the given coordinates.
  */
 export function fieldCenterPoint(): Point {
-    return new Point(SPECS.CENTER_X_COORDINATE, SPECS.CENTER_Y_COORDINATE);
+	return new Point(SPECS.CENTER_X_COORDINATE, SPECS.CENTER_Y_COORDINATE);
 }
 
 // ------------------------------------------------------------
@@ -25,10 +25,5 @@ export function fieldCenterPoint(): Point {
  * isValidInsideFieldPoint(new Point(-1, 20)); // false
  */
 export function isValidInsideFieldPoint(point: Point): boolean {
-    return (
-        point.getX() >= 0 &&
-        point.getX() <= SPECS.MAX_X_COORDINATE &&
-        point.getY() >= 0 &&
-        point.getY() <= SPECS.MAX_Y_COORDINATE
-    );
+	return point.getX() >= 0 && point.getX() <= SPECS.MAX_X_COORDINATE && point.getY() >= 0 && point.getY() <= SPECS.MAX_Y_COORDINATE;
 }

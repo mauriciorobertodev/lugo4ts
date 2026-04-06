@@ -1,16 +1,16 @@
-import { Mapper } from 'core/mapper.js';
-import { Client } from 'runtime/client.js';
-import { Env } from 'runtime/env.js';
-import { enableLogs } from 'utils/logger.js';
+import { Mapper } from "core/mapper.js";
 
-import { BotTester } from './bot.js';
-import { MAPPER_COLS, MAPPER_ROWS, PLAYER_INITIAL_POSITIONS } from './settings.js';
+import { Env } from "runtime/env.js";
+import { enableLogs } from "utils/logger.js";
+
+import { BotTester } from "./bot.js";
+import { MAPPER_COLS, MAPPER_ROWS, PLAYER_INITIAL_POSITIONS } from "./settings.js";
 
 enableLogs();
 
 const env = new Env();
 
-const mapper = new Mapper(MAPPER_COLS, MAPPER_ROWS, env.getBotSide());
+const mapper = new Mapper(MAPPER_COLS, MAPPER_ROWS);
 
 const initRegion = PLAYER_INITIAL_POSITIONS[env.getBotNumber()];
 

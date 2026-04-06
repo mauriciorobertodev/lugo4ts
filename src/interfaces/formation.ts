@@ -1,50 +1,50 @@
-import type { IMapper, MapperObject } from '@/interfaces/mapper.js';
-import type { IPoint } from '@/interfaces/positionable.js';
+import type { IMapper, MapperObject } from "@/interfaces/mapper.js";
+import type { IPoint } from "@/interfaces/positionable.js";
 
-import type { Side } from '@/core/side.js';
+import type { Side } from "@/core/side.js";
 
 export interface IFormation {
-    getId(): string;
-    setId(id: string): this;
+	getId(): string;
+	setId(id: string): this;
 
-    getName(): string;
-    setName(name: string): this;
+	getName(): string;
+	setName(name: string): this;
 
-    getType(): FormationType;
-    setType(type: FormationType): this;
+	getType(): FormationType;
+	setType(type: FormationType): this;
 
-    getMapper(): IMapper | null;
-    setMapper(mapper: IMapper): this;
+	getMapper(): IMapper | null;
+	setMapper(mapper: IMapper): this;
 
-    getViewSide(): Side;
-    setViewSide(side: Side): this;
+	getViewSide(): Side;
+	setViewSide(side: Side): this;
 
-    hasPositionOf(playerNumber: number): boolean;
+	hasPositionOf(playerNumber: number): boolean;
 
-    getPositionOf(playerNumber: number): IPoint;
-    tryGetPositionOf(playerNumber: number): IPoint | null;
-    setPositionOf(playerNumber: number, position: IPoint): this;
-    definePositionOf(playerNumber: number, x: number, y: number): this;
+	getPositionOf(playerNumber: number): IPoint;
+	tryGetPositionOf(playerNumber: number): IPoint | null;
+	setPositionOf(playerNumber: number, position: IPoint): this;
+	definePositionOf(playerNumber: number, x: number, y: number): this;
 
-    countPositions(): number;
-    getPositions(): Record<number, IPoint>;
+	countPositions(): number;
+	getPositions(): Record<number, IPoint>;
 
-    toArray(): IPoint[];
+	toArray(): IPoint[];
 
-    clone(): IFormation;
-    toObject(): FormationObject;
-    toJsonString(): string;
+	clone(): IFormation;
+	toObject(): FormationObject;
+	toJsonString(): string;
 }
 
 export type FormationObject = {
-    id?: string;
-    name?: string;
-    positions: Record<number, [number, number]>;
-    type: FormationType;
-    mapper?: MapperObject;
+	id?: string;
+	name?: string;
+	positions: Record<number, [number, number]>;
+	type: FormationType;
+	mapper?: MapperObject;
 };
 
 export enum FormationType {
-    REGIONS = 'regions',
-    POINTS = 'points',
+	REGIONS = "regions",
+	POINTS = "points",
 }

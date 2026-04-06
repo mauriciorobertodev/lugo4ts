@@ -16,18 +16,18 @@ import { MessageType } from "@protobuf-ts/runtime";
  * @generated from protobuf message lugo.Vector
  */
 export interface Vector {
-    /**
-     * Coordinate X to define the vector direction.
-     *
-     * @generated from protobuf field: double x = 1
-     */
-    x: number;
-    /**
-     * Coordinate Y to define the vector direction.
-     *
-     * @generated from protobuf field: double y = 2
-     */
-    y: number;
+	/**
+	 * Coordinate X to define the vector direction.
+	 *
+	 * @generated from protobuf field: double x = 1
+	 */
+	x: number;
+	/**
+	 * Coordinate Y to define the vector direction.
+	 *
+	 * @generated from protobuf field: double y = 2
+	 */
+	y: number;
 }
 /**
  * Point represents one position on the cartesian plan of the game field.
@@ -36,18 +36,18 @@ export interface Vector {
  * @generated from protobuf message lugo.Point
  */
 export interface Point {
-    /**
-     * Distance from the Y axis to right.
-     *
-     * @generated from protobuf field: int32 x = 1
-     */
-    x: number;
-    /**
-     * Distance from the X axis to up.
-     *
-     * @generated from protobuf field: int32 y = 2
-     */
-    y: number;
+	/**
+	 * Distance from the Y axis to right.
+	 *
+	 * @generated from protobuf field: int32 x = 1
+	 */
+	x: number;
+	/**
+	 * Distance from the X axis to up.
+	 *
+	 * @generated from protobuf field: int32 y = 2
+	 */
+	y: number;
 }
 /**
  * Velocity is a tuple with the direction (a vector) an a speed (float) values.
@@ -56,69 +56,64 @@ export interface Point {
  * @generated from protobuf message lugo.Velocity
  */
 export interface Velocity {
-    /**
-     * Direction is a normalised vector that indicates the element direction
-     *
-     * @generated from protobuf field: lugo.Vector direction = 1
-     */
-    direction?: Vector;
-    /**
-     * Speed of the element.
-     *
-     * @generated from protobuf field: double speed = 2
-     */
-    speed: number;
+	/**
+	 * Direction is a normalised vector that indicates the element direction
+	 *
+	 * @generated from protobuf field: lugo.Vector direction = 1
+	 */
+	direction?: Vector;
+	/**
+	 * Speed of the element.
+	 *
+	 * @generated from protobuf field: double speed = 2
+	 */
+	speed: number;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class Vector$Type extends MessageType<Vector> {
-    constructor() {
-        super("lugo.Vector", [
-            { no: 1, name: "x", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
-            { no: 2, name: "y", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
-        ]);
-    }
-    create(value?: PartialMessage<Vector>): Vector {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.x = 0;
-        message.y = 0;
-        if (value !== undefined)
-            reflectionMergePartial<Vector>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Vector): Vector {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* double x */ 1:
-                    message.x = reader.double();
-                    break;
-                case /* double y */ 2:
-                    message.y = reader.double();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: Vector, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* double x = 1; */
-        if (message.x !== 0)
-            writer.tag(1, WireType.Bit64).double(message.x);
-        /* double y = 2; */
-        if (message.y !== 0)
-            writer.tag(2, WireType.Bit64).double(message.y);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
+	constructor() {
+		super("lugo.Vector", [
+			{ no: 1, name: "x", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+			{ no: 2, name: "y", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+		]);
+	}
+	create(value?: PartialMessage<Vector>): Vector {
+		const message = globalThis.Object.create(this.messagePrototype!);
+		message.x = 0;
+		message.y = 0;
+		if (value !== undefined) reflectionMergePartial<Vector>(this, message, value);
+		return message;
+	}
+	internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Vector): Vector {
+		let message = target ?? this.create(),
+			end = reader.pos + length;
+		while (reader.pos < end) {
+			let [fieldNo, wireType] = reader.tag();
+			switch (fieldNo) {
+				case /* double x */ 1:
+					message.x = reader.double();
+					break;
+				case /* double y */ 2:
+					message.y = reader.double();
+					break;
+				default:
+					let u = options.readUnknownField;
+					if (u === "throw") throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+					let d = reader.skip(wireType);
+					if (u !== false) (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+			}
+		}
+		return message;
+	}
+	internalBinaryWrite(message: Vector, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+		/* double x = 1; */
+		if (message.x !== 0) writer.tag(1, WireType.Bit64).double(message.x);
+		/* double y = 2; */
+		if (message.y !== 0) writer.tag(2, WireType.Bit64).double(message.y);
+		let u = options.writeUnknownFields;
+		if (u !== false) (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+		return writer;
+	}
 }
 /**
  * @generated MessageType for protobuf message lugo.Vector
@@ -126,54 +121,49 @@ class Vector$Type extends MessageType<Vector> {
 export const Vector = new Vector$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class Point$Type extends MessageType<Point> {
-    constructor() {
-        super("lugo.Point", [
-            { no: 1, name: "x", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 2, name: "y", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
-        ]);
-    }
-    create(value?: PartialMessage<Point>): Point {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.x = 0;
-        message.y = 0;
-        if (value !== undefined)
-            reflectionMergePartial<Point>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Point): Point {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* int32 x */ 1:
-                    message.x = reader.int32();
-                    break;
-                case /* int32 y */ 2:
-                    message.y = reader.int32();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: Point, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 x = 1; */
-        if (message.x !== 0)
-            writer.tag(1, WireType.Varint).int32(message.x);
-        /* int32 y = 2; */
-        if (message.y !== 0)
-            writer.tag(2, WireType.Varint).int32(message.y);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
+	constructor() {
+		super("lugo.Point", [
+			{ no: 1, name: "x", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+			{ no: 2, name: "y", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+		]);
+	}
+	create(value?: PartialMessage<Point>): Point {
+		const message = globalThis.Object.create(this.messagePrototype!);
+		message.x = 0;
+		message.y = 0;
+		if (value !== undefined) reflectionMergePartial<Point>(this, message, value);
+		return message;
+	}
+	internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Point): Point {
+		let message = target ?? this.create(),
+			end = reader.pos + length;
+		while (reader.pos < end) {
+			let [fieldNo, wireType] = reader.tag();
+			switch (fieldNo) {
+				case /* int32 x */ 1:
+					message.x = reader.int32();
+					break;
+				case /* int32 y */ 2:
+					message.y = reader.int32();
+					break;
+				default:
+					let u = options.readUnknownField;
+					if (u === "throw") throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+					let d = reader.skip(wireType);
+					if (u !== false) (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+			}
+		}
+		return message;
+	}
+	internalBinaryWrite(message: Point, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+		/* int32 x = 1; */
+		if (message.x !== 0) writer.tag(1, WireType.Varint).int32(message.x);
+		/* int32 y = 2; */
+		if (message.y !== 0) writer.tag(2, WireType.Varint).int32(message.y);
+		let u = options.writeUnknownFields;
+		if (u !== false) (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+		return writer;
+	}
 }
 /**
  * @generated MessageType for protobuf message lugo.Point
@@ -181,53 +171,48 @@ class Point$Type extends MessageType<Point> {
 export const Point = new Point$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class Velocity$Type extends MessageType<Velocity> {
-    constructor() {
-        super("lugo.Velocity", [
-            { no: 1, name: "direction", kind: "message", T: () => Vector },
-            { no: 2, name: "speed", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
-        ]);
-    }
-    create(value?: PartialMessage<Velocity>): Velocity {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.speed = 0;
-        if (value !== undefined)
-            reflectionMergePartial<Velocity>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Velocity): Velocity {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* lugo.Vector direction */ 1:
-                    message.direction = Vector.internalBinaryRead(reader, reader.uint32(), options, message.direction);
-                    break;
-                case /* double speed */ 2:
-                    message.speed = reader.double();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: Velocity, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* lugo.Vector direction = 1; */
-        if (message.direction)
-            Vector.internalBinaryWrite(message.direction, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* double speed = 2; */
-        if (message.speed !== 0)
-            writer.tag(2, WireType.Bit64).double(message.speed);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
+	constructor() {
+		super("lugo.Velocity", [
+			{ no: 1, name: "direction", kind: "message", T: () => Vector },
+			{ no: 2, name: "speed", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+		]);
+	}
+	create(value?: PartialMessage<Velocity>): Velocity {
+		const message = globalThis.Object.create(this.messagePrototype!);
+		message.speed = 0;
+		if (value !== undefined) reflectionMergePartial<Velocity>(this, message, value);
+		return message;
+	}
+	internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Velocity): Velocity {
+		let message = target ?? this.create(),
+			end = reader.pos + length;
+		while (reader.pos < end) {
+			let [fieldNo, wireType] = reader.tag();
+			switch (fieldNo) {
+				case /* lugo.Vector direction */ 1:
+					message.direction = Vector.internalBinaryRead(reader, reader.uint32(), options, message.direction);
+					break;
+				case /* double speed */ 2:
+					message.speed = reader.double();
+					break;
+				default:
+					let u = options.readUnknownField;
+					if (u === "throw") throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+					let d = reader.skip(wireType);
+					if (u !== false) (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+			}
+		}
+		return message;
+	}
+	internalBinaryWrite(message: Velocity, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+		/* lugo.Vector direction = 1; */
+		if (message.direction) Vector.internalBinaryWrite(message.direction, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+		/* double speed = 2; */
+		if (message.speed !== 0) writer.tag(2, WireType.Bit64).double(message.speed);
+		let u = options.writeUnknownFields;
+		if (u !== false) (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+		return writer;
+	}
 }
 /**
  * @generated MessageType for protobuf message lugo.Velocity

@@ -1,82 +1,82 @@
-import { Order } from '@/generated/server.js';
+import { Order } from "@/generated/server.js";
 
-import { IBot } from '@/interfaces/bot.js';
-import { IGameInspector } from '@/interfaces/game-inspector.js';
-import { PlayerState } from '@/interfaces/player.js';
-import { IPoint } from '@/interfaces/positionable.js';
+import { IBot } from "@/interfaces/bot.js";
+import { IGameInspector } from "@/interfaces/game-inspector.js";
+import { PlayerState } from "@/interfaces/player.js";
+import { IPoint } from "@/interfaces/positionable.js";
 
-import { Point } from '@/core/point.js';
-import { SPECS } from '@/core/specs.js';
+import { Point } from "@/core/point.js";
+import { SPECS } from "@/core/specs.js";
 
-import { logger } from '@/utils/logger.js';
-import { randomInt } from '@/utils/random.js';
+import { logger } from "@/utils/logger.js";
+import { randomInt } from "@/utils/random.js";
 
 export class DummyKicker implements IBot {
-    private distanceToKick: number = this.generateDistanceToKick();
+	private distanceToKick: number = this.generateDistanceToKick();
 
-    beforeActions(inspector: IGameInspector): void {}
-    afterActions(inspector: IGameInspector): void {}
-    onReady(inspector: IGameInspector): void {}
+	beforeActions(inspector: IGameInspector): void {}
+	afterActions(inspector: IGameInspector): void {}
+	onReady(inspector: IGameInspector): void {}
 
-    onHolding(inspector: IGameInspector): Order[] {
-        logger.warn(`Eu sou o bot número ${inspector.getMe().getNumber()} e estou segurando a bola!`);
-        const orders: Order[] = [];
+	onHolding(inspector: IGameInspector): Order[] {
+		logger.warn(`Eu sou o bot número ${inspector.getMe().getNumber()} e estou segurando a bola!`);
+		const orders: Order[] = [];
 
-        const me = inspector.getMe();
-        const ball = inspector.getBall();
-        const goal = inspector.getAttackGoal();
-        const distance = ball.distanceToPoint(goal.getCenter());
+		const me = inspector.getMe();
+		const ball = inspector.getBall();
+		const goal = inspector.getAttackGoal();
+		const distance = ball.distanceToPoint(goal.getCenter());
 
-        // console.log(`ball direction is my direction: ${me.getDirection().is(ball.getDirection())}`);
+		// console.log(`ball direction is my direction: ${me.getDirection().is(ball.getDirection())}`);
 
-        if (distance <= this.distanceToKick) {
-            const pointToKick = this.generatePointToKick(goal.getTopPole(), goal.getBottomPole());
-            const order = inspector.makeOrderKickToPoint(pointToKick);
-            orders.push(order);
-            this.distanceToKick = this.generateDistanceToKick();
-        } else {
-            const order = inspector.makeOrderMoveToPoint(goal.getCenter());
-            orders.push(order);
-        }
+		if (distance <= this.distanceToKick) {
+			const pointToKick = this.generatePointToKick(goal.getTopPole(), goal.getBottomPole());
+			const order = inspector.makeOrderKickToPoint(pointToKick);
+			orders.push(order);
+			this.distanceToKick = this.generateDistanceToKick();
+		} else {
+			const order = inspector.makeOrderMoveToPoint(goal.getCenter());
+			orders.push(order);
+		}
 
-        return orders;
-    }
+		return orders;
+	}
 
-    onDisputing(inspector: IGameInspector): Order[] {
-        const orders: Order[] = [];
+	onDisputing(inspector: IGameInspector): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 
-    onDefending(inspector: IGameInspector): Order[] {
-        const orders: Order[] = [];
+	onDefending(inspector: IGameInspector): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 
-    onSupporting(inspector: IGameInspector): Order[] {
-        const orders: Order[] = [];
+	onSupporting(inspector: IGameInspector): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 
-    asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
-        const orders: Order[] = [];
+	asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 
-    private generateDistanceToKick(): number {
-        const MIN_DISTANCE_TO_GOAL = SPECS.GOAL_ZONE_RADIUS;
-        const MAX_DISTANCE_TO_GOAL = SPECS.GOAL_ZONE_RADIUS * 5;
+	private generateDistanceToKick(): number {
+		const MIN_DISTANCE_TO_GOAL = SPECS.GOAL_ZONE_RADIUS;
+		const MAX_DISTANCE_TO_GOAL = SPECS.GOAL_ZONE_RADIUS * 5;
 
-        return randomInt(MIN_DISTANCE_TO_GOAL, MAX_DISTANCE_TO_GOAL);
-    }
+		return randomInt(MIN_DISTANCE_TO_GOAL, MAX_DISTANCE_TO_GOAL);
+	}
 
-    private generatePointToKick(topPole: IPoint, bottomPole: IPoint): Point {
-        const x = topPole.getX();
-        const y = randomInt(topPole.getY(), bottomPole.getY());
+	private generatePointToKick(topPole: IPoint, bottomPole: IPoint): Point {
+		const x = topPole.getX();
+		const y = randomInt(topPole.getY(), bottomPole.getY());
 
-        return new Point(x, y);
-    }
+		return new Point(x, y);
+	}
 }

@@ -1,13 +1,13 @@
-import { GoalObject } from '@/interfaces/goal.js';
+import { GoalObject } from "@/interfaces/goal.js";
 
-import { AWAY_GOAL, Goal, HOME_GOAL } from '@/core/goal.js';
-import { Side } from '@/core/side.js';
+import { AWAY_GOAL, Goal, HOME_GOAL } from "@/core/goal.js";
+import { Side } from "@/core/side.js";
 
 // ------------------------------------------------------------
 // Converters
 // ------------------------------------------------------------
 export function fromGoalObject(obj: GoalObject): Goal {
-    return obj.side === Side.HOME ? HOME_GOAL.clone() : AWAY_GOAL.clone();
+	return obj.side === Side.HOME ? HOME_GOAL.clone() : AWAY_GOAL.clone();
 }
 
 // ------------------------------------------------------------
@@ -15,10 +15,10 @@ export function fromGoalObject(obj: GoalObject): Goal {
 // ------------------------------------------------------------
 
 export function randomGoal(): Goal {
-    const side = Math.random() < 0.5 ? Side.HOME : Side.AWAY;
-    return side === Side.HOME ? HOME_GOAL : AWAY_GOAL;
+	const side = Math.random() < 0.5 ? Side.HOME : Side.AWAY;
+	return side === Side.HOME ? HOME_GOAL : AWAY_GOAL;
 }
 
 export function goalFromSide(side: Side): Goal {
-    return side === Side.HOME ? HOME_GOAL : AWAY_GOAL;
+	return side === Side.HOME ? HOME_GOAL : AWAY_GOAL;
 }

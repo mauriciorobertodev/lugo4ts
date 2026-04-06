@@ -1,41 +1,41 @@
-import { Order } from '@/generated/server.js';
+import { Order } from "@/generated/server.js";
 
-import { IBot } from '@/interfaces/bot.js';
-import { IGameInspector } from '@/interfaces/game-inspector.js';
-import { PlayerState } from '@/interfaces/player.js';
+import { IBot } from "@/interfaces/bot.js";
+import { IGameInspector } from "@/interfaces/game-inspector.js";
+import { PlayerState } from "@/interfaces/player.js";
 
 export class DummyStatue implements IBot {
-    beforeActions(inspector: IGameInspector): void {}
-    afterActions(inspector: IGameInspector): void {}
-    onReady(inspector: IGameInspector): void {}
+	beforeActions(inspector: IGameInspector): void {}
+	afterActions(inspector: IGameInspector): void {}
+	onReady(inspector: IGameInspector): void {}
 
-    onHolding(inspector: IGameInspector): Order[] {
-        const orders: Order[] = [];
+	onHolding(inspector: IGameInspector): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 
-    onDisputing(inspector: IGameInspector): Order[] {
-        const orders: Order[] = [];
+	onDisputing(inspector: IGameInspector): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 
-    onDefending(inspector: IGameInspector): Order[] {
-        const orders: Order[] = [];
+	onDefending(inspector: IGameInspector): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 
-    onSupporting(inspector: IGameInspector): Order[] {
-        const orders: Order[] = [];
+	onSupporting(inspector: IGameInspector): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 
-    asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
-        const orders: Order[] = [];
+	asGoalkeeper(inspector: IGameInspector, state: PlayerState): Order[] {
+		const orders: Order[] = [];
 
-        return orders;
-    }
+		return orders;
+	}
 }

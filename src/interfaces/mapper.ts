@@ -1,35 +1,35 @@
-import type { IPoint } from '@/interfaces/positionable.js';
-import type { IRegion } from '@/interfaces/region.js';
+import type { IPoint } from "@/interfaces/positionable.js";
+import type { IRegion } from "@/interfaces/region.js";
 
-import type { Side } from '@/core/side.js';
+import type { Side } from "@/core/side.js";
 
 export interface IMapper {
-    getCols(): number;
-    setCols(cols: number): this;
+	getCols(): number;
+	setCols(cols: number): this;
 
-    getRows(): number;
-    setRows(rows: number): this;
+	getRows(): number;
+	setRows(rows: number): this;
 
-    getRegionWidth(): number;
-    getRegionHeight(): number;
+	getRegionWidth(): number;
+	getRegionHeight(): number;
 
-    getViewSide(): Side;
-    setViewSide(side: Side): this;
+	getViewSide(): Side;
+	setViewSide(side: Side): this;
 
-    getRegion(col: number, row: number): IRegion;
-    getRegionFromPoint(point: IPoint): IRegion;
-    getRandomRegion(): IRegion;
+	getRegion(col: number, row: number): IRegion;
+	getRegionFromPoint(point: IPoint): IRegion;
+	getRandomRegion(): IRegion;
 
-    isValidCol(col: number): boolean;
-    isValidRow(row: number): boolean;
-    isValidRegion(col: number, row: number): boolean;
+	isValidCol(col: number): boolean;
+	isValidRow(row: number): boolean;
+	isValidRegion(col: number, row: number): boolean;
 
-    clone(): IMapper;
-    toObject(): MapperObject;
-    toJsonString(): string;
+	clone(): IMapper;
+	toObject(): MapperObject;
+	toJsonString(): string;
 }
 
 export type MapperObject = {
-    cols: number;
-    rows: number;
+	cols: number;
+	rows: number;
 };

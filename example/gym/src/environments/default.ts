@@ -1,29 +1,29 @@
-import { Environment, Side, randomPlayer, randomTeam, zeroedBall } from '@/index.js';
+import { Environment, Side, randomPlayer, randomTeam, zeroedBall } from "@/index.js";
 
-import { DefaultFormation } from '../formations/default.js';
+import { DefaultFormation } from "../formations/default.js";
 
 export class DefaultEnvironment extends Environment {
-    constructor() {
-        super();
-        this.setName('Default Environment');
-        this.setBall(zeroedBall());
+	constructor() {
+		super();
+		this.setName("Default Environment");
+		this.setBall(zeroedBall());
 
-        this.setHomeScore(0);
-        this.setHomeTeam(
-            randomTeam({
-                side: Side.HOME,
-                players: Array.from({ length: 11 }, (_, index) => randomPlayer({ number: index + 1, side: Side.HOME })),
-            })
-        );
-        this.setHomeTeamPositionsByFormation(new DefaultFormation());
+		this.setHomeScore(0);
+		this.setHomeTeam(
+			randomTeam({
+				side: Side.HOME,
+				players: Array.from({ length: 11 }, (_, index) => randomPlayer({ number: index + 1, side: Side.HOME })),
+			}),
+		);
+		this.setHomeTeamPositionsByFormation(new DefaultFormation());
 
-        this.setAwayScore(0);
-        this.setAwayTeam(
-            randomTeam({
-                side: Side.AWAY,
-                players: Array.from({ length: 11 }, (_, index) => randomPlayer({ number: index + 1, side: Side.AWAY })),
-            })
-        );
-        this.setAwayTeamPositionsByFormation(new DefaultFormation());
-    }
+		this.setAwayScore(0);
+		this.setAwayTeam(
+			randomTeam({
+				side: Side.AWAY,
+				players: Array.from({ length: 11 }, (_, index) => randomPlayer({ number: index + 1, side: Side.AWAY })),
+			}),
+		);
+		this.setAwayTeamPositionsByFormation(new DefaultFormation());
+	}
 }

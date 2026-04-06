@@ -1,4 +1,4 @@
 export enum Side {
-    HOME = 'home',
-    AWAY = 'away',
+	HOME = "home",
+	AWAY = "away",
 }

@@ -1,8 +1,8 @@
 import type { Order } from "@/generated/server.js";
 
-import type { IBot } from "@/interfaces/bot.js";
-import type { IGameInspector } from "@/interfaces/game-inspector.js";
-import type { PlayerState } from "@/interfaces/player.js";
+import type { IBot } from "@/interfaces/bot.interface.js";
+import type { IGameInspector } from "@/interfaces/inspector.interface.js";
+import type { PlayerState } from "@/interfaces/player.interface.js";
 
 export class DummyStatue implements IBot {
 	beforeActions(_inspector: IGameInspector): void {}

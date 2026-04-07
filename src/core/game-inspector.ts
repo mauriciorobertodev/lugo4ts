@@ -11,8 +11,8 @@ import { Vector2D } from "@/core/vector.js";
 import { Velocity } from "@/core/velocity.js";
 import { ErrBallNotFound, ErrJumpZeroDirection, ErrKickZeroDirection, ErrMoveZeroDirection, ErrPlayerNotFound, ErrTeamNotFound } from "@/errors.js";
 import { Catch, Jump, Kick, Move, Order } from "@/generated/server.js";
-import type { GameInspectorObject, IGameInspector } from "@/interfaces/game-inspector.js";
-import { PlayerState } from "@/interfaces/player.js";
+import type { GameInspectorObject, IGameInspector } from "@/interfaces/inspector.interface.js";
+import { PlayerState } from "@/interfaces/player.interface.js";
 
 import { toLugoVelocity } from "@/lugo.js";
 

@@ -2,7 +2,7 @@ import type { Mapper } from "@/core/mapper.js";
 import type { Player } from "@/core/player.js";
 import { Point } from "@/core/point.js";
 import type { Side } from "@/core/side.js";
-import type { IRegion, RegionObject } from "@/interfaces/region.js";
+import type { IRegion, RegionObject } from "@/interfaces/region.interface.js";
 
 export class Region implements IRegion {
 	constructor(

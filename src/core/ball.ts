@@ -4,9 +4,9 @@ import type { Region } from "@/core/region.js";
 import { SPECS } from "@/core/specs.js";
 import type { Vector2D } from "@/core/vector.js";
 import type { Velocity } from "@/core/velocity.js";
-import type { BallObject, IBall } from "@/interfaces/ball.js";
+import type { BallObject, IBall } from "@/interfaces/ball.interface.js";
 
-import { zeroedVelocity } from "@/utils/velocity.js";
+import { zeroedVelocity } from "@/utils/velocity.utils.js";
 
 export class Ball implements IBall {
 	private position: Point;

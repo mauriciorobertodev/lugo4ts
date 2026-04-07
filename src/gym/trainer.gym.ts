@@ -2,7 +2,7 @@ import type { GameInspector } from "@/core/game-inspector.js";
 import type { Order } from "@/generated/server.js";
 import type { GymSession, IGymTrainer } from "@/gym.js";
 
-import type { IBot } from "@/interfaces/bot.js";
+import type { IBot } from "@/interfaces/bot.interface.js";
 import { generateOrdersForBot } from "@/runtime.js";
 
 type State = unknown;

@@ -2,8 +2,8 @@ import { Mapper } from "@/core/mapper.js";
 import { Point } from "@/core/point.js";
 import { Side } from "@/core/side.js";
 import { ErrFormationMapperNotDefined, ErrFormationPlayerPositionNotDefined } from "@/errors.js";
-import { type FormationObject, FormationType, type IFormation } from "@/interfaces/formation.js";
-import { randomUUID } from "@/utils/random.js";
+import { type FormationObject, FormationType, type IFormation } from "@/interfaces/formation.interface.js";
+import { randomUUID } from "@/utils/random.utils.js";
 
 export type FormationPositions = Record<number, Point>;
 

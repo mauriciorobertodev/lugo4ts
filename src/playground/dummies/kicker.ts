@@ -1,13 +1,13 @@
 import { Point } from "@/core/point.js";
 import { SPECS } from "@/core/specs.js";
 import type { Order } from "@/generated/server.js";
-import type { IBot } from "@/interfaces/bot.js";
-import type { IGameInspector } from "@/interfaces/game-inspector.js";
-import type { PlayerState } from "@/interfaces/player.js";
-import type { IPoint } from "@/interfaces/positionable.js";
+import type { IBot } from "@/interfaces/bot.interface.js";
+import type { IGameInspector } from "@/interfaces/inspector.interface.js";
+import type { PlayerState } from "@/interfaces/player.interface.js";
+import type { IPoint } from "@/interfaces/positionable.interface.js";
 
-import { logger } from "@/utils/logger.js";
-import { randomInt } from "@/utils/random.js";
+import { logger } from "@/utils/logger.utils.js";
+import { randomInt } from "@/utils/random.utils.js";
 
 export class DummyKicker implements IBot {
 	private distanceToKick: number = this.generateDistanceToKick();

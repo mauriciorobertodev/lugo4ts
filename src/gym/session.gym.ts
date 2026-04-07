@@ -2,13 +2,13 @@ import type { Environment } from "@/core/environment.js";
 import type { GameInspector } from "@/core/game-inspector.js";
 import type { GameSnapshot } from "@/core/game-snapshot.js";
 import type { Order } from "@/generated/server.js";
-import type { IGymSession } from "@/interfaces/gym-session.js";
-import type { IGymTrainer } from "@/interfaces/gym-trainer.js";
-import type { GameClient } from "@/runtime/game-client.js";
-import type { GameController } from "@/runtime/game-controller.js";
+import type { IGymSession } from "@/interfaces/session.interface.js";
+import type { IGymTrainer } from "@/interfaces/trainer.interface.js";
+import type { GameClient } from "@/runtime/client.runtime.js";
+import type { GameController } from "@/runtime/controller.runtime.js";
 
-import { fromGameSnapshot } from "@/utils/game-inspector.js";
-import { sleep } from "@/utils/time.js";
+import { fromGameSnapshot } from "@/utils/inspector.utils.js";
+import { sleep } from "@/utils/time.utils.js";
 
 export class GymSession implements IGymSession {
 	private running: boolean = false;

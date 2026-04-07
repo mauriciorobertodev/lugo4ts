@@ -1,7 +1,7 @@
 import { Point } from "@/core/point.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
-import type { GoalObject, IGoal } from "@/interfaces/goal.js";
+import type { GoalObject, IGoal } from "@/interfaces/goal.interface.js";
 
 export class Goal implements IGoal {
 	constructor(

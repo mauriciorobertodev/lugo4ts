@@ -1,6 +1,6 @@
 import { type Formation, type Player, type Point, type Region, randomUUID } from "@/index.js";
 
-import type { FieldZoneObject, IFieldZone } from "@/interfaces/field-zone.js";
+import type { FieldZoneObject, IFieldZone } from "@/interfaces/field-zone.interface.js";
 
 export class FieldZone implements IFieldZone {
 	constructor(

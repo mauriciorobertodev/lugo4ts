@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { Ball, GameSnapshot, ServerState, Side, Team } from "@/index.js";
 
-import { createZeroedSnapshot, randomGameSnapshot } from "@/utils/game-snapshot.js";
+import { createZeroedSnapshot, randomGameSnapshot } from "@/utils/snapshot.utils.js";
 
 describe("Utils/GameSnapshot", () => {
 	describe("Factories", () => {

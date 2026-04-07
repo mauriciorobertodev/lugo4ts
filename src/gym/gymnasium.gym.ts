@@ -4,17 +4,17 @@ import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 import { ErrBotInvalidNumber } from "@/errors.js";
 import { GymSession } from "@/gym/session.gym.js";
-import type { IBot } from "@/interfaces/bot.js";
-import type { IGymTrainer } from "@/interfaces/gym-trainer.js";
+import type { IBot } from "@/interfaces/bot.interface.js";
+import type { IGymTrainer } from "@/interfaces/trainer.interface.js";
 import { DummyStatue } from "@/playground/dummies/statue.js";
 import { StartInlineFormation } from "@/playground/formations/start-inline.js";
-import { GameClient } from "@/runtime/game-client.js";
-import { GameController } from "@/runtime/game-controller.js";
-import { logger } from "@/utils/logger.js";
-import { isValidPlayerNumber } from "@/utils/player.js";
-import { randomInitialPosition } from "@/utils/point.js";
-import { flipSide } from "@/utils/side.js";
-import { sleep } from "@/utils/time.js";
+import { GameClient } from "@/runtime/client.runtime.js";
+import { GameController } from "@/runtime/controller.runtime.js";
+import { logger } from "@/utils/logger.utils.js";
+import { isValidPlayerNumber } from "@/utils/player.utils.js";
+import { randomInitialPosition } from "@/utils/point.utils.js";
+import { flipSide } from "@/utils/side.utils.js";
+import { sleep } from "@/utils/time.utils.js";
 
 export class Gym {
 	private traineeNumber: number = 10;

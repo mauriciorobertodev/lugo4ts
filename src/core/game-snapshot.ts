@@ -6,7 +6,7 @@ import { SPECS } from "@/core/specs.js";
 import type { Team } from "@/core/team.js";
 import type { Vector2D } from "@/core/vector.js";
 import type { Velocity } from "@/core/velocity.js";
-import type { GameSnapshotObject, IGameSnapshot, ServerState } from "@/interfaces/game-snapshot.js";
+import type { GameSnapshotObject, IGameSnapshot, ServerState } from "@/interfaces/snapshot.interface.js";
 
 export class GameSnapshot implements IGameSnapshot {
 	constructor(

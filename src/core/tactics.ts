@@ -3,7 +3,7 @@ import type { FieldZone } from "@/core/field-zone.js";
 import type { Formation } from "@/core/formation.js";
 import type { Player } from "@/core/player.js";
 import type { Point } from "@/core/point.js";
-import type { ITactics, TacticsObject } from "@/interfaces/tactics.js";
+import type { ITactics, TacticsObject } from "@/interfaces/tactics.interface.js";
 
 export class Tactics<ZoneIdentifier extends string = string, FormationIdentifier extends string = string> implements ITactics {
 	constructor(

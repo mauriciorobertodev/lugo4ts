@@ -18,16 +18,16 @@ import {
 	Team as LugoTeam,
 	Team_Side,
 } from "@/generated/server.js";
-import type { IBall } from "@/interfaces/ball.js";
-import { type IGameSnapshot, ServerState } from "@/interfaces/game-snapshot.js";
-import type { IPlayer } from "@/interfaces/player.js";
-import type { IPoint, IVector2D } from "@/interfaces/positionable.js";
-import type { IShotClock } from "@/interfaces/shot-clock.js";
-import type { ITeam } from "@/interfaces/team.js";
-import type { IVelocity } from "@/interfaces/velocity.js";
+import type { IBall } from "@/interfaces/ball.interface.js";
+import type { IPlayer } from "@/interfaces/player.interface.js";
+import type { IPoint, IVector2D } from "@/interfaces/positionable.interface.js";
+import type { IShotClock } from "@/interfaces/shot-clock.interface.js";
+import { type IGameSnapshot, ServerState } from "@/interfaces/snapshot.interface.js";
+import type { ITeam } from "@/interfaces/team.interface.js";
+import type { IVelocity } from "@/interfaces/velocity.interface.js";
 
-import { intToSide, sideToInt } from "@/utils/side.js";
-import { zeroedVelocity } from "@/utils/velocity.js";
+import { intToSide, sideToInt } from "@/utils/side.utils.js";
+import { zeroedVelocity } from "@/utils/velocity.utils.js";
 
 // ------------------------------------------------------------
 // Converters

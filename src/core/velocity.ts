@@ -1,5 +1,5 @@
 import { Vector2D } from "@/core/vector.js";
-import type { IVelocity, VelocityObject } from "@/interfaces/velocity.js";
+import type { IVelocity, VelocityObject } from "@/interfaces/velocity.interface.js";
 
 export class Velocity implements IVelocity {
 	constructor(

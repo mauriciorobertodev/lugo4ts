@@ -3,8 +3,8 @@ import type { Player } from "@/core/player.js";
 import type { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 import { ErrPlayerNotFound, ErrTeamDuplicatePlayer, ErrTeamEmpty, ErrTeamInvalidScore, ErrTeamInvalidSide } from "@/errors.js";
-import type { ITeam, TeamObject } from "@/interfaces/team.js";
-import { randomElement } from "@/utils/random.js";
+import type { ITeam, TeamObject } from "@/interfaces/team.interface.js";
+import { randomElement } from "@/utils/random.utils.js";
 
 export class Team implements ITeam {
 	constructor(

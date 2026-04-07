@@ -7,11 +7,11 @@ import { Side } from "@/core/side.js";
 import type { Team } from "@/core/team.js";
 import type { Vector2D } from "@/core/vector.js";
 import type { Velocity } from "@/core/velocity.js";
-import type { EnvironmentObject, IEnvironment } from "@/interfaces/environment.js";
+import type { EnvironmentObject, IEnvironment } from "@/interfaces/environment.interface.js";
 
-import { zeroedBall } from "@/utils/ball.js";
-import { randomPlayer } from "@/utils/player.js";
-import { randomTeam } from "@/utils/team.js";
+import { zeroedBall } from "@/utils/ball.utils.js";
+import { randomPlayer } from "@/utils/player.utils.js";
+import { randomTeam } from "@/utils/team.utils.js";
 
 export class Environment implements IEnvironment {
 	private name: string = "Sem nome";

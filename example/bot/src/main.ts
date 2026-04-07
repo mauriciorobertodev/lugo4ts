@@ -1,7 +1,6 @@
 import { Mapper } from "core/mapper.js";
 
 import { Env } from "runtime/env.js";
-import { enableLogs } from "utils/logger.js";
 
 import { BotTester } from "./bot.js";
 import { MAPPER_COLS, MAPPER_ROWS, PLAYER_INITIAL_POSITIONS } from "./settings.js";

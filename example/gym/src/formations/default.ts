@@ -5,7 +5,7 @@ export class DefaultFormation extends Formation {
 		super();
 		this.setName("Formação padrão");
 		this.setType(FormationType.REGIONS);
-		this.setMapper(new Mapper(10, 6, Side.HOME));
+		this.setMapper(new Mapper(10, 6)).setViewSide(Side.HOME);
 		this.setPositionOf(1, new Point(0, 0));
 		this.setPositionOf(2, new Point(1, 1));
 		this.setPositionOf(3, new Point(2, 2));

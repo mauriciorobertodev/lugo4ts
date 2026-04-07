@@ -1,11 +1,9 @@
 import * as fs from "node:fs";
 import * as tf from "@tensorflow/tfjs-node";
-
-import { type Order, OrderSet } from "../../../../src/generated/server.js";
-import type { TrainingSession } from "../../../../src/gym/session.js";
+import type { GymSession, IGymTrainer } from "@/gym.js";
+import type { Order } from "../../../../src/generated/server.js";
 import { SPECS } from "../../../../src/index.js";
 import type { IGameInspector } from "../../../../src/interfaces/game-inspector.js";
-import type { IBotTrainer } from "../../../../src/rl/trainer.js";
 
 // ──────────────────────────────────────────────────────────────
 // Tipos
@@ -32,8 +30,7 @@ interface Exp {
 // ──────────────────────────────────────────────────────────────
 // Trainer
 // ──────────────────────────────────────────────────────────────
-export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, GoalkeeperOutput> {
-	// TensorFlow
+export class GoalkeeperCatcherTrainer implements IGymTrainer<GoalkeeperInput, GoalkeeperOutput> {
 	private model!: tf.LayersModel;
 	private target!: tf.LayersModel;
 	private memory: Exp[] = [];
@@ -83,7 +80,7 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 	}
 
 	// ───────── RL interface ─────────
-	async input(g: IGameInspector): Promise<GoalkeeperInput> {
+	async state(g: IGameInspector): Promise<GoalkeeperInput> {
 		return [
 			g.getMe().getPosition().getX() / SPECS.MAX_X_COORDINATE,
 			g.getMe().getPosition().getY() / SPECS.MAX_Y_COORDINATE,
@@ -95,7 +92,7 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 		];
 	}
 
-	async predict(inp: GoalkeeperInput): Promise<GoalkeeperOutput> {
+	async action(inp: GoalkeeperInput): Promise<GoalkeeperOutput> {
 		// ε‑greedy
 		if (Math.random() < this.ε) {
 			return Math.floor(Math.random() * 3) as GKAction;
@@ -107,7 +104,7 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 		return a;
 	}
 
-	async play(act: GKAction, g: IGameInspector): Promise<OrderSet> {
+	async play(act: GKAction, g: IGameInspector): Promise<Order[]> {
 		const orders: (Order | null)[] = [];
 		const goal = g.getDefenseGoal();
 
@@ -124,9 +121,7 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 		}
 
 		orders.push(g.makeOrderCatch()); // tenta pegar a bola
-		const set = OrderSet.create();
-		set.orders = orders.filter(Boolean) as Order[];
-		return set;
+		return orders.filter(Boolean) as Order[];
 	}
 
 	async evaluate(prev: IGameInspector, curr: IGameInspector): Promise<{ reward: number; done: boolean }> {
@@ -194,7 +189,7 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 		return { reward, done: false };
 	}
 
-	async train(session: TrainingSession) {
+	async train(session: GymSession) {
 		const BATCH = 64;
 		let step = 0;
 
@@ -207,7 +202,7 @@ export class GoalkeeperCatcherTrainer implements IBotTrainer<GoalkeeperInput, Go
 				const { input: s, output: a, reward: r, done } = await session.update();
 				// `session.update()` já moveu o jogo: o snapshot atual mudou,
 				// logo o input guardado dentro da sessão já é o s1
-				const s1 = await this.input(session.getLastSnapshot());
+				const s1 = await this.state(session.getLastSnapshot());
 
 				// grava memória
 				this.memory.push({ s: s as GoalkeeperInput, a: a as GKAction, r, s1, done });

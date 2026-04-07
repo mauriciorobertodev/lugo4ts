@@ -1,7 +1,5 @@
-import { Gym, Side } from "@/core.js";
-
-import { DummyStatue } from "@/playground.js";
-
+import { Gym } from "@/gym.js";
+import { DummyStatue, Side } from "@/index.js";
 import { EnvironmentOpponentHolder } from "./environments/opponent-holder.js";
 import { GoalkeeperCatcherTrainer } from "./trainers/goalkeeper-catch.trainer.js";
 
@@ -10,8 +8,8 @@ await trainer.init();
 
 new Gym()
 	.withServerAddress("localhost:6000")
-	.withPlayerNumber(1)
-	.withTrainingSide(Side.HOME)
+	.withTraineeNumber(1)
+	.withTraineeSide(Side.HOME)
 	.withEnvironment(() => new EnvironmentOpponentHolder())
 	.withMyBots(() => {
 		return new DummyStatue();
@@ -19,5 +17,6 @@ new Gym()
 	.withOpponentBots(() => {
 		return new DummyStatue();
 	})
-	.withTrainer(trainer)
+	.withTrainer(() => trainer)
+	.withTurnDuration(1000)
 	.start();

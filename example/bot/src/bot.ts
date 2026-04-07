@@ -1,7 +1,8 @@
-import type { GameInspector } from "../../../src/core/inspector.js";
-import { FormationFactory } from "../../../src/factories/formation.factory.js";
+import type { GameInspector } from "core/game-inspector.js";
+import type { Mapper } from "core/mapper.js";
+import type { Point } from "core/point.js";
 import type { Order } from "../../../src/generated/server.js";
-import { type Mapper, PlayerState, type Point } from "../../../src/index.js";
+import { PlayerState } from "../../../src/index.js";
 import type { IBot } from "../../../src/interfaces/bot.js";
 import { DEFENSIVE, NORMAL, OFFENSIVE } from "./settings.js";
 
@@ -103,11 +104,11 @@ export class BotTester implements IBot {
 		const fieldThird = this.mapper.getCols() / 3;
 		const ballCols = ballRegion.getCol();
 
-		let tacticPositions = FormationFactory.createFromObject(OFFENSIVE);
+		let tacticPositions = createFromObject(OFFENSIVE);
 		if (ballCols < fieldThird) {
-			tacticPositions = FormationFactory.createFromObject(DEFENSIVE);
+			tacticPositions = createFromObject(DEFENSIVE);
 		} else if (ballCols < fieldThird * 2) {
-			tacticPositions = FormationFactory.createFromObject(NORMAL);
+			tacticPositions = createFromObject(NORMAL);
 		}
 
 		const position = tacticPositions.getPositionOf(inspector.getMyNumber());

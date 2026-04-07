@@ -4,9 +4,8 @@
 		"module": "NodeNext",
 		"rootDir": "./src",
 		"outDir": "./dist",
-		"baseUrl": "./src",
 		"paths": {
-			"@/*": ["*"]
+			"@/*": ["./src/*"]
 		},
 		"declaration": true,
 		"emitDeclarationOnly": false,

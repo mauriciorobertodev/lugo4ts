@@ -12,7 +12,6 @@ import { fromLugoGameSnapshot, toLugoPoint } from "@/lugo.js";
 import { fromGameSnapshot } from "@/utils/game-inspector.js";
 import { logger } from "@/utils/logger.js";
 import { sideToInt } from "@/utils/side.js";
-
 // type KnownErrorCode =
 // 	| "ALREADY_EXISTS" // Mesma conexão grpc tentando se conectar novamente
 // 	| "UNAVAILABLE"; // Servidor indisponível

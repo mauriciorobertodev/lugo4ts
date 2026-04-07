@@ -46,9 +46,9 @@
 		"test:coverage": "vitest --coverage",
 		"proto:generate": "npx grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/@protobuf-ts/plugin/bin/protoc-gen-ts --ts_out=src/generated --grpc_out=src/generated -I protos protos/*.proto && node scripts/fix-generated-imports.mjs",
 		"proto:fix-imports": "node scripts/fix-generated-imports.mjs",
-		"format": "biome format --write .",
 		"format:check": "biome format .",
-		"lint": "biome check .",
+		"format:fix": "biome format --write .",
+		"lint:check": "biome check .",
 		"lint:fix": "biome check --write ."
 	},
 	"keywords": [

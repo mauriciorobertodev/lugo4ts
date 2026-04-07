@@ -3,7 +3,7 @@ import type { Formation } from "@/core/formation.js";
 import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 import { ErrBotInvalidNumber } from "@/errors.js";
-import { GymSession } from "@/gym/session.js";
+import { GymSession } from "@/gym/session.gym.js";
 import type { IBot } from "@/interfaces/bot.js";
 import type { IGymTrainer } from "@/interfaces/gym-trainer.js";
 import { DummyStatue } from "@/playground/dummies/statue.js";

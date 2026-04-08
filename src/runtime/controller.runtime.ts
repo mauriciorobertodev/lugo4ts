@@ -268,6 +268,7 @@ export class GameController implements IGameController {
 		const { responses } = this.broadcast.onEvent({ uuid: this.uuid });
 
 		responses.onNext((_event) => {
+			console.log("[EVENT] Novo evento recebido next:", _event);
 			// console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
 		});
 
@@ -295,13 +296,13 @@ export class GameController implements IGameController {
 				case "newPlayer":
 					if (event.event.newPlayer.player) {
 						const player = fromLugoPlayer(event.event.newPlayer.player);
-						this.listener?.("player-join", { player });
-						this.listeners["player-join"]?.map((callback) => callback({ player }));
+						this.listener?.("joined", { player });
+						this.listeners["joined"]?.map((callback) => callback({ player }));
 					}
 					break;
 				case "lostPlayer":
 					if (event.event.lostPlayer.player) {
-						this.listener?.("player-leave", {
+						this.listener?.("leaved", {
 							player: fromLugoPlayer(event.event.lostPlayer.player),
 						});
 					}
@@ -312,8 +313,8 @@ export class GameController implements IGameController {
 						newState: fromLugoGameState(event.event.stateChange.newState),
 						snapshot: event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined,
 					};
-					this.listener?.("state-changed", data);
-					this.listeners["state-changed"]?.map((callback) => callback(data));
+					this.listener?.("changed", data);
+					this.listeners["changed"]?.map((callback) => callback(data));
 					break;
 				}
 				default:

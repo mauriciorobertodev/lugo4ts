@@ -28,7 +28,7 @@ export class GymSession implements IGymSession {
 		//     await this.applyEnvironment((this.initialEnvironment = this.environmentFactory()));
 		// });
 
-		// this.remote.on('state-changed', (data) => {
+		// this.remote.on('changed', (data) => {
 		//     // console.debug('Estado do servidor alterado:', data.prevState, '->', data.newState);
 		//     if (data.newState === ServerState.LISTENING || data.newState === ServerState.READY) {
 		//         this.isListening = true;

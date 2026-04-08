@@ -3,7 +3,7 @@ import type { Player } from "@/core/player.js";
 import type { Side } from "@/core/side.js";
 import type { ServerState } from "@/interfaces/snapshot.interface.js";
 
-export type Event = "turn" | "goal" | "play" | "pause" | "over" | "player-join" | "player-leave" | "state-changed";
+export type Event = "turn" | "goal" | "play" | "pause" | "over" | "joined" | "leaved" | "changed";
 
 export type EventData = {
 	turn: { snapshot?: GameSnapshot };
@@ -11,9 +11,9 @@ export type EventData = {
 	play: null;
 	pause: null;
 	over: null;
-	"player-join": { player?: Player };
-	"player-leave": { player?: Player };
-	"state-changed": { prevState: ServerState; newState: ServerState; snapshot?: GameSnapshot };
+	joined: { player?: Player };
+	leaved: { player?: Player };
+	changed: { prevState: ServerState; newState: ServerState; snapshot?: GameSnapshot };
 };
 
 export type GenericEventListener = <K extends Event>(event: K, data: EventData[K]) => void;

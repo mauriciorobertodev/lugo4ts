@@ -1,8 +1,5 @@
-import { BotTrainer } from "@/gym/bot-trainer.js";
-import type { GymSession } from "@/gym.js";
-import type { GameInspector } from "@/index.js";
-
-import type { IBot } from "@/interfaces/bot.js";
+import type { GameInspector, IBot } from "@mauricioroberto/lugo4ts";
+import { BotTrainer, type GymSession } from "@mauricioroberto/lugo4ts/gym";
 
 import { MyBot } from "../bot.js";
 

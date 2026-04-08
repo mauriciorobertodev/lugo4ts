@@ -1,4 +1,4 @@
-import { Formation, FormationType, Mapper, Point, Side } from "@/index.js";
+import { Formation, FormationType, Mapper, Point, Side } from "@mauricioroberto/lugo4ts";
 
 export class DefaultFormation extends Formation {
 	constructor() {

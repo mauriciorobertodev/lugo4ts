@@ -1,7 +1,4 @@
-import type { Order } from "@/generated/server.js";
-import type { GameInspector, PlayerState } from "@/index.js";
-
-import type { IBot } from "@/interfaces/bot.js";
+import type { GameInspector, IBot, Order, PlayerState } from "@mauricioroberto/lugo4ts";
 
 export class MyBot implements IBot {
 	onHolding(_inspector: GameInspector): Order[] {

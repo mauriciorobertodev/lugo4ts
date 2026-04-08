@@ -1,10 +1,4 @@
-import type { GameInspector } from "core/game-inspector.js";
-import type { Mapper } from "core/mapper.js";
-import type { Point } from "core/point.js";
-import { fromPointObject } from "utils/point.js";
-import type { Order } from "../../../src/generated/server.js";
-import { PlayerState } from "../../../src/index.js";
-import type { IBot } from "../../../src/interfaces/bot.js";
+import { type GameInspector, type IBot, type Mapper, type Order, type Point, PlayerState } from "@mauricioroberto/lugo4ts";
 import { DEFENSIVE, NORMAL, OFFENSIVE } from "./settings.js";
 
 export class BotTester implements IBot {
@@ -105,15 +99,15 @@ export class BotTester implements IBot {
 		const fieldThird = this.mapper.getCols() / 3;
 		const ballCols = ballRegion.getCol();
 
-		let tacticPositions = fromPointObject(OFFENSIVE);
+		let tacticPositions = OFFENSIVE;
 		if (ballCols < fieldThird) {
-			tacticPositions = fromPointObject(DEFENSIVE);
+			tacticPositions = DEFENSIVE;
 		} else if (ballCols < fieldThird * 2) {
-			tacticPositions = fromPointObject(NORMAL);
+			tacticPositions = NORMAL;
 		}
 
-		const position = tacticPositions.getPositionOf(inspector.getMyNumber());
-		const expectedRegion = mapper.getRegion(position.getX(), position.getY());
+		const position = tacticPositions[inspector.getMyNumber()];
+		const expectedRegion = mapper.getRegion(position.col, position.row);
 
 		return expectedRegion.getCenter();
 	}

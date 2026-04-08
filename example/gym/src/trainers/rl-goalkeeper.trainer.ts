@@ -1,8 +1,7 @@
 import * as fs from "node:fs";
 import * as tf from "@tensorflow/tfjs-node";
-import type { Order } from "@/generated/server.js";
-import type { GymSession, IGymTrainer } from "@/gym.js";
-import { type GameInspector, SPECS } from "@/index.js";
+import { type GameInspector, type Order, SPECS } from "@mauricioroberto/lugo4ts";
+import type { GymSession, IGymTrainer } from "@mauricioroberto/lugo4ts/gym";
 
 // ──────────────────────────────────────────────────────────────
 // Tipos

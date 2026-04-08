@@ -1,5 +1,5 @@
-import { Gym } from "@/gym.js";
-import { DummyStatue, Side } from "@/index.js";
+import { DummyStatue, Side } from "@mauricioroberto/lugo4ts";
+import { Gym } from "@mauricioroberto/lugo4ts/gym";
 import { EnvironmentOpponentHolder } from "./environments/opponent-holder.js";
 import { GoalkeeperCatcherTrainer } from "./trainers/goalkeeper-catch.trainer.js";
 

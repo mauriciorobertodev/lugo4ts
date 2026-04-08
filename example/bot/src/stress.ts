@@ -1,6 +1,5 @@
-import { Mapper } from "core/mapper.js";
-import { Side } from "core/side.js";
-import { BotPerformanceTester } from "stress.js";
+import { Mapper, Side } from "@mauricioroberto/lugo4ts";
+import { BotPerformanceTester } from "@mauricioroberto/lugo4ts/stress";
 import { BotTester } from "./bot.js";
 import { MAPPER_COLS, MAPPER_ROWS } from "./settings.js";
 

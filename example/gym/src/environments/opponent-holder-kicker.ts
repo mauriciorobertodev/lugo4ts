@@ -1,4 +1,4 @@
-import { Environment, fieldCenterPoint, randomBall, randomInitialPosition, randomPlayer, randomTeam, Side, zeroedVector } from "@/index.js";
+import { Environment, fieldCenterPoint, randomBall, randomInitialPosition, randomPlayer, randomTeam, Side, zeroedVector } from "@mauricioroberto/lugo4ts";
 
 export class EnvironmentOpponentHolder extends Environment {
 	constructor(side: Side = Side.HOME) {

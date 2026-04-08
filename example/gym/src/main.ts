@@ -1,4 +1,4 @@
-import { logger, randomGameInspectorInOnHolding, Side } from "@/index.js";
+import { logger, randomGameInspectorInOnHolding, Side } from "@mauricioroberto/lugo4ts";
 
 logger.enable();
 

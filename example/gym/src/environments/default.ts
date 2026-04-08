@@ -1,4 +1,4 @@
-import { Environment, randomPlayer, randomTeam, Side, zeroedBall } from "@/index.js";
+import { Environment, randomPlayer, randomTeam, Side, zeroedBall } from "@mauricioroberto/lugo4ts";
 
 import { DefaultFormation } from "../formations/default.js";
 

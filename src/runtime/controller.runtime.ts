@@ -102,7 +102,7 @@ export class GameController implements IGameController {
 	}
 
 	async pause(): Promise<GameSnapshot | null> {
-		return this.play();
+		return await this.play();
 	}
 
 	async getGameSnapshot(): Promise<GameSnapshot | null> {

@@ -7,9 +7,9 @@ export type Event = "goal" | "play" | "pause" | "over" | "joined" | "leaved" | "
 
 export type EventData = {
 	goal: { side: Side };
-	play: null;
-	pause: null;
-	over: null;
+	play: { snapshot?: GameSnapshot };
+	pause: { snapshot?: GameSnapshot };
+	over: { snapshot?: GameSnapshot };
 	joined: { player?: Player };
 	leaved: { player?: Player };
 	changed: { prevState: ServerState; newState: ServerState; snapshot?: GameSnapshot };

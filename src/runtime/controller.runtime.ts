@@ -282,16 +282,19 @@ export class GameController implements IGameController {
 		const { responses } = this.broadcast.onEvent({ uuid: this.uuid });
 
 		responses.onNext((_event) => {
-			console.log("[EVENT] Novo evento recebido next:", _event);
+			// console.log("[EVENT] Novo evento recebido next:", _event);
 			// console.log('[EVENT]', event?.gameSnapshot?.turn, event?.event?.oneofKind);
 		});
 
 		responses.onMessage((event: GameEvent) => {
 			switch (event.event?.oneofKind) {
-				case "breakpoint":
-					this.listener?.("pause", null);
-					this.listeners.pause?.map((callback) => callback(null));
+				case "breakpoint": {
+					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
+					this.listener?.("pause", { snapshot });
+					this.listeners.pause?.map((callback) => callback({ snapshot }));
+
 					break;
+				}
 				case "goal": {
 					const side = intToSide(event.event.goal.side);
 					this.listener?.("goal", { side });
@@ -299,27 +302,35 @@ export class GameController implements IGameController {
 
 					break;
 				}
-				case "debugReleased":
-					this.listener?.("play", null);
-					this.listeners.play?.map((callback) => callback(null));
+				case "debugReleased": {
+					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
+					this.listener?.("play", { snapshot });
+					this.listeners.play?.map((callback) => callback({ snapshot }));
+
 					break;
-				case "gameOver":
-					this.listener?.("over", null);
-					this.listeners.over?.map((callback) => callback(null));
+				}
+				case "gameOver": {
+					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
+					this.listener?.("over", { snapshot });
+					this.listeners.over?.map((callback) => callback({ snapshot }));
+
 					break;
+				}
 				case "newPlayer":
 					if (event.event.newPlayer.player) {
 						const player = fromLugoPlayer(event.event.newPlayer.player);
 						this.listener?.("joined", { player });
 						this.listeners["joined"]?.map((callback) => callback({ player }));
 					}
+
 					break;
 				case "lostPlayer":
 					if (event.event.lostPlayer.player) {
-						this.listener?.("leaved", {
-							player: fromLugoPlayer(event.event.lostPlayer.player),
-						});
+						const player = fromLugoPlayer(event.event.lostPlayer.player);
+						this.listener?.("leaved", { player });
+						this.listeners["leaved"]?.map((callback) => callback({ player }));
 					}
+
 					break;
 				case "stateChange": {
 					const data = {
@@ -329,6 +340,7 @@ export class GameController implements IGameController {
 					};
 					this.listener?.("changed", data);
 					this.listeners["changed"]?.map((callback) => callback(data));
+
 					break;
 				}
 				default:

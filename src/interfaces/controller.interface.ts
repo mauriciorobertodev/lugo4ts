@@ -8,10 +8,10 @@ import type { IGameSnapshot } from "@/interfaces/snapshot.interface.js";
 import type { IVelocity } from "@/interfaces/velocity.interface.js";
 
 export interface IGameController {
-	nextTurn(): Promise<void>;
-	nextOrder(): Promise<void>;
-	play(): Promise<void>;
-	pause(): Promise<void>;
+	nextTurn(): Promise<IGameSnapshot | null>;
+	nextOrder(): Promise<IGameSnapshot | null>;
+	play(): Promise<IGameSnapshot | null>;
+	pause(): Promise<IGameSnapshot | null>;
 	getGameSnapshot(): Promise<IGameSnapshot | null>;
 	resumeListeningPhase(): Promise<void>;
 	resetPlayerPositions(): Promise<IGameSnapshot>;

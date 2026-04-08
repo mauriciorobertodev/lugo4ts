@@ -3,10 +3,9 @@ import type { Player } from "@/core/player.js";
 import type { Side } from "@/core/side.js";
 import type { ServerState } from "@/interfaces/snapshot.interface.js";
 
-export type Event = "turn" | "goal" | "play" | "pause" | "over" | "joined" | "leaved" | "changed";
+export type Event = "goal" | "play" | "pause" | "over" | "joined" | "leaved" | "changed";
 
 export type EventData = {
-	turn: { snapshot?: GameSnapshot };
 	goal: { side: Side };
 	play: null;
 	pause: null;

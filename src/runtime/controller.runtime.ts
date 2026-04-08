@@ -59,35 +59,49 @@ export class GameController implements IGameController {
 		return this.setTeamFormation(Side.AWAY, formation);
 	}
 
-	async nextTurn(): Promise<void> {
-		try {
-			await this.remote.nextTurn({});
-			logger.debug("[CONTROLLER] Turn avançado com sucesso");
-		} catch (error) {
-			logger.error("[CONTROLLER] ❌ Erro ao avançar turno");
-			console.error(error);
-		}
+	async nextTurn(): Promise<GameSnapshot | null> {
+		return new Promise<GameSnapshot | null>(async (resolve, reject) => {
+			try {
+				const call = await this.remote.nextTurn({});
+				const lugoSnapshot = call.response.gameSnapshot;
+				resolve(lugoSnapshot ? fromLugoGameSnapshot(lugoSnapshot) : null);
+			} catch (error) {
+				logger.error("[CONTROLLER] ❌ Erro ao avançar turno");
+				console.error(error);
+				reject(error);
+			}
+		});
 	}
 
-	async nextOrder(): Promise<void> {
-		try {
-			await this.remote.nextOrder({});
-		} catch (error) {
-			logger.error("[CONTROLLER] ❌ Erro ao avançar ordem");
-			console.error(error);
-		}
+	async nextOrder(): Promise<GameSnapshot | null> {
+		return new Promise<GameSnapshot | null>(async (resolve, reject) => {
+			try {
+				const call = await this.remote.nextOrder({});
+				const lugoSnapshot = call.response.gameSnapshot;
+				resolve(lugoSnapshot ? fromLugoGameSnapshot(lugoSnapshot) : null);
+			} catch (error) {
+				logger.error("[CONTROLLER] ❌ Erro ao avançar ordem");
+				console.error(error);
+				reject(error);
+			}
+		});
 	}
 
-	async play(): Promise<void> {
-		try {
-			await this.remote.pauseOrResume({});
-		} catch (error) {
-			logger.error("[CONTROLLER] ❌ Erro ao iniciar jogo");
-			console.error(error);
-		}
+	async play(): Promise<GameSnapshot | null> {
+		return new Promise<GameSnapshot | null>(async (resolve, reject) => {
+			try {
+				const call = await this.remote.getGameSnapshot({});
+				const lugoSnapshot = call.response.gameSnapshot;
+				resolve(lugoSnapshot ? fromLugoGameSnapshot(lugoSnapshot) : null);
+			} catch (error) {
+				logger.error("[CONTROLLER] ❌ Erro ao iniciar jogo");
+				console.error(error);
+				reject(error);
+			}
+		});
 	}
 
-	async pause(): Promise<void> {
+	async pause(): Promise<GameSnapshot | null> {
 		return this.play();
 	}
 

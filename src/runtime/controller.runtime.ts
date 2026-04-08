@@ -90,7 +90,7 @@ export class GameController implements IGameController {
 	async play(): Promise<GameSnapshot | null> {
 		return new Promise<GameSnapshot | null>(async (resolve, reject) => {
 			try {
-				const call = await this.remote.getGameSnapshot({});
+				const call = await this.remote.pauseOrResume({});
 				const lugoSnapshot = call.response.gameSnapshot;
 				resolve(lugoSnapshot ? fromLugoGameSnapshot(lugoSnapshot) : null);
 			} catch (error) {

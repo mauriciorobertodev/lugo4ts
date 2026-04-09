@@ -22,9 +22,10 @@ export interface IGameController {
 	applyEnvironment(environment: Environment): Promise<IGameSnapshot>;
 
 	addPlayer(player: IPlayer): Promise<IGameSnapshot>;
-	setPlayerPosition(player: IPlayer, position: IPoint): Promise<IGameSnapshot>;
-	setPlayerVelocity(player: IPlayer, velocity: IVelocity): Promise<IGameSnapshot>;
-	setPlayerSpeed(player: IPlayer, speed: number): Promise<IGameSnapshot>;
+	setPlayerPosition(side: Side, number: number, position: IPoint): Promise<IGameSnapshot>;
+	setPlayersPositions(positions: { side: Side; number: number; position: IPoint }[]): Promise<IGameSnapshot>;
+	setPlayerVelocity(side: Side, number: number, velocity: IVelocity): Promise<IGameSnapshot>;
+	setPlayerSpeed(side: Side, number: number, speed: number): Promise<IGameSnapshot>;
 
 	setBall(ball: IBall): Promise<IGameSnapshot>;
 	setBallPosition(position: IPoint): Promise<IGameSnapshot>;

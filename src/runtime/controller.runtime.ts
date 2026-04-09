@@ -42,13 +42,15 @@ export class GameController implements IGameController {
 	}
 
 	async setTeamFormation(side: Side, formation: Formation): Promise<void> {
-		Object.entries(formation.toArray()).forEach(([number, position]) => {
-			this.remote.setPlayerProperties({
-				number: parseInt(number, 10),
-				side: sideToInt(side),
-				position: toLugoPoint(position),
-			});
-		});
+		await Promise.all(
+			Object.entries(formation.toArray()).map(async ([number, position]) => {
+				await this.remote.setPlayerProperties({
+					number: parseInt(number, 10),
+					side: sideToInt(side),
+					position: toLugoPoint(position),
+				});
+			}),
+		);
 	}
 
 	async setHomeTeamFormation(formation: Formation): Promise<void> {
@@ -157,14 +159,16 @@ export class GameController implements IGameController {
 		});
 	}
 
-	async setPlayerPosition(player: Player, position: Point): Promise<GameSnapshot> {
-		return new Promise<GameSnapshot>(async (_resolve, reject) => {
+	async setPlayerPosition(side: Side, number: number, position: Point): Promise<GameSnapshot> {
+		return new Promise<GameSnapshot>(async (resolve, reject) => {
 			try {
-				await this.remote.setPlayerProperties({
-					number: player.getNumber(),
-					side: sideToInt(player.getTeamSide()),
+				const res = await this.remote.setPlayerProperties({
+					number: number,
+					side: sideToInt(side),
 					position: toLugoPoint(position),
 				});
+				const lugoSnapshot = res.response.gameSnapshot;
+				return resolve(fromLugoGameSnapshot(lugoSnapshot!));
 			} catch (error) {
 				logger.error("[CONTROLLER] ❌ Erro ao definir posição do jogador");
 				console.error(error);
@@ -173,12 +177,34 @@ export class GameController implements IGameController {
 		});
 	}
 
-	async setPlayerVelocity(player: Player, velocity: Velocity): Promise<GameSnapshot> {
+	async setPlayersPositions(positions: { side: Side; number: number; position: Point }[]): Promise<GameSnapshot> {
+		return new Promise<GameSnapshot>(async (resolve, reject) => {
+			try {
+				for (const { side, number, position } of positions) {
+					await this.remote.setPlayerProperties({
+						number: number,
+						side: sideToInt(side),
+						position: toLugoPoint(position),
+					});
+				}
+
+				const res = await this.remote.getGameSnapshot({});
+				const lugoSnapshot = res.response.gameSnapshot;
+				resolve(fromLugoGameSnapshot(lugoSnapshot!));
+			} catch (error) {
+				logger.error("[CONTROLLER] ❌ Erro ao definir posições dos jogadores");
+				console.error(error);
+				reject(error);
+			}
+		});
+	}
+
+	async setPlayerVelocity(side: Side, number: number, velocity: Velocity): Promise<GameSnapshot> {
 		return new Promise<GameSnapshot>(async (resolve, reject) => {
 			try {
 				const res = await this.remote.setPlayerProperties({
-					number: player.getNumber(),
-					side: sideToInt(player.getTeamSide()),
+					number: number,
+					side: sideToInt(side),
 					velocity: toLugoVelocity(velocity),
 				});
 				const lugoSnapshot = res.response.gameSnapshot;
@@ -191,12 +217,12 @@ export class GameController implements IGameController {
 		});
 	}
 
-	async setPlayerSpeed(player: Player, speed: number): Promise<GameSnapshot> {
+	async setPlayerSpeed(side: Side, number: number, speed: number): Promise<GameSnapshot> {
 		return new Promise<GameSnapshot>(async (resolve, reject) => {
 			try {
 				const res = await this.remote.setPlayerProperties({
-					number: player.getNumber(),
-					side: sideToInt(player.getTeamSide()),
+					number: number,
+					side: sideToInt(side),
 					velocity: { speed },
 				});
 				const lugoSnapshot = res.response.gameSnapshot;

@@ -129,8 +129,10 @@ export function toLugoTeam(team: ITeam): LugoTeam {
 	});
 }
 
-export function fromLugoGameState(state: GameSnapshot_State): ServerState {
+export function fromLugoGameState(state: -1 | GameSnapshot_State): ServerState {
 	switch (state) {
+		case -1:
+			return ServerState.WAITING;
 		case GameSnapshot_State.WAITING:
 			return ServerState.WAITING;
 		case GameSnapshot_State.GET_READY:

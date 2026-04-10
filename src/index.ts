@@ -1,7 +1,6 @@
 export * from "@/core/ball.js";
 export * from "@/core/compass.js";
 export * from "@/core/environment.js";
-export * from "@/core/environment.js";
 export * from "@/core/field-zone.js";
 export * from "@/core/formation.js";
 export * from "@/core/game-inspector.js";
@@ -37,6 +36,7 @@ export * from "@/playground/dummies/kicker.js";
 export * from "@/playground/dummies/statue.js";
 export * from "@/playground/formations/start-inline.js";
 export * from "@/utils/ball.utils.js";
+export * from "@/utils/environment.utils.js";
 export * from "@/utils/field.utils.js";
 export * from "@/utils/field-zone.utils.js";
 export * from "@/utils/formation.utils.js";

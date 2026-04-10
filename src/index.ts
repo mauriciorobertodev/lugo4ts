@@ -21,6 +21,7 @@ export * from "@/errors.js";
 export type { Order } from "@/generated/server.js";
 export type { BallObject } from "@/interfaces/ball.interface.js";
 export type { IBot } from "@/interfaces/bot.interface.js";
+export type { EnvironmentObject } from "@/interfaces/environment.interface.js";
 export type { FieldZoneObject } from "@/interfaces/field-zone.interface.js";
 export { type FormationObject, FormationType } from "@/interfaces/formation.interface.js";
 export type { GameInspectorObject, IGameInspector } from "@/interfaces/inspector.interface.js";

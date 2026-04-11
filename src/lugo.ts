@@ -28,6 +28,8 @@ import type { IVelocity } from "@/interfaces/velocity.interface.js";
 
 import { intToSide, sideToInt } from "@/utils/side.utils.js";
 import { zeroedVelocity } from "@/utils/velocity.utils.js";
+import { EventGameOver_EndingReason } from "./generated/broadcast.js";
+import { GameOverReason } from "./runtime.js";
 
 // ------------------------------------------------------------
 // Converters
@@ -147,6 +149,23 @@ export function fromLugoGameState(state: -1 | GameSnapshot_State): ServerState {
 			return ServerState.OVER;
 		default:
 			throw new Error(`Unknown game state: ${state}`);
+	}
+}
+
+export function fromLugoGameOverReason(reason: EventGameOver_EndingReason): GameOverReason {
+	switch (reason) {
+		case EventGameOver_EndingReason.EXTERNAL_REQUEST:
+			return GameOverReason.EXTERNAL_REQUEST;
+		case EventGameOver_EndingReason.KNOCKOUT:
+			return GameOverReason.KNOCKOUT;
+		case EventGameOver_EndingReason.NO_ENOUGH_PLAYER:
+			return GameOverReason.NO_ENOUGH_PLAYER;
+		case EventGameOver_EndingReason.TIME_IS_OVER:
+			return GameOverReason.TIME_IS_OVER;
+		case EventGameOver_EndingReason.WAITING_EXPIRED:
+			return GameOverReason.WAITING_EXPIRED;
+		default:
+			throw new Error(`Unknown ending reason: ${reason}`);
 	}
 }
 

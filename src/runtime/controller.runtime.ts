@@ -13,8 +13,17 @@ import { BroadcastClient } from "@/generated/broadcast.client.js";
 import type { GameEvent, GameSetup } from "@/generated/broadcast.js";
 import { RemoteClient } from "@/generated/remote.client.js";
 import { GameProperties } from "@/generated/remote.js";
-import type { GameState, IGameController } from "@/interfaces/controller.interface.js";
-import { fromLugoGameSnapshot, fromLugoGameState, fromLugoPlayer, toLugoPlayer, toLugoPoint, toLugoShotClock, toLugoVelocity } from "@/lugo.js";
+import { GameState, type IGameController } from "@/interfaces/controller.interface.js";
+import {
+	fromLugoGameOverReason,
+	fromLugoGameSnapshot,
+	fromLugoGameState,
+	fromLugoPlayer,
+	toLugoPlayer,
+	toLugoPoint,
+	toLugoShotClock,
+	toLugoVelocity,
+} from "@/lugo.js";
 import type { Event, EventData, GenericEventListener } from "@/runtime/events.runtime.js";
 import { logger } from "@/utils/logger.utils.js";
 // import { danger, debug, info, success, warn } from '@/utils/logger.js';
@@ -24,7 +33,7 @@ export class GameController implements IGameController {
 	private uuid: string = crypto.randomUUID();
 	private remote: RemoteClient;
 	private broadcast: BroadcastClient;
-	private state: GameState = "waiting";
+	private state: GameState = GameState.WAITING;
 	private snapshot: GameSnapshot | null = null;
 
 	private listeners: { [K in Event]?: ((data: EventData[K]) => void)[] } = {};
@@ -334,7 +343,7 @@ export class GameController implements IGameController {
 		responses.onMessage((event: GameEvent) => {
 			switch (event.event?.oneofKind) {
 				case "breakpoint": {
-					this.state = "paused";
+					this.state = GameState.PAUSED;
 
 					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 					this.listener?.("game:paused", { snapshot });
@@ -351,7 +360,7 @@ export class GameController implements IGameController {
 					break;
 				}
 				case "debugReleased": {
-					this.state = "playing";
+					this.state = GameState.PLAYING;
 
 					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 					this.listener?.("game:playing", { snapshot });
@@ -360,11 +369,12 @@ export class GameController implements IGameController {
 					break;
 				}
 				case "gameOver": {
-					this.state = "over";
+					this.state = GameState.OVER;
 
 					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
-					this.listener?.("game:over", { snapshot });
-					this.listeners["game:over"]?.map((callback) => callback({ snapshot }));
+					const reason = fromLugoGameOverReason(event.event.gameOver.reason);
+					this.listener?.("game:over", { snapshot, reason });
+					this.listeners["game:over"]?.map((callback) => callback({ snapshot, reason }));
 
 					break;
 				}

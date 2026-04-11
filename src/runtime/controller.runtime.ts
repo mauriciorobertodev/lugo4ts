@@ -13,7 +13,7 @@ import { BroadcastClient } from "@/generated/broadcast.client.js";
 import type { GameEvent, GameSetup } from "@/generated/broadcast.js";
 import { RemoteClient } from "@/generated/remote.client.js";
 import { GameProperties } from "@/generated/remote.js";
-import type { IGameController } from "@/interfaces/controller.interface.js";
+import type { GameState, IGameController } from "@/interfaces/controller.interface.js";
 import { fromLugoGameSnapshot, fromLugoGameState, fromLugoPlayer, toLugoPlayer, toLugoPoint, toLugoShotClock, toLugoVelocity } from "@/lugo.js";
 import type { Event, EventData, GenericEventListener } from "@/runtime/events.runtime.js";
 import { logger } from "@/utils/logger.utils.js";
@@ -24,6 +24,8 @@ export class GameController implements IGameController {
 	private uuid: string = crypto.randomUUID();
 	private remote: RemoteClient;
 	private broadcast: BroadcastClient;
+	private state: GameState = "waiting";
+	private snapshot: GameSnapshot | null = null;
 
 	private listeners: { [K in Event]?: ((data: EventData[K]) => void)[] } = {};
 	private listener: GenericEventListener | null = null;
@@ -41,27 +43,44 @@ export class GameController implements IGameController {
 		this.broadcast = new BroadcastClient(transport);
 	}
 
-	async setTeamFormation(side: Side, formation: Formation): Promise<void> {
+	public getState(): GameState {
+		return this.state;
+	}
+
+	public getSnapshot(): GameSnapshot | null {
+		return this.snapshot;
+	}
+
+	public async setTeamFormation(side: Side, formation: Formation): Promise<GameSnapshot> {
+		let snapshot: GameSnapshot | null = null;
 		await Promise.all(
 			Object.entries(formation.toArray()).map(async ([number, position]) => {
-				await this.remote.setPlayerProperties({
+				const call = await this.remote.setPlayerProperties({
 					number: parseInt(number, 10),
 					side: sideToInt(side),
 					position: toLugoPoint(position),
 				});
+
+				if (call.response.gameSnapshot) {
+					console.debug(`[CONTROLLER] ✅ Posição do jogador ${number} do lado ${side} definida para (${position.getX()}, ${position.getY()})`);
+					snapshot = fromLugoGameSnapshot(call.response.gameSnapshot);
+				} else {
+					logger.error(`[CONTROLLER] ❌ Erro ao definir posição do jogador ${number} do lado ${side}`);
+				}
 			}),
 		);
+		return snapshot!;
 	}
 
-	async setHomeTeamFormation(formation: Formation): Promise<void> {
+	public async setHomeTeamFormation(formation: Formation): Promise<GameSnapshot> {
 		return this.setTeamFormation(Side.HOME, formation);
 	}
 
-	async setAwayTeamFormation(formation: Formation): Promise<void> {
+	public async setAwayTeamFormation(formation: Formation): Promise<GameSnapshot> {
 		return this.setTeamFormation(Side.AWAY, formation);
 	}
 
-	async nextTurn(): Promise<GameSnapshot | null> {
+	public async nextTurn(): Promise<GameSnapshot | null> {
 		return new Promise<GameSnapshot | null>(async (resolve, reject) => {
 			try {
 				const call = await this.remote.nextTurn({});
@@ -315,57 +334,64 @@ export class GameController implements IGameController {
 		responses.onMessage((event: GameEvent) => {
 			switch (event.event?.oneofKind) {
 				case "breakpoint": {
+					this.state = "paused";
+
 					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
-					this.listener?.("pause", { snapshot });
-					this.listeners.pause?.map((callback) => callback({ snapshot }));
+					this.listener?.("game:paused", { snapshot });
+					this.listeners["game:paused"]?.map((callback) => callback({ snapshot }));
 
 					break;
 				}
 				case "goal": {
 					const side = intToSide(event.event.goal.side);
-					this.listener?.("goal", { side });
-					this.listeners.goal?.map((callback) => callback({ side }));
+					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
+					this.listener?.("game:goal", { side, snapshot });
+					this.listeners["game:goal"]?.map((callback) => callback({ side, snapshot }));
 
 					break;
 				}
 				case "debugReleased": {
+					this.state = "playing";
+
 					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
-					this.listener?.("play", { snapshot });
-					this.listeners.play?.map((callback) => callback({ snapshot }));
+					this.listener?.("game:playing", { snapshot });
+					this.listeners["game:playing"]?.map((callback) => callback({ snapshot }));
 
 					break;
 				}
 				case "gameOver": {
+					this.state = "over";
+
 					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
-					this.listener?.("over", { snapshot });
-					this.listeners.over?.map((callback) => callback({ snapshot }));
+					this.listener?.("game:over", { snapshot });
+					this.listeners["game:over"]?.map((callback) => callback({ snapshot }));
 
 					break;
 				}
 				case "newPlayer":
 					if (event.event.newPlayer.player) {
 						const player = fromLugoPlayer(event.event.newPlayer.player);
-						this.listener?.("joined", { player });
-						this.listeners["joined"]?.map((callback) => callback({ player }));
+						const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
+						this.listener?.("game:joined", { player, snapshot });
+						this.listeners["game:joined"]?.map((callback) => callback({ player, snapshot }));
 					}
 
 					break;
 				case "lostPlayer":
 					if (event.event.lostPlayer.player) {
 						const player = fromLugoPlayer(event.event.lostPlayer.player);
-						this.listener?.("leaved", { player });
-						this.listeners["leaved"]?.map((callback) => callback({ player }));
+						const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
+						this.listener?.("game:leaved", { player, snapshot });
+						this.listeners["game:leaved"]?.map((callback) => callback({ player, snapshot }));
 					}
 
 					break;
 				case "stateChange": {
-					const data = {
-						prevState: fromLugoGameState(event.event.stateChange.previousState),
-						newState: fromLugoGameState(event.event.stateChange.newState),
-						snapshot: event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined,
-					};
-					this.listener?.("changed", data);
-					this.listeners["changed"]?.map((callback) => callback(data));
+					const prevState = fromLugoGameState(event.event.stateChange.previousState);
+					const newState = fromLugoGameState(event.event.stateChange.newState);
+					const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
+					this.listener?.("game:changed", { prevState, newState, snapshot });
+					this.listeners["game:changed"]?.map((callback) => callback({ prevState, newState, snapshot }));
 
 					break;
 				}
@@ -377,13 +403,21 @@ export class GameController implements IGameController {
 		responses.onError((err) => {
 			logger.error("[EVENT] Erro no stream de eventos:");
 			console.error(err);
+			this.listener?.("stream:error", { error: err.message });
+			this.listeners["stream:error"]?.map((callback) => callback({ error: err.message }));
 		});
 
 		responses.onComplete(() => {
 			logger.warn("[EVENT] ⚠️ Stream finalizada.");
+			this.listener?.("stream:ended", null);
+			this.listeners["stream:ended"]?.map((callback) => callback(null));
+			// Optionally, you can attempt to restart the stream here
+			// this.setupEventListeners();
 		});
 
 		logger.debug("[EVENT] ✅ Stream iniciado");
+		this.listener?.("stream:started", null);
+		this.listeners["stream:started"]?.map((callback) => callback(null));
 	}
 
 	async startGame(): Promise<GameSetup> {
@@ -478,7 +512,7 @@ export class GameController implements IGameController {
 		});
 	}
 
-	setTurn(turn: number): Promise<GameSnapshot> {
+	public setTurn(turn: number): Promise<GameSnapshot> {
 		return new Promise<GameSnapshot>(async (resolve, reject) => {
 			try {
 				const properties = GameProperties.create();

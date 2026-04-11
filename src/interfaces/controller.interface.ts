@@ -7,7 +7,10 @@ import type { IPoint } from "@/interfaces/positionable.interface.js";
 import type { IGameSnapshot } from "@/interfaces/snapshot.interface.js";
 import type { IVelocity } from "@/interfaces/velocity.interface.js";
 
+export type GameState = "waiting" | "playing" | "paused" | "over";
+
 export interface IGameController {
+	getState(): GameState;
 	nextTurn(): Promise<IGameSnapshot | null>;
 	nextOrder(): Promise<IGameSnapshot | null>;
 	play(): Promise<IGameSnapshot | null>;
@@ -32,7 +35,7 @@ export interface IGameController {
 	setBallVelocity(velocity: IVelocity): Promise<IGameSnapshot>;
 	setBallSpeed(speed: number): Promise<IGameSnapshot>;
 
-	setTeamFormation(side: Side, formation: IFormation): Promise<void>;
-	setHomeTeamFormation(formation: IFormation): Promise<void>;
-	setAwayTeamFormation(formation: IFormation): Promise<void>;
+	setTeamFormation(side: Side, formation: IFormation): Promise<IGameSnapshot>;
+	setHomeTeamFormation(formation: IFormation): Promise<IGameSnapshot>;
+	setAwayTeamFormation(formation: IFormation): Promise<IGameSnapshot>;
 }

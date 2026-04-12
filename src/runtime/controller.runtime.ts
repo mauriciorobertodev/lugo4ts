@@ -45,6 +45,10 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	private attempts = 0;
 	private retryTimer: NodeJS.Timeout | null = null;
+	private retryTicker: NodeJS.Timeout | null = null;
+	private isConnecting = false;
+	private isConnected = false;
+	private activeConnectionId = 0;
 
 	private listeners: { [K in Event<T>]?: ((data: EventData<T, K>) => void)[] } = {};
 	private listener: GenericEventListener<T> | null = null;
@@ -318,7 +322,23 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 	}
 
 	public async connect(config?: RetryConfig): Promise<void> {
+		if (this.isConnecting) {
+			logger.warn("[CONTROLLER] ⏳ Conexão já em andamento, ignorando nova tentativa.");
+			return;
+		}
+
+		if (this.isConnected) {
+			logger.warn("[CONTROLLER] 🔌 Já existe uma conexão ativa, ignorando nova tentativa.");
+			return;
+		}
+
+		this.clearRetrySchedule();
+		this.isConnecting = true;
+		const connectionId = ++this.activeConnectionId;
+
 		try {
+			logger.info(`[CONTROLLER] 🔌 Iniciando conexão #${connectionId}...`);
+
 			const { responses } = this.broadcast.onEvent({ uuid: this.uuid });
 
 			responses.onNext((_event) => {
@@ -399,6 +419,13 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 			});
 
 			responses.onError((err) => {
+				if (connectionId !== this.activeConnectionId) {
+					logger.warn(`[CONTROLLER] Ignorando erro de uma conexão antiga (#${connectionId}).`);
+					return;
+				}
+
+				this.isConnecting = false;
+				this.isConnected = false;
 				logger.error("[EVENT] Erro no stream de eventos:");
 				console.error(err);
 
@@ -412,16 +439,37 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 			});
 
 			responses.onComplete(() => {
+				if (connectionId !== this.activeConnectionId) {
+					logger.warn(`[CONTROLLER] Ignorando finalização de uma conexão antiga (#${connectionId}).`);
+					return;
+				}
+
+				this.isConnecting = false;
+				this.isConnected = false;
 				logger.warn("[EVENT] ⚠️ Stream finalizada.");
 				this.emitCore("connection:ended", null);
+				if (config?.auto ?? true) {
+					this.handleRetry(config);
+				}
 			});
 
+			this.isConnecting = false;
+			this.isConnected = true;
+			this.attempts = 0;
 			logger.debug("[EVENT] ✅ Stream iniciado");
 			this.emitCore("connection:started", {
 				setup: await this.getGameSetup(),
 				snapshot: (await this.getGameSnapshot())?.toObject(),
 			});
 		} catch (err) {
+			if (connectionId !== this.activeConnectionId) {
+				logger.warn(`[CONTROLLER] Ignorando falha de inicialização de uma conexão antiga (#${connectionId}).`);
+				return;
+			}
+
+			this.isConnecting = false;
+			this.isConnected = false;
+
 			if (!(config?.auto ?? true)) {
 				logger.error("[CONTROLLER] ❌ Erro ao conectar e auto-retry desativado, não tentando reconectar.");
 				this.emitCore("connection:error", { error: err instanceof Error ? err.message : String(err) });
@@ -435,39 +483,54 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 	private handleRetry(config?: RetryConfig) {
 		const attempts = config?.attempts ?? Infinity;
 		const delay = config?.delay ?? 5000;
+		const nextAttempt = this.attempts + 1;
 
-		if (this.attempts >= attempts) {
+		if (this.retryTimer) {
+			logger.warn("[CONTROLLER] ⏳ Já existe uma reconexão agendada, ignorando retry duplicado.");
+			return;
+		}
+
+		if (nextAttempt > attempts) {
 			logger.error(`[CONTROLLER] Conexão perdida. Número máximo de tentativas (${attempts}) atingido, não tentando reconectar.`);
 			this.emitCore("connection:error", { error: `Falha na conexão e número máximo de tentativas (${attempts}) atingido` });
 			return;
 		}
 
 		let secondsLeft = delay / 1000;
+		logger.warn(`[CONTROLLER] 🔁 Conexão perdida. Tentando novamente em ${secondsLeft}s (tentativa ${nextAttempt}/${attempts === Infinity ? "∞" : attempts}).`);
 
 		// Emite o evento inicial para o front já saber o tempo total
 		this.emitCore("connection:retrying", {
-			attempt: this.attempts,
+			attempt: nextAttempt,
 			next: delay,
 		});
 
-		// Opcional: Um intervalo interno na lib que avisa o "tick" a cada segundo
-		// Isso facilita pro front não ter que criar o próprio timer
-		const ticker = setInterval(() => {
+		this.retryTicker = setInterval(() => {
 			secondsLeft--;
 			this.emitCore("connection:tick", { left: secondsLeft });
-			if (secondsLeft <= 0) clearInterval(ticker);
+			if (secondsLeft > 0) {
+				logger.info(`[CONTROLLER] ⏳ Nova tentativa em ${secondsLeft}s.`);
+			}
+			if (secondsLeft <= 0 && this.retryTicker) {
+				clearInterval(this.retryTicker);
+				this.retryTicker = null;
+			}
 		}, 1000);
 
-		this.retryTimer = setTimeout(() => this.connect(config), delay);
+		this.retryTimer = setTimeout(() => {
+			this.retryTimer = null;
+			this.clearRetryTicker();
+			this.attempts = nextAttempt;
+			logger.warn(`[CONTROLLER] 🚀 Tentando reconectar agora (tentativa ${this.attempts}/${attempts === Infinity ? "∞" : attempts}).`);
+			void this.connect(config);
+		}, delay);
 	}
 
 	public retry(config?: RetryConfig) {
-		if (this.retryTimer) {
-			clearTimeout(this.retryTimer);
-			this.retryTimer = null;
-		}
-		this.attempts++; // Opcional: contar como uma nova tentativa
-		this.connect(config);
+		this.clearRetrySchedule();
+		this.attempts++;
+		logger.warn(`[CONTROLLER] 🔁 Retry manual solicitado. Tentando reconectar agora (tentativa ${this.attempts}).`);
+		void this.connect(config);
 	}
 
 	public async startGame(): Promise<GameSetup> {
@@ -598,5 +661,21 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	private emitCore<K extends keyof CoreEventData>(event: K, data: CoreEventData[K]) {
 		this.emit(event as Event<T>, data as EventData<T, K & Event<T>>);
+	}
+
+	private clearRetrySchedule() {
+		if (this.retryTimer) {
+			clearTimeout(this.retryTimer);
+			this.retryTimer = null;
+		}
+
+		this.clearRetryTicker();
+	}
+
+	private clearRetryTicker() {
+		if (this.retryTicker) {
+			clearInterval(this.retryTicker);
+			this.retryTicker = null;
+		}
 	}
 }

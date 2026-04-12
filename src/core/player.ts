@@ -4,13 +4,13 @@ import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 import type { Vector2D } from "@/core/vector.js";
 import type { Velocity } from "@/core/velocity.js";
-import type { IPlayer, PlayerNumber, PlayerObject } from "@/interfaces/player.interface.js";
+import type { IPlayer, PlayerObject } from "@/interfaces/player.interface.js";
 
 export class Player implements IPlayer {
 	private asGoalkeeper: boolean;
 
 	constructor(
-		private number: PlayerNumber,
+		private number: number,
 		private isJumping: boolean,
 		private side: Side,
 		private position: Point,

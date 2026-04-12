@@ -28,7 +28,7 @@ export { type FormationObject, FormationType } from "@/interfaces/formation.inte
 export type { GameState } from "@/interfaces/game.interface.js";
 export type { GameInspectorObject, IGameInspector } from "@/interfaces/inspector.interface.js";
 export type { MapperObject } from "@/interfaces/mapper.interface.js";
-export { type PlayerNumber, type PlayerObject, PlayerState } from "@/interfaces/player.interface.js";
+export { type PlayerObject, PlayerState } from "@/interfaces/player.interface.js";
 export type { RegionObject } from "@/interfaces/region.interface.js";
 export type { ShotClockObject } from "@/interfaces/shot-clock.interface.js";
 export { type GameSnapshotObject, ServerState } from "@/interfaces/snapshot.interface.js";

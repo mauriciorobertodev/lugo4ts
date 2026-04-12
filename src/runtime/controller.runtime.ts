@@ -394,7 +394,14 @@ export class GameController implements IGameController {
 			responses.onError((err) => {
 				logger.error("[EVENT] Erro no stream de eventos:");
 				console.error(err);
-				this.emit("connection:error", { error: err.message });
+
+				if (!(config?.auto ?? true)) {
+					logger.error("[CONTROLLER] ❌ Erro ao conectar e auto-retry desativado, não tentando reconectar.");
+					this.emit("connection:error", { error: err instanceof Error ? err.message : String(err) });
+					return;
+				}
+
+				this.handleRetry(config);
 			});
 
 			responses.onComplete(() => {

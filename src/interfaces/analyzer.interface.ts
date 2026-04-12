@@ -1,10 +1,10 @@
 /** biome-ignore-all lint/complexity/noBannedTypes: <.> */
 
-import type { CombinedEvents } from "@/interfaces/events.interface.js";
+import type { Event, EventData, EventMap } from "@/interfaces/events.interface.js";
 import type { GameSnapshotObject } from "@/interfaces/snapshot.interface.js";
 
 // T é o "buraco" para os eventos customizados. O padrão é vazio {}
-export interface IAnalyzer<T = Record<string, unknown>> {
+export interface IAnalyzer<T extends EventMap = {}> {
 	/**
 	 * Método que recebe o snapshot atual do jogo e retorna uma lista de eventos customizados.
 	 */
@@ -12,9 +12,9 @@ export interface IAnalyzer<T = Record<string, unknown>> {
 }
 
 // Esse tipo utilitário faz a mágica de juntar tudo
-export type AnalyzedEvent<T = Record<string, unknown>> = {
-	[K in keyof CombinedEvents<T>]: {
+export type AnalyzedEvent<T extends EventMap = {}> = {
+	[K in Event<T>]: {
 		event: K;
-		data: CombinedEvents<T>[K];
+		data: EventData<T, K>;
 	};
-}[keyof CombinedEvents<T>];
+}[Event<T>];

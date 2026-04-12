@@ -9,12 +9,8 @@ export type CoreEventData = {
 
 	/** Evento disparado quando um gol é marcado */
 	"game:goal": {
-		/** Jogador que marcou o gol */
-		scorer: PlayerObject;
-		/** Placar do time que marcou o gol */
-		scoring_team_score: number;
-		/** Placar do time adversário */
-		opponent_team_score: number;
+		/** Lado do time que marcou o gol */
+		side: Side;
 		/** Snapshot do jogo no momento do gol */
 		snapshot?: GameSnapshotObject;
 	};
@@ -136,7 +132,18 @@ export type CoreEventData = {
 	// #endregion
 };
 
-// Criamos um tipo que permite fundir o Core com o Custom
-export type CombinedEvents<T = {}> = CoreEventData & Omit<T, keyof CoreEventData>;
+export type EventMap = object;
 
-export type GenericEventListener<T = {}> = <K extends keyof CombinedEvents<T>>(event: K, data: CombinedEvents<T>[K]) => void;
+type CustomEvents<T extends EventMap> = Omit<T, keyof CoreEventData>;
+
+// Criamos um tipo que permite fundir o Core com o Custom
+export type CombinedEvents<T extends EventMap = {}> = CoreEventData & CustomEvents<T>;
+
+export type Event<T extends EventMap = {}> = Extract<keyof CombinedEvents<T>, string>;
+
+export type EventData<
+	T extends EventMap = {},
+	K extends Event<T> = Event<T>,
+> = K extends keyof CoreEventData ? CoreEventData[K] : K extends keyof CustomEvents<T> ? CustomEvents<T>[K] : never;
+
+export type GenericEventListener<T extends EventMap = {}> = <K extends Event<T>>(event: K, data: EventData<T, K>) => void;

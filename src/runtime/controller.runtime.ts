@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/complexity/noBannedTypes: <.> */
+
 import { credentials } from "@grpc/grpc-js";
 import { GrpcTransport } from "@protobuf-ts/grpc-transport";
 import type { Ball } from "@/core/ball.js";
@@ -15,7 +17,7 @@ import { RemoteClient } from "@/generated/remote.client.js";
 import { GameProperties } from "@/generated/remote.js";
 import type { IAnalyzer } from "@/interfaces/analyzer.interface.js";
 import type { IGameController, RetryConfig } from "@/interfaces/controller.interface.js";
-import type { CombinedEvents, CoreEventData, GenericEventListener } from "@/interfaces/events.interface.js";
+import type { CoreEventData, Event, EventData, EventMap, GenericEventListener } from "@/interfaces/events.interface.js";
 import { GameState } from "@/interfaces/game.interface.js";
 import { ServerState } from "@/interfaces/snapshot.interface.js";
 import {
@@ -32,10 +34,8 @@ import { logger } from "@/utils/logger.utils.js";
 // import { danger, debug, info, success, warn } from '@/utils/logger.js';
 import { intToSide, sideToInt } from "@/utils/side.utils.js";
 
-export class GameController<T = {}> implements IGameController {
+export class GameController<T extends EventMap = {}> implements IGameController {
 	private uuid: string = crypto.randomUUID();
-
-	private analyzer: IAnalyzer<T> | null = null;
 
 	private remote: RemoteClient;
 	private broadcast: BroadcastClient;
@@ -46,10 +46,13 @@ export class GameController<T = {}> implements IGameController {
 	private attempts = 0;
 	private retryTimer: NodeJS.Timeout | null = null;
 
-	private listeners: { [K in keyof CombinedEvents<T>]?: ((data: CombinedEvents<T>[K]) => void)[] } = {};
+	private listeners: { [K in Event<T>]?: ((data: EventData<T, K>) => void)[] } = {};
 	private listener: GenericEventListener<T> | null = null;
 
-	constructor(serverAddress: string) {
+	constructor(
+		serverAddress: string,
+		private analyzer: IAnalyzer<T> | null = null,
+	) {
 		const transport = new GrpcTransport({
 			host: serverAddress,
 			channelCredentials: credentials.createInsecure(),
@@ -330,7 +333,7 @@ export class GameController<T = {}> implements IGameController {
 
 						const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 
-						this.emit("game:paused", { snapshot: snapshot?.toObject() });
+						this.emitCore("game:paused", { snapshot: snapshot?.toObject() });
 
 						break;
 					}
@@ -338,7 +341,7 @@ export class GameController<T = {}> implements IGameController {
 						const side = intToSide(event.event.goal.side);
 						const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 
-						this.emit("game:goal", { side, snapshot: snapshot?.toObject() });
+						this.emitCore("game:goal", { side, snapshot: snapshot?.toObject() });
 
 						break;
 					}
@@ -347,7 +350,7 @@ export class GameController<T = {}> implements IGameController {
 
 						const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 
-						this.emit("game:playing", { snapshot: snapshot?.toObject() });
+						this.emitCore("game:playing", { snapshot: snapshot?.toObject() });
 
 						break;
 					}
@@ -357,7 +360,7 @@ export class GameController<T = {}> implements IGameController {
 						const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 						const reason = fromLugoGameOverReason(event.event.gameOver.reason);
 
-						this.emit("game:over", { snapshot: snapshot?.toObject(), reason });
+						this.emitCore("game:over", { snapshot: snapshot?.toObject(), reason });
 
 						break;
 					}
@@ -366,7 +369,7 @@ export class GameController<T = {}> implements IGameController {
 							const player = fromLugoPlayer(event.event.newPlayer.player);
 							const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 
-							this.emit("game:joined", { player: player.toObject(), snapshot: snapshot?.toObject() });
+							this.emitCore("game:joined", { player: player.toObject(), snapshot: snapshot?.toObject() });
 						}
 
 						break;
@@ -375,7 +378,7 @@ export class GameController<T = {}> implements IGameController {
 							const player = fromLugoPlayer(event.event.lostPlayer.player);
 							const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 
-							this.emit("game:leaved", { player: player.toObject(), snapshot: snapshot?.toObject() });
+							this.emitCore("game:leaved", { player: player.toObject(), snapshot: snapshot?.toObject() });
 						}
 
 						break;
@@ -384,7 +387,7 @@ export class GameController<T = {}> implements IGameController {
 						const newState = fromLugoGameState(event.event.stateChange.newState);
 						const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 
-						this.emit("game:changed", { prevState, newState, snapshot: snapshot?.toObject() });
+						this.emitCore("game:changed", { prevState, newState, snapshot: snapshot?.toObject() });
 
 						if (snapshot) this.capture(snapshot);
 
@@ -401,7 +404,7 @@ export class GameController<T = {}> implements IGameController {
 
 				if (!(config?.auto ?? true)) {
 					logger.error("[CONTROLLER] ❌ Erro ao conectar e auto-retry desativado, não tentando reconectar.");
-					this.emit("connection:error", { error: err instanceof Error ? err.message : String(err) });
+					this.emitCore("connection:error", { error: err instanceof Error ? err.message : String(err) });
 					return;
 				}
 
@@ -410,18 +413,18 @@ export class GameController<T = {}> implements IGameController {
 
 			responses.onComplete(() => {
 				logger.warn("[EVENT] ⚠️ Stream finalizada.");
-				this.emit("connection:ended", null);
+				this.emitCore("connection:ended", null);
 			});
 
 			logger.debug("[EVENT] ✅ Stream iniciado");
-			this.emit("connection:started", {
+			this.emitCore("connection:started", {
 				setup: await this.getGameSetup(),
 				snapshot: (await this.getGameSnapshot())?.toObject(),
 			});
 		} catch (err) {
 			if (!(config?.auto ?? true)) {
 				logger.error("[CONTROLLER] ❌ Erro ao conectar e auto-retry desativado, não tentando reconectar.");
-				this.emit("connection:error", { error: err instanceof Error ? err.message : String(err) });
+				this.emitCore("connection:error", { error: err instanceof Error ? err.message : String(err) });
 				return;
 			}
 
@@ -435,14 +438,14 @@ export class GameController<T = {}> implements IGameController {
 
 		if (this.attempts >= attempts) {
 			logger.error(`[CONTROLLER] Conexão perdida. Número máximo de tentativas (${attempts}) atingido, não tentando reconectar.`);
-			this.emit("connection:error", { error: `Falha na conexão e número máximo de tentativas (${attempts}) atingido` });
+			this.emitCore("connection:error", { error: `Falha na conexão e número máximo de tentativas (${attempts}) atingido` });
 			return;
 		}
 
 		let secondsLeft = delay / 1000;
 
 		// Emite o evento inicial para o front já saber o tempo total
-		this.emit("connection:retrying", {
+		this.emitCore("connection:retrying", {
 			attempt: this.attempts,
 			next: delay,
 		});
@@ -451,7 +454,7 @@ export class GameController<T = {}> implements IGameController {
 		// Isso facilita pro front não ter que criar o próprio timer
 		const ticker = setInterval(() => {
 			secondsLeft--;
-			this.emit("connection:tick", { left: secondsLeft });
+			this.emitCore("connection:tick", { left: secondsLeft });
 			if (secondsLeft <= 0) clearInterval(ticker);
 		}, 1000);
 
@@ -491,11 +494,11 @@ export class GameController<T = {}> implements IGameController {
 		}
 	}
 
-	public onEvent(listener: GenericEventListener) {
+	public onEvent(listener: GenericEventListener<T>) {
 		this.listener = listener;
 	}
 
-	public on<K extends keyof CombinedEvents>(event: K, callback: (data: CombinedEvents[K]) => void) {
+	public on<K extends Event<T>>(event: K, callback: (data: EventData<T, K>) => void) {
 		if (!this.listeners[event]) {
 			this.listeners[event] = [];
 		}
@@ -574,14 +577,26 @@ export class GameController<T = {}> implements IGameController {
 
 		if (this.state === GameState.WAITING && snapshot.getState() === ServerState.PLAYING) {
 			this.state = GameState.PLAYING;
-			this.emit("game:playing", { snapshot: undefined });
+			this.emitCore("game:playing", { snapshot: undefined });
 		}
 
 		this.snapshot = snapshot;
+
+		if (this.analyzer) {
+			const analyzedEvents = this.analyzer.compute(snapshot.toObject());
+
+			for (const analyzedEvent of analyzedEvents) {
+				this.emit(analyzedEvent.event, analyzedEvent.data);
+			}
+		}
 	}
 
-	private emit<K extends keyof CombinedEvents<T>>(event: K, data: CombinedEvents<T>[K]) {
+	private emit<K extends Event<T>>(event: K, data: EventData<T, K>) {
 		this.listener?.(event, data); // O listener genérico aceita qualquer um
-		this.listeners[event]?.forEach((callback) => callback(data));
+		this.listeners[event]?.map((callback) => callback(data));
+	}
+
+	private emitCore<K extends keyof CoreEventData>(event: K, data: CoreEventData[K]) {
+		this.emit(event as Event<T>, data as EventData<T, K & Event<T>>);
 	}
 }

@@ -54,7 +54,9 @@ export type EventData = {
 
 	/** Evento disparado quando a conexão é iniciada */
 	"connection:started": {
+		/** Configurações iniciais do jogo */
 		setup: GameSetup;
+		/** Snapshot do jogo no momento do evento */
 		snapshot?: GameSnapshotObject;
 	};
 	/** Evento disparado quando a conexão é encerrada */

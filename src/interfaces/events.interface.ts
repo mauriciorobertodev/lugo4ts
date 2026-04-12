@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/complexity/noBannedTypes: <.> */
 import type { Side } from "@/core/side.js";
 import type { GameSetup } from "@/generated/broadcast.js";
 import type { GameOverReason } from "@/interfaces/game.interface.js";
@@ -141,9 +142,10 @@ export type CombinedEvents<T extends EventMap = {}> = CoreEventData & CustomEven
 
 export type Event<T extends EventMap = {}> = Extract<keyof CombinedEvents<T>, string>;
 
-export type EventData<
-	T extends EventMap = {},
-	K extends Event<T> = Event<T>,
-> = K extends keyof CoreEventData ? CoreEventData[K] : K extends keyof CustomEvents<T> ? CustomEvents<T>[K] : never;
+export type EventData<T extends EventMap = {}, K extends Event<T> = Event<T>> = K extends keyof CoreEventData
+	? CoreEventData[K]
+	: K extends keyof CustomEvents<T>
+		? CustomEvents<T>[K]
+		: never;
 
 export type GenericEventListener<T extends EventMap = {}> = <K extends Event<T>>(event: K, data: EventData<T, K>) => void;

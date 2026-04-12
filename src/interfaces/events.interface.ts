@@ -1,6 +1,6 @@
 import type { Side } from "@/core/side.js";
 import type { GameSetup } from "@/generated/broadcast.js";
-import type { GameOverReason } from "@/interfaces/controller.interface.js";
+import type { GameOverReason } from "@/interfaces/game.interface.js";
 import type { PlayerObject } from "@/interfaces/player.interface.js";
 import type { GameSnapshotObject, ServerState } from "@/interfaces/snapshot.interface.js";
 

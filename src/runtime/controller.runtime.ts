@@ -13,7 +13,9 @@ import { BroadcastClient } from "@/generated/broadcast.client.js";
 import type { GameEvent, GameSetup } from "@/generated/broadcast.js";
 import { RemoteClient } from "@/generated/remote.client.js";
 import { GameProperties } from "@/generated/remote.js";
-import { GameState, type IGameController, type RetryConfig } from "@/interfaces/controller.interface.js";
+import type { IGameController, RetryConfig } from "@/interfaces/controller.interface.js";
+import type { Event, EventData, GenericEventListener } from "@/interfaces/events.interface.js";
+import { GameState } from "@/interfaces/game.interface.js";
 import { ServerState } from "@/interfaces/snapshot.interface.js";
 import {
 	fromLugoGameOverReason,
@@ -25,7 +27,6 @@ import {
 	toLugoShotClock,
 	toLugoVelocity,
 } from "@/lugo.js";
-import type { Event, EventData, GenericEventListener } from "@/runtime/events.runtime.js";
 import { logger } from "@/utils/logger.utils.js";
 // import { danger, debug, info, success, warn } from '@/utils/logger.js';
 import { intToSide, sideToInt } from "@/utils/side.utils.js";

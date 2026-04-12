@@ -19,17 +19,16 @@ import {
 	Team_Side,
 } from "@/generated/server.js";
 import type { IBall } from "@/interfaces/ball.interface.js";
+import { GameOverReason } from "@/interfaces/game.interface.js";
 import type { IPlayer } from "@/interfaces/player.interface.js";
 import type { IPoint, IVector2D } from "@/interfaces/positionable.interface.js";
 import type { IShotClock } from "@/interfaces/shot-clock.interface.js";
 import { type IGameSnapshot, ServerState } from "@/interfaces/snapshot.interface.js";
 import type { ITeam } from "@/interfaces/team.interface.js";
 import type { IVelocity } from "@/interfaces/velocity.interface.js";
-
 import { intToSide, sideToInt } from "@/utils/side.utils.js";
 import { zeroedVelocity } from "@/utils/velocity.utils.js";
 import { EventGameOver_EndingReason } from "./generated/broadcast.js";
-import { GameOverReason } from "./runtime.js";
 
 // ------------------------------------------------------------
 // Converters

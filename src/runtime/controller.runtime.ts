@@ -412,6 +412,7 @@ export class GameController implements IGameController {
 			logger.debug("[EVENT] ✅ Stream iniciado");
 			this.emit("connection:started", {
 				setup: await this.getGameSetup(),
+				snapshot: (await this.getGameSnapshot())?.toObject(),
 			});
 		} catch (err) {
 			if (!(config?.auto ?? true)) {

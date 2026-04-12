@@ -124,6 +124,8 @@ export class GameInspector implements IGameInspector {
 		return this.getBall().getSpeed();
 	}
 
+	// Mudar pra getHomeGoal e getAwayGoal e mover o getAttackGoal e getDefenseGoal para dentro do mapper,
+	// pois nele tem a questão de normalizar os pontos para que o desenvolvedor não precise se preocupar com qual lado do campo está.
 	getAttackGoal(): Goal {
 		return this.getMyTeamSide() === Side.HOME ? AWAY_GOAL : HOME_GOAL;
 	}

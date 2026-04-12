@@ -46,7 +46,7 @@ export enum PlayerState {
 }
 
 export type PlayerObject = {
-	number: number;
+	number: PlayerNumber;
 	side: Side;
 	position: PointObject;
 	initPosition: PointObject;

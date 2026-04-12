@@ -4,17 +4,21 @@ import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 import type { Vector2D } from "@/core/vector.js";
 import type { Velocity } from "@/core/velocity.js";
-import type { IPlayer, PlayerObject } from "@/interfaces/player.interface.js";
+import type { IPlayer, PlayerNumber, PlayerObject } from "@/interfaces/player.interface.js";
 
 export class Player implements IPlayer {
+	private asGoalkeeper: boolean;
+
 	constructor(
-		private number: number,
+		private number: PlayerNumber,
 		private isJumping: boolean,
 		private side: Side,
 		private position: Point,
 		private initPosition: Point,
 		private velocity: Velocity,
-	) {}
+	) {
+		this.asGoalkeeper = number === SPECS.GOALKEEPER_NUMBER;
+	}
 
 	getNumber(): number {
 		return this.number;
@@ -54,7 +58,7 @@ export class Player implements IPlayer {
 	}
 
 	isGoalkeeper(): boolean {
-		return this.number === SPECS.GOALKEEPER_NUMBER;
+		return this.asGoalkeeper;
 	}
 
 	is(player: Player): boolean {
@@ -111,6 +115,7 @@ export class Player implements IPlayer {
 			initPosition: this.initPosition.toObject(),
 			velocity: this.velocity.toObject(),
 			isJumping: this.isJumping,
+			asGoalkeeper: this.asGoalkeeper,
 		};
 	}
 }

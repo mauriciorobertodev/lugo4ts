@@ -1,18 +1,12 @@
-import { SPECS } from "@/core/specs.js"; // Para saber limites do campo/velocidade
+import { AWAY_GOAL, HOME_GOAL } from "@/core/goal.js";
+import { SPECS } from "@/core/specs.js";
+import type { AnalyzedEvent, IAnalyzer } from "@/interfaces/analyzer.interface.js";
 import type { BallObject } from "@/interfaces/ball.interface.js";
-import type { EventData } from "@/interfaces/events.interface.js";
 import type { GoalObject } from "@/interfaces/goal.interface.js";
 import type { PlayerObject } from "@/interfaces/player.interface.js";
 import type { PointObject } from "@/interfaces/positionable.interface.js";
 import type { GameSnapshotObject } from "@/interfaces/snapshot.interface.js";
-import { AWAY_GOAL, HOME_GOAL } from "./goal.js";
-
-type AnalyzedEvent = {
-	[K in keyof EventData]: {
-		event: K;
-		data: EventData[K];
-	};
-}[keyof EventData];
+import type { BasicEventData } from "./basic.events.js";
 
 type BallCollision = {
 	side: "left" | "right" | "top" | "bottom";
@@ -21,14 +15,16 @@ type BallCollision = {
 	t: number;
 };
 
-export class Analyzer {
+export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
 	private lastHolder: PlayerObject | null = null;
 	private lastHolderTurn: number | null = null;
 	private lastBallStoppedTurn: number | null = null;
+	private lastIntensity: number = 0.5;
+	private jumpingPlayers: Set<string> = new Set();
 	private prevSnapshot: GameSnapshotObject | null = null;
-	private events: AnalyzedEvent[] = [];
+	private events: AnalyzedEvent<BasicEventData>[] = [];
 
-	public compute(current: GameSnapshotObject): AnalyzedEvent[] {
+	public compute(current: GameSnapshotObject): AnalyzedEvent<BasicEventData>[] {
 		this.events = [];
 
 		if (!this.prevSnapshot) {
@@ -46,6 +42,7 @@ export class Analyzer {
 		// --- 1. LÓGICA DE POSSE (KICK, CATCH, PASS, INTERCEPTION) ---
 		const prevHolder = prev.ball.holder;
 		const currHolder = current.ball.holder;
+		const prevBall = prev.ball;
 		const currBall = current.ball;
 
 		/**
@@ -106,21 +103,36 @@ export class Analyzer {
 		}
 
 		/**
-		 * Intensidade da torcida baseada na posição da bola: quanto mais próximo do gol, mais intensa a torcida (0 a 1)
+		 * QUANDO: o jogador está pulando ou não
+		 *
+		 * POSSIBILIDADES:
+		 * - A. Está pulando (goalkeeper/jump)
+		 * - B. Estava pulando e agora aterrissou (goalkeeper/land)
 		 */
-		this.events.push({
-			event: "game:intensity",
-			data: { intensity: this.calculateMatchIntensity(currBall) },
-		});
+		this.jumps(current);
+
+		/**
+		 * Calcula e emite um evento de intensidade do jogo baseado na posição da bola, onde quanto mais próxima do centro do campo, mais intenso é o jogo,
+		 * e quanto mais próxima das extremidades, menos intenso é o jogo.
+		 */
+		this.intensity(prevBall, currBall);
 
 		this.prevSnapshot = current;
+
 		if (currHolder) {
 			this.lastHolder = currHolder;
 			this.lastHolderTurn = current.turn;
 		}
+
 		if (currBall.velocity.speed <= SPECS.BALL_MIN_SPEED) {
 			this.lastBallStoppedTurn = current.turn;
 		}
+
+		this.events.push({
+			event: "batata",
+			data: "seila",
+		});
+
 		return this.events;
 	}
 
@@ -235,18 +247,82 @@ export class Analyzer {
 		};
 	}
 
-	private calculateMatchIntensity(curBall: BallObject): number {
-		// Exemplo: intensidade baseada na distância da bola até o gol mais próximo
-		const ballX = curBall.position.x;
-		const distToGoalA = Math.abs(ballX - 0);
-		const distToGoalB = Math.abs(ballX - SPECS.MAX_X_COORDINATE);
-		const minPulse = Math.min(distToGoalA, distToGoalB);
+	// LOGICA
+	private intensity(prevBall: BallObject, curBall: BallObject): void {
+		const currBallPos = curBall.position;
+		const prevBallPos = prevBall.position;
 
-		// Quanto menor a distância, maior a intensidade (0 a 1)
-		return 1 - minPulse / (SPECS.MAX_X_COORDINATE / 2);
+		if (currBallPos.x === prevBallPos.x && currBallPos.y === prevBallPos.y) {
+			return; // Se a bola não se moveu, não precisa recalcular a intensidade
+		}
+
+		// Vamos achar o ponto de intercessão entre a bola e a linha do gol;
+
+		// O X do ponto de intercessão é o X do gol mais próximo da bola horizontalmente
+		const X = currBallPos.x < SPECS.CENTER_X_COORDINATE ? SPECS.MIN_X_COORDINATE : SPECS.MAX_X_COORDINATE;
+		// Caso a bola esteja verticalmente entre as traves, o ponto de intercessão é o Y da bola, caso contrário é o Y da trave mais próxima
+		let Y = currBallPos.y;
+		// Se a bola estiver acima da trave superior, o ponto de intercessão é o Y da trave superior
+		if (Y < SPECS.GOAL_MIN_Y) Y = SPECS.GOAL_MIN_Y;
+		// Se a bola estiver abaixo da trave inferior, o ponto de intercessão é o Y da trave inferior
+		if (Y > SPECS.GOAL_MAX_Y) Y = SPECS.GOAL_MAX_Y;
+
+		// Distância entre a bola e o ponto de intercessão na linha do gol mais próximo
+		const distance = Math.sqrt((currBallPos.x - X) ** 2 + (currBallPos.y - Y) ** 2);
+		/**
+		 * Se nós queremos que a intensidade suba sempre que a bola se aproximar do gol.
+		 * A distância máxima onde teriamos o menor risco para ambos os gols e consequêntemente a menor intensidade, seria a distância do centro do campo para a linha do gol,
+		 * ou seja, a metade do campo, pois a partir disso a bola já estaria mais próxima de um gol do que do outro, e consequentemente o risco já começaria a aumentar.
+		 */
+		const maxDistance = SPECS.CENTER_X_COORDINATE;
+
+		// Como sabemos que a distância atual, a min e a max, usamos o inverseLerp para calcular um valor entre 0 e 1, onde 0 é quando a bola está na linha do gol (distância 0) e 1 é quando a bola está na metade do campo ou mais longe (distância >= maxDistance), e valores intermediários para distâncias entre 0 e maxDistance. Depois invertemos esse valor para que a intensidade seja maior quanto mais próxima do gol a bola estiver.
+		const factor = this.inverseLerp(distance, 0, maxDistance);
+
+		// Invertendo para que a intensidade seja maior quanto mais próxima do gol a bola estiver
+		const intensity = 1 - factor;
+
+		if (this.lastIntensity !== intensity) {
+			this.lastIntensity = intensity;
+			this.events.push({
+				event: "game:intensity",
+				data: { intensity },
+			});
+		}
 	}
 
-	// LOGICA
+	private jumps(curr: GameSnapshotObject): void {
+		for (const player of curr.homeTeam?.players || []) {
+			const key = `home-${player.number}`;
+
+			if (player.isJumping) {
+				if (!this.jumpingPlayers.has(key)) {
+					this.events.push({
+						event: "game:goalkeeper/jump",
+						data: {
+							goalkeeper: player,
+							duration: SPECS.GOALKEEPER_JUMP_TURNS_DURATION,
+							intensity: this.inverseLerp(player.velocity.speed, 0, SPECS.GOALKEEPER_JUMP_MAX_SPEED),
+						},
+					});
+					this.jumpingPlayers.add(key);
+				}
+			}
+
+			if (!player.isJumping) {
+				if (this.jumpingPlayers.has(key)) {
+					this.events.push({
+						event: "game:goalkeeper/land",
+						data: {
+							goalkeeper: player,
+						},
+					});
+					this.jumpingPlayers.delete(key);
+				}
+			}
+		}
+	}
+
 	/** ANTES: bola sem holder -> AGORA: bola com holder */
 	private withoutHolderToWithHolder(prevSnapshot: GameSnapshotObject, currSnapshot: GameSnapshotObject) {
 		const currHolder = currSnapshot.ball!.holder!;
@@ -264,8 +340,7 @@ export class Analyzer {
 			this.events.push({
 				event: "game:catch",
 				data: {
-					side: currHolder.side,
-					player: currHolder.number,
+					catcher: currHolder,
 				},
 			});
 		}
@@ -279,8 +354,7 @@ export class Analyzer {
 			this.events.push({
 				event: "game:defense",
 				data: {
-					side: currHolder.side,
-					player: currHolder.number,
+					defender: currHolder,
 					intensity: currBallIntensity,
 				},
 			});
@@ -320,8 +394,8 @@ export class Analyzer {
 					this.events.push({
 						event: "game:pass",
 						data: {
-							kicker: { side: this.lastHolder!.side, player: this.lastHolder!.number },
-							receiver: { side: currHolder.side, player: currHolder.number },
+							kicker: this.lastHolder!,
+							receiver: currHolder,
 						},
 					});
 				}
@@ -343,8 +417,8 @@ export class Analyzer {
 					this.events.push({
 						event: "game:interception",
 						data: {
-							interceptor: { side: currHolder.side, player: currHolder.number },
-							intercepted: { side: this.lastHolder!.side, player: this.lastHolder!.number },
+							interceptor: currHolder,
+							intercepted: this.lastHolder!,
 						},
 					});
 				}
@@ -368,10 +442,9 @@ export class Analyzer {
 		 */
 		if (!currBallIsStopped) {
 			this.events.push({
-				event: "game:shot",
+				event: "game:kick",
 				data: {
-					side: prevHolder.side,
-					player: prevHolder.number,
+					kicker: prevHolder,
 					intensity: currBallIntensity,
 				},
 			});
@@ -387,8 +460,7 @@ export class Analyzer {
 			this.events.push({
 				event: "game:ball/dropped",
 				data: {
-					side: prevHolder.side,
-					player: prevHolder.number,
+					dropper: prevHolder,
 				},
 			});
 		}
@@ -478,8 +550,8 @@ export class Analyzer {
 			this.events.push({
 				event: "game:pass",
 				data: {
-					kicker: { side: prevHolder.side, player: prevHolder.number },
-					receiver: { side: currHolder.side, player: currHolder.number },
+					kicker: prevHolder,
+					receiver: currHolder,
 				},
 			});
 		}
@@ -493,8 +565,8 @@ export class Analyzer {
 			this.events.push({
 				event: "game:steal",
 				data: {
-					thief: { side: currHolder.side, player: currHolder.number },
-					victim: { side: prevHolder.side, player: prevHolder.number },
+					thief: currHolder,
+					victim: prevHolder,
 				},
 			});
 		}

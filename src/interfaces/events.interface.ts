@@ -1,172 +1,22 @@
 import type { Side } from "@/core/side.js";
 import type { GameSetup } from "@/generated/broadcast.js";
 import type { GameOverReason } from "@/interfaces/game.interface.js";
-import type { PlayerNumber, PlayerObject } from "@/interfaces/player.interface.js";
+import type { PlayerObject } from "@/interfaces/player.interface.js";
 import type { GameSnapshotObject, ServerState } from "@/interfaces/snapshot.interface.js";
-import type { GoalObject } from "./goal.interface.js";
 
-export type EventData = {
+export type CoreEventData = {
 	// #region Eventos relacionados ao jogo
 
 	/** Evento disparado quando um gol é marcado */
 	"game:goal": {
-		/** Lado que marcou o gol */
-		side: Side;
 		/** Jogador que marcou o gol */
-		player: PlayerNumber;
+		scorer: PlayerObject;
 		/** Placar do time que marcou o gol */
 		scoring_team_score: number;
 		/** Placar do time adversário */
 		opponent_team_score: number;
 		/** Snapshot do jogo no momento do gol */
 		snapshot?: GameSnapshotObject;
-	};
-
-	/** Evento disparado quando um chute é feito */
-	"game:shot": {
-		/** Lado que fez o chute */
-		side: Side;
-		/** Jogador que fez o chute */
-		player: PlayerNumber;
-		/** Intensidade do chute comparado a velocidade máxima da bola (0-1) */
-		intensity: number;
-	};
-
-	/** Evento disparado quando o goleiro faz uma defesa */
-	"game:defense": {
-		/** Lado que fez a defesa */
-		side: Side;
-		/** Jogador que fez a defesa */
-		player: PlayerNumber;
-		/** Intensidade da defesa comparando a velocidade que foi pega com a velocidade máxima da bola (0-1) */
-		intensity: number;
-	};
-
-	/** Evento disparado quando o goleiro pega a bola que estava parada */
-	"game:catch": {
-		/** Lado que pegou a bola */
-		side: Side;
-		/** Jogador que pegou a bola */
-		player: PlayerNumber;
-	};
-
-	/** Evento disparado quando a posse de bola muda do time A para o time B, ou seja roubo de bola, sem que a bola tenha sido chutada ou seja no corpo a corpo */
-	"game:steal": {
-		thief: {
-			/** Lado que roubou a posse de bola */
-			side: Side;
-			/** Jogador que roubou a posse de bola */
-			player: PlayerNumber;
-		};
-		victim: {
-			/** Lado que perdeu a posse de bola */
-			side: Side;
-			/** Jogador que perdeu a posse de bola */
-			player: PlayerNumber;
-		};
-	};
-
-	/** Evento disparado quando um passe é feito, ou seja o último holder e o novo holder são do mesmo time sem a bola ter parado */
-	// TODO: no futuro talvez seria interessante, a gente detectar se existe um aliado na trajetória do chute, e se tiver chamar de game:pass/shoot e depois quando receber game:pass/receive
-	// Assim a gente pode até calcular passes que não foram efetivados, ou seja, quando o jogador tentou passar para um aliado mas a bola foi interceptada por um adversário, ou quando o jogador tentou passar para um aliado mas errou o passe e a bola parou no meio do caminho, ou seja, sem chegar no aliado.
-	"game:pass": {
-		kicker: {
-			/** Lado que fez o passe */
-			side: Side;
-			/** Jogador que fez o passe */
-			player: PlayerNumber;
-		};
-		receiver: {
-			/** Lado que recebeu o passe */
-			side: Side;
-			/** Jogador que recebeu o passe */
-			player: PlayerNumber;
-		};
-	};
-
-	/** Evento disparado quando uma interceptação é feita, ou seja o último holder e o novo holder são de times diferentes sem a bola ter parado, e sem que a bola tenha um holder */
-	"game:interception": {
-		interceptor: {
-			/** Lado que fez a interceptação */
-			side: Side;
-			/** Jogador que fez a interceptação */
-			player: PlayerNumber;
-		};
-		intercepted: {
-			/** Lado que teve a posse de bola interceptada */
-			side: Side;
-			/** Jogador que teve a posse de bola interceptada */
-			player: PlayerNumber;
-		};
-	};
-
-	/** Evento disparado quando a bola toca nas laterais do campo (paredes) e inverte o ângulo de movimento */
-	"game:ball/wall": {
-		/** Lado que tocou na parede */
-		side: "left" | "right" | "top" | "bottom";
-		/** Intensidade do impacto na parede */
-		intensity: number;
-	};
-
-	/** Evento disparado quando a bola toca na trave do gol e inverte o ângulo de movimento */
-	"game:ball/goalpost": {
-		/** Lado que tocou no gol */
-		goal: GoalObject;
-		/** Trave que tocou no gol */
-		pole: "top" | "bottom";
-		/** Intensidade do impacto no gol */
-		intensity: number;
-	};
-
-	/** Evento disparado quando a bola que estava em movimento para completamente, ou seja, sua velocidade chega a zero */
-	"game:ball/stopped": null;
-
-	/** Evento disparado quando a bola que estava com um holder para completamente, ou seja, sua velocidade chega a zero, ou seja o jogador só soltou ela nem chutou */
-	"game:ball/dropped": {
-		/** Lado que deixou a bola cair */
-		side: Side;
-		/** Jogador que deixou a bola cair */
-		player: PlayerNumber;
-	};
-
-	/** Evento disparado quando o goleiro salta para tentar defender um chute */
-	"game:goalkeeper/flying": {
-		/** Lado que fez o salto */
-		side: Side;
-		/** Jogador que fez o salto */
-		player: PlayerNumber;
-		/** Duração do salto em turnos */
-		duration: number;
-		/** Turnos restantes para o goleiro aterrissar no chão */
-		remaining: number;
-		/** Intensidade do salto comparado a velocidade máxima do goleiro */
-		intensity: number;
-	};
-
-	/** Evento disparado quando o goleiro aterrissa no chão após um salto */
-	"game:goalkeeper/land": {
-		/** Lado que fez o salto */
-		side: Side;
-		/** Jogador que fez o salto */
-		player: PlayerNumber;
-		/** Duração do salto em turnos */
-		duration: number;
-		/** Intensidade do salto comparado a velocidade máxima do goleiro */
-		intensity: number;
-	};
-
-	/** Evento disparado com base na distância da bola em relação ao gol para aumentar ou diminuir o som de fundo da torcida */
-	"game:intensity": {
-		/** Intensidade do barulho comparado ao barulho máximo da torcida */
-		intensity: number;
-	};
-
-	/** Evento para contagem regressiva quando de tempo de posse ou fim de partida */
-	"game:countdown": {
-		/** Quantos turnos faltam */
-		remaining: number;
-		/** Se é o tempo de posse (shot clock) ou o tempo da partida (game) */
-		type: "possession" | "game";
 	};
 
 	// #endregion
@@ -286,6 +136,7 @@ export type EventData = {
 	// #endregion
 };
 
-export type Event = keyof EventData;
+// Criamos um tipo que permite fundir o Core com o Custom
+export type CombinedEvents<T = {}> = CoreEventData & Omit<T, keyof CoreEventData>;
 
-export type GenericEventListener = <K extends Event>(event: K, data: EventData[K]) => void;
+export type GenericEventListener<T = {}> = <K extends keyof CombinedEvents<T>>(event: K, data: CombinedEvents<T>[K]) => void;

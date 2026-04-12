@@ -52,4 +52,5 @@ export type PlayerObject = {
 	initPosition: PointObject;
 	velocity: VelocityObject;
 	isJumping: boolean;
+	asGoalkeeper: boolean;
 };

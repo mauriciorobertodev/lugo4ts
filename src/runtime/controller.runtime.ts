@@ -13,8 +13,9 @@ import { BroadcastClient } from "@/generated/broadcast.client.js";
 import type { GameEvent, GameSetup } from "@/generated/broadcast.js";
 import { RemoteClient } from "@/generated/remote.client.js";
 import { GameProperties } from "@/generated/remote.js";
+import type { IAnalyzer } from "@/interfaces/analyzer.interface.js";
 import type { IGameController, RetryConfig } from "@/interfaces/controller.interface.js";
-import type { Event, EventData, GenericEventListener } from "@/interfaces/events.interface.js";
+import type { CombinedEvents, CoreEventData, GenericEventListener } from "@/interfaces/events.interface.js";
 import { GameState } from "@/interfaces/game.interface.js";
 import { ServerState } from "@/interfaces/snapshot.interface.js";
 import {
@@ -31,8 +32,11 @@ import { logger } from "@/utils/logger.utils.js";
 // import { danger, debug, info, success, warn } from '@/utils/logger.js';
 import { intToSide, sideToInt } from "@/utils/side.utils.js";
 
-export class GameController implements IGameController {
+export class GameController<T = {}> implements IGameController {
 	private uuid: string = crypto.randomUUID();
+
+	private analyzer: IAnalyzer<T> | null = null;
+
 	private remote: RemoteClient;
 	private broadcast: BroadcastClient;
 
@@ -42,8 +46,8 @@ export class GameController implements IGameController {
 	private attempts = 0;
 	private retryTimer: NodeJS.Timeout | null = null;
 
-	private listeners: { [K in Event]?: ((data: EventData[K]) => void)[] } = {};
-	private listener: GenericEventListener | null = null;
+	private listeners: { [K in keyof CombinedEvents<T>]?: ((data: CombinedEvents<T>[K]) => void)[] } = {};
+	private listener: GenericEventListener<T> | null = null;
 
 	constructor(serverAddress: string) {
 		const transport = new GrpcTransport({
@@ -491,7 +495,7 @@ export class GameController implements IGameController {
 		this.listener = listener;
 	}
 
-	public on<K extends Event>(event: K, callback: (data: EventData[K]) => void) {
+	public on<K extends keyof CombinedEvents>(event: K, callback: (data: CombinedEvents[K]) => void) {
 		if (!this.listeners[event]) {
 			this.listeners[event] = [];
 		}
@@ -576,8 +580,8 @@ export class GameController implements IGameController {
 		this.snapshot = snapshot;
 	}
 
-	private emit<K extends Event>(event: K, data: EventData[K]) {
-		this.listener?.(event, data);
-		this.listeners[event]?.map((callback) => callback(data));
+	private emit<K extends keyof CombinedEvents<T>>(event: K, data: CombinedEvents<T>[K]) {
+		this.listener?.(event, data); // O listener genérico aceita qualquer um
+		this.listeners[event]?.forEach((callback) => callback(data));
 	}
 }

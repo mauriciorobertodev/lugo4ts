@@ -1,6 +1,6 @@
 {
 	"name": "@mauricioroberto/lugo4ts",
-	"version": "0.0.44-beta",
+	"version": "0.0.45-beta",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"type": "module",
@@ -28,6 +28,11 @@
 			"import": "./dist/runtime.js",
 			"require": "./dist/runtime.js",
 			"default": "./dist/runtime.js"
+		},
+		"./analyzers": {
+			"import": "./dist/analyzers.js",
+			"require": "./dist/analyzers.js",
+			"default": "./dist/analyzers.js"
 		}
 	},
 	"files": [

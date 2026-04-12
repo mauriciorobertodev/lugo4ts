@@ -46,7 +46,18 @@ export enum GameOverReason {
 	KNOCKOUT = "knockout",
 }
 
+export type RetryConfig = {
+	/** Se deve tentar reconectar automaticamente (padrão: true) */
+	auto?: boolean;
+	/** Número máximo de tentativas de reconexão (padrão: infinito) */
+	attempts?: number;
+	/** Delay entre tentativas de reconexão em milissegundos */
+	delay?: number;
+};
+
 export interface IGameController {
+	connect(config?: RetryConfig): Promise<void>;
+
 	getState(): GameState;
 	nextTurn(): Promise<IGameSnapshot | null>;
 	nextOrder(): Promise<IGameSnapshot | null>;

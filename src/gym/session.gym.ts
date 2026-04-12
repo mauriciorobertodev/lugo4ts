@@ -49,7 +49,7 @@ export class GymSession implements IGymSession {
 		//     logger.debug('Jogo retomado');
 		// });
 
-		this.remote.setupEventListeners();
+		this.remote.connect();
 	}
 
 	// Novo: define e aplica o environment inicial

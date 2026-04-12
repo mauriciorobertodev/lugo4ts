@@ -124,7 +124,7 @@ export class GymSession implements IGymSession {
 		const newSnapshot = await this.remote.getGameSnapshot();
 
 		if (!newSnapshot) {
-			throw new Error("Snapshot do jogo não disponível, batata");
+			throw new Error("Snapshot do jogo não disponível");
 		}
 
 		this.lastSnapshot = fromGameSnapshot(this.client.getSide(), this.client.getNumber(), newSnapshot);

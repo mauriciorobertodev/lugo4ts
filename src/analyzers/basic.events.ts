@@ -109,8 +109,6 @@ export interface BasicEventData {
 		type: "possession" | "game";
 	};
 
-	batata: "seila";
-
 	// #endregion
 }
 

@@ -128,11 +128,6 @@ export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
 			this.lastBallStoppedTurn = current.turn;
 		}
 
-		this.events.push({
-			event: "batata",
-			data: "seila",
-		});
-
 		return this.events;
 	}
 

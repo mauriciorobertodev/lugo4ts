@@ -12,7 +12,6 @@ type BallCollision = {
 	side: "left" | "right" | "top" | "bottom";
 	point: PointObject;
 	normal: PointObject;
-	t: number;
 };
 
 export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
@@ -136,88 +135,50 @@ export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
 		return (value - min) / (max - min);
 	}
 
-	private sweepBallVsWalls(prev: BallObject, curr: BallObject): BallCollision | null {
-		const dx = curr.position.x - prev.position.x;
-		const dy = curr.position.y - prev.position.y;
+	private sweepBallVsWalls(prevBall: BallObject, currBall: BallObject): BallCollision | null {
+		const EPS = 0.1; // Margem para flutuações pequenas
 
-		const EPS = 1e-6;
+		const prevDirection = prevBall.velocity.direction;
+		const currDirection = currBall.velocity.direction;
 
-		const candidates: BallCollision[] = [];
+		// 1. Detectar inversão de direção (produto das velocidades < 0 significa que mudou o sinal)
+		const hitX = prevDirection.x * currDirection.x < -EPS;
+		const hitY = prevDirection.y * currDirection.y < -EPS;
 
-		// 👉 LEFT
-		if (Math.abs(dx) > EPS) {
-			const t = (0 - prev.position.x) / dx;
-			if (t >= 0 && t <= 1) {
-				const y = prev.position.y + dy * t;
-				if (y >= 0 && y <= SPECS.MAX_Y_COORDINATE) {
-					candidates.push({
-						side: "left",
-						point: { x: 0, y },
-						normal: { x: 1, y: 0 },
-						t,
-					});
-				}
-			}
+		if (!hitX && !hitY) return null;
+
+		if (hitX) {
+			// 2. Determinar qual parede foi baseada na posição atual
+			// Se inverteu no X, ou bateu na esquerda ou na direita
+			const side = currBall.position.x < SPECS.CENTER_X_COORDINATE ? "left" : "right";
+			const targetX = side === "left" ? 0 : SPECS.MAX_X_COORDINATE;
+
+			return {
+				side,
+				point: { x: targetX, y: currBall.position.y },
+				normal: { x: side === "left" ? 1 : -1, y: 0 },
+			};
 		}
 
-		// 👉 RIGHT
-		if (Math.abs(dx) > EPS) {
-			const t = (SPECS.MAX_X_COORDINATE - prev.position.x) / dx;
-			if (t >= 0 && t <= 1) {
-				const y = prev.position.y + dy * t;
-				if (y >= 0 && y <= SPECS.MAX_Y_COORDINATE) {
-					candidates.push({
-						side: "right",
-						point: { x: SPECS.MAX_X_COORDINATE, y },
-						normal: { x: -1, y: 0 },
-						t,
-					});
-				}
-			}
+		if (hitY) {
+			// Se inverteu no Y, ou bateu no topo ou no fundo
+			const side = currBall.position.y < SPECS.MAX_Y_COORDINATE / 2 ? "bottom" : "top";
+			const targetY = side === "bottom" ? 0 : SPECS.MAX_Y_COORDINATE;
+
+			return {
+				side,
+				point: { x: currBall.position.x, y: targetY },
+				normal: { x: 0, y: side === "bottom" ? 1 : -1 },
+			};
 		}
 
-		// 👉 BOTTOM
-		if (Math.abs(dy) > EPS) {
-			const t = (0 - prev.position.y) / dy;
-			if (t >= 0 && t <= 1) {
-				const x = prev.position.x + dx * t;
-				if (x >= 0 && x <= SPECS.MAX_X_COORDINATE) {
-					candidates.push({
-						side: "bottom",
-						point: { x, y: 0 },
-						normal: { x: 0, y: 1 },
-						t,
-					});
-				}
-			}
-		}
-
-		// 👉 TOP
-		if (Math.abs(dy) > EPS) {
-			const t = (SPECS.MAX_Y_COORDINATE - prev.position.y) / dy;
-			if (t >= 0 && t <= 1) {
-				const x = prev.position.x + dx * t;
-				if (x >= 0 && x <= SPECS.MAX_X_COORDINATE) {
-					candidates.push({
-						side: "top",
-						point: { x, y: SPECS.MAX_Y_COORDINATE },
-						normal: { x: 0, y: -1 },
-						t,
-					});
-				}
-			}
-		}
-
-		if (candidates.length === 0) return null;
-
-		// 🔥 pega a colisão MAIS PRÓXIMA (menor t)
-		return candidates.reduce((closest, c) => (c.t < closest.t ? c : closest));
+		return null;
 	}
 	/**
 	 * Detecta se o ponto de colisão é próximo o suficiente das traves para ser considerado uma colisão com o gol, e retorna qual trave e qual lado se for o caso
 	 */
 	private isGoalpostCollision(point: PointObject): { goal: GoalObject; pole: "top" | "bottom" } | null {
-		const MIN_TO_NEAR = 0.5;
+		const MIN_TO_NEAR = SPECS.BALL_RADIUS + 1; // Distância mínima para considerar que está perto o suficiente para ser uma colisão com o gol, pode ser ajustada conforme necessário
 		const distanceToStartField = Math.abs(point.x - SPECS.MIN_X_COORDINATE);
 		const distanceToEndField = Math.abs(point.x - SPECS.MAX_X_COORDINATE);
 		const isNearStartField = distanceToStartField < MIN_TO_NEAR; // Ajuste esse valor conforme necessário

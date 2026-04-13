@@ -25,7 +25,7 @@ export type { EnvironmentObject } from "@/interfaces/environment.interface.js";
 export type { CoreEventData, Event, EventData, EventMap, GenericEventListener } from "@/interfaces/events.interface.js";
 export type { FieldZoneObject } from "@/interfaces/field-zone.interface.js";
 export { type FormationObject, FormationType } from "@/interfaces/formation.interface.js";
-export { GameState } from "@/interfaces/game.interface.js";
+export { GameOverReason, GameState } from "@/interfaces/game.interface.js";
 export type { GameInspectorObject, IGameInspector } from "@/interfaces/inspector.interface.js";
 export type { MapperObject } from "@/interfaces/mapper.interface.js";
 export { type PlayerObject, PlayerState } from "@/interfaces/player.interface.js";

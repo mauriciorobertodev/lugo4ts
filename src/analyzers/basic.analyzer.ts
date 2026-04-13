@@ -142,8 +142,8 @@ export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
 		const currDirection = currBall.velocity.direction;
 
 		// 1. Detectar inversão de direção (produto das velocidades < 0 significa que mudou o sinal)
-		const hitX = prevDirection.x * currDirection.x < -EPS;
-		const hitY = prevDirection.y * currDirection.y < -EPS;
+		const hitX = Math.sign(prevDirection.x) !== Math.sign(currDirection.x) && Math.abs(prevDirection.x - currDirection.x) > EPS;
+		const hitY = Math.sign(prevDirection.y) !== Math.sign(currDirection.y) && Math.abs(prevDirection.y - currDirection.y) > EPS;
 
 		if (!hitX && !hitY) return null;
 

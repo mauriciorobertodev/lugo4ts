@@ -407,6 +407,11 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 						const newState = fromLugoGameState(event.event.stateChange.newState);
 						const snapshot = event.gameSnapshot ? fromLugoGameSnapshot(event.gameSnapshot) : undefined;
 
+						if (prevState === ServerState.WAITING && newState !== ServerState.WAITING) {
+							this.state = GameState.PLAYING;
+							this.emitCore("game:started", { snapshot: snapshot?.toObject() });
+						}
+
 						this.emitCore("game:changed", { prevState, newState, snapshot: snapshot?.toObject() });
 
 						if (snapshot) this.capture(snapshot);

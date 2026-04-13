@@ -20,6 +20,12 @@ export type CoreEventData = {
 
 	// #region Eventos relacionados ao estado do jogo
 
+	/** Evento disparado quando o jogo começa  depois de esperar */
+	"game:started": {
+		/** Snapshot do jogo no momento do evento */
+		snapshot?: GameSnapshotObject;
+	};
+
 	/** Evento disparado quando o jogo está em andamento */
 	"game:playing": {
 		/** Snapshot do jogo no momento do evento */

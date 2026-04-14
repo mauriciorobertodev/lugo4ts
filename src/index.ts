@@ -21,6 +21,7 @@ export * from "@/errors.js";
 export type { Order } from "@/generated/server.js";
 export type { BallObject } from "@/interfaces/ball.interface.js";
 export type { IBot } from "@/interfaces/bot.interface.js";
+export type { ControllerGameSetup, IGameController, RetryConfig } from "@/interfaces/controller.interface.js";
 export type { EnvironmentObject } from "@/interfaces/environment.interface.js";
 export type { CoreEventData, Event, EventData, EventMap, GenericEventListener } from "@/interfaces/events.interface.js";
 export type { FieldZoneObject } from "@/interfaces/field-zone.interface.js";

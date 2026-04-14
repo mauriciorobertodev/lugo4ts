@@ -1,5 +1,6 @@
 import type { Environment } from "@/core/environment.js";
 import type { Side } from "@/core/side.js";
+import type { GameSetup } from "@/generated/broadcast.js";
 import type { IBall } from "@/interfaces/ball.interface.js";
 import type { IFormation } from "@/interfaces/formation.interface.js";
 import type { GameState } from "@/interfaces/game.interface.js";
@@ -7,6 +8,10 @@ import type { IPlayer } from "@/interfaces/player.interface.js";
 import type { IPoint } from "@/interfaces/positionable.interface.js";
 import type { IGameSnapshot } from "@/interfaces/snapshot.interface.js";
 import type { IVelocity } from "@/interfaces/velocity.interface.js";
+
+export type ControllerGameSetup = GameSetup & {
+	state: GameState;
+};
 
 export type RetryConfig = {
 	/** Se deve tentar reconectar automaticamente (padrão: true) */
@@ -21,6 +26,8 @@ export interface IGameController {
 	connect(config?: RetryConfig): Promise<void>;
 
 	getState(): GameState;
+	startGame(): Promise<ControllerGameSetup>;
+	getGameSetup(): Promise<ControllerGameSetup>;
 	nextTurn(): Promise<IGameSnapshot | null>;
 	nextOrder(): Promise<IGameSnapshot | null>;
 	play(): Promise<IGameSnapshot | null>;

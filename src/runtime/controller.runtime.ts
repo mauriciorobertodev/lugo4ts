@@ -12,11 +12,11 @@ import { Side } from "@/core/side.js";
 import { SPECS } from "@/core/specs.js";
 import type { Velocity } from "@/core/velocity.js";
 import { BroadcastClient } from "@/generated/broadcast.client.js";
-import type { GameEvent, GameSetup } from "@/generated/broadcast.js";
+import type { GameEvent } from "@/generated/broadcast.js";
 import { RemoteClient } from "@/generated/remote.client.js";
 import { GameProperties } from "@/generated/remote.js";
 import type { IAnalyzer } from "@/interfaces/analyzer.interface.js";
-import type { IGameController, RetryConfig } from "@/interfaces/controller.interface.js";
+import type { ControllerGameSetup, IGameController, RetryConfig } from "@/interfaces/controller.interface.js";
 import type { CoreEventData, Event, EventData, EventMap, GenericEventListener } from "@/interfaces/events.interface.js";
 import { GameState } from "@/interfaces/game.interface.js";
 import { ServerState } from "@/interfaces/snapshot.interface.js";
@@ -538,11 +538,11 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 		void this.connect(config);
 	}
 
-	public async startGame(): Promise<GameSetup> {
+	public async startGame(): Promise<ControllerGameSetup> {
 		try {
 			const call = await this.broadcast.startGame({ watcherUuid: this.uuid });
 			logger.debug("[CONTROLLER] ✅ Jogo iniciado");
-			return call.response;
+			return { ...call.response, state: this.state };
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao iniciar jogo");
 			console.error(error);
@@ -550,11 +550,11 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 		}
 	}
 
-	public async getGameSetup(): Promise<GameSetup> {
+	public async getGameSetup(): Promise<ControllerGameSetup> {
 		try {
 			const call = await this.broadcast.getGameSetup({ uuid: this.uuid });
 			logger.debug("[GAME SETUP] ✅ Recebido");
-			return call.response;
+			return { ...call.response, state: this.state };
 		} catch (error) {
 			logger.error("[GAME SETUP] ❌ Erro ao obter configuração do jogo");
 			console.error(error);
@@ -643,7 +643,7 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 		// TODO: implementar captura de estado para permitir funcionalidades como replay, rewind, etc.
 		// TODO: comparar a snapshot nova com a atual para emitir eventos de mudança de estado (ex: gol, mudança de posse, etc.)
 
-		if (this.state === GameState.WAITING && snapshot.getState() === ServerState.PLAYING) {
+		if (this.state === GameState.WAITING && (snapshot.getState() === ServerState.PLAYING || snapshot.getState() === ServerState.SHIFTING)) {
 			this.state = GameState.PLAYING;
 			this.emitCore("game:playing", { snapshot: undefined });
 		}

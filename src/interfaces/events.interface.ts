@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/complexity/noBannedTypes: <.> */
 import type { Side } from "@/core/side.js";
-import type { GameSetup } from "@/generated/broadcast.js";
+import type { ControllerGameSetup } from "@/interfaces/controller.interface.js";
 import type { GameOverReason } from "@/interfaces/game.interface.js";
 import type { PlayerObject } from "@/interfaces/player.interface.js";
 import type { GameSnapshotObject, ServerState } from "@/interfaces/snapshot.interface.js";
@@ -108,7 +108,7 @@ export type CoreEventData = {
 	/** Evento disparado quando a conexão é iniciada */
 	"connection:started": {
 		/** Configurações iniciais do jogo */
-		setup: GameSetup;
+		setup: ControllerGameSetup;
 		/** Snapshot do jogo no momento do evento */
 		snapshot?: GameSnapshotObject;
 	};

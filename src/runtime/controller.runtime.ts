@@ -81,9 +81,9 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 	public async setTeamFormation(side: Side, formation: Formation): Promise<GameSnapshot> {
 		let snapshot: GameSnapshot | null = null;
 		await Promise.all(
-			Object.entries(formation.toArray()).map(async ([number, position]) => {
+			Object.entries(formation.getPositions()).map(async ([number, position]) => {
 				const call = await this.remote.setPlayerProperties({
-					number: parseInt(number, 10),
+					number: Number(number),
 					side: sideToInt(side),
 					position: toLugoPoint(position),
 				});
@@ -100,11 +100,11 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 	}
 
 	public async setHomeTeamFormation(formation: Formation): Promise<GameSnapshot> {
-		return this.setTeamFormation(Side.HOME, formation);
+		return await this.setTeamFormation(Side.HOME, formation);
 	}
 
 	public async setAwayTeamFormation(formation: Formation): Promise<GameSnapshot> {
-		return this.setTeamFormation(Side.AWAY, formation);
+		return await this.setTeamFormation(Side.AWAY, formation);
 	}
 
 	public async nextTurn(): Promise<GameSnapshot | null> {
@@ -633,6 +633,51 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error(`[CONTROLLER] Erro ao definir turno como ${turn}:`);
+			console.error(error);
+			throw error;
+		}
+	}
+
+	public async setScore(scores: { home?: number; away?: number }): Promise<GameSnapshot> {
+		try {
+			const current = await this.getGameSnapshot();
+			const homeScore = scores.home ?? current?.getHomeTeam()?.getScore() ?? 0;
+			const awayScore = scores.away ?? current?.getAwayTeam()?.getScore() ?? 0;
+			const call = await this.remote.setGameProperties({
+				...GameProperties.create(),
+				homeScore,
+				awayScore,
+			});
+			const lugoSnapshot = call.response.gameSnapshot;
+			logger.debug(`[CONTROLLER] ✅ Placar definido: HOME ${homeScore} x ${awayScore} AWAY`);
+			return fromLugoGameSnapshot(lugoSnapshot!);
+		} catch (error) {
+			logger.error("[CONTROLLER] ❌ Erro ao definir placar");
+			console.error(error);
+			throw error;
+		}
+	}
+
+	public async makeGoal(side: Side): Promise<GameSnapshot> {
+		try {
+			const current = await this.getGameSnapshot();
+			const homeScore = current?.getHomeTeam()?.getScore() ?? 0;
+			const awayScore = current?.getAwayTeam()?.getScore() ?? 0;
+
+			const snapshot = await this.setScore({
+				home: side === Side.HOME ? homeScore + 1 : homeScore,
+				away: side === Side.AWAY ? awayScore + 1 : awayScore,
+			});
+
+			await this.resetPlayerPositions();
+			await this.resetBallPosition();
+
+			this.emitCore("game:goal", { side, snapshot: snapshot.toObject() });
+
+			logger.debug(`[CONTROLLER] ⚽️ Gol do time ${side}! Placar: HOME ${snapshot.getHomeTeam()?.getScore()} x ${snapshot.getAwayTeam()?.getScore()} AWAY`);
+			return snapshot;
+		} catch (error) {
+			logger.error(`[CONTROLLER] ❌ Erro ao marcar gol para o time ${side}`);
 			console.error(error);
 			throw error;
 		}

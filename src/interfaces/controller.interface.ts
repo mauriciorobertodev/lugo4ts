@@ -38,6 +38,8 @@ export interface IGameController {
 	resetBallPosition(): Promise<IGameSnapshot>;
 
 	setTurn(turn: number): Promise<IGameSnapshot>;
+	setScore(scores: { home?: number; away?: number }): Promise<IGameSnapshot>;
+	makeGoal(side: Side): Promise<IGameSnapshot>;
 
 	applyEnvironment(environment: Environment): Promise<IGameSnapshot>;
 

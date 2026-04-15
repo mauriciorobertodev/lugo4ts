@@ -1,6 +1,6 @@
 {
 	"name": "@mauricioroberto/lugo4ts",
-	"version": "0.0.53-beta",
+	"version": "0.0.54-beta",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"type": "module",
@@ -75,7 +75,7 @@
 		"@biomejs/biome": "2.4.10",
 		"@protobuf-ts/plugin": "^2.11.0",
 		"@tensorflow/tfjs-node": "^4.22.0",
-		"@types/node": "^22.15.29",
+		"@types/node": "^22.19.17",
 		"@vitest/coverage-v8": "^3.2.3",
 		"@vitest/ui": "^3.2.3",
 		"grpc-tools": "^1.13.0",

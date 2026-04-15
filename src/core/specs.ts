@@ -112,6 +112,9 @@ export class SPECS {
 
 	// ───────────── Clock ─────────────
 
+	/** Number of turns per second: 20 turns = 1s (50ms per turn) */
+	static readonly TURNS_PER_SECOND = 20;
+
 	/** Maximum possession time before turnover: 300 turns (~15s) */
 	static readonly SHOT_CLOCK_TURNS = 300;
 }

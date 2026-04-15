@@ -14,7 +14,31 @@ type BallCollision = {
 	normal: PointObject;
 };
 
+export type BasicAnalyzerConfig = {
+	/**
+	 * Duração total da partida em turnos (vem de GameSetup.gameDuration).
+	 * Necessário para emitir game:countdown do tempo de jogo.
+	 */
+	gameDuration?: number;
+
+	/**
+	 * A partir de quantos segundos restantes emitir o countdown do tempo de jogo.
+	 * Padrão: 10 segundos.
+	 */
+	gameCountdownFrom?: number;
+
+	/**
+	 * A partir de quantos segundos restantes do shot clock emitir o countdown de posse.
+	 * Padrão: 5 segundos.
+	 */
+	possessionCountdownFrom?: number;
+};
+
 export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
+	private readonly gameDuration: number;
+	private readonly gameCountdownFromTurns: number;
+	private readonly possessionCountdownFromTurns: number;
+
 	private lastHolder: PlayerObject | null = null;
 	private lastHolderTurn: number | null = null;
 	private lastBallStoppedTurn: number | null = null;
@@ -22,6 +46,15 @@ export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
 	private jumpingPlayers: Set<string> = new Set();
 	private prevSnapshot: GameSnapshotObject | null = null;
 	private events: AnalyzedEvent<BasicEventData>[] = [];
+
+	private lastGameCountdownSecond: number | null = null;
+	private lastPossessionCountdownSecond: number | null = null;
+
+	constructor(config: BasicAnalyzerConfig = {}) {
+		this.gameDuration = config.gameDuration ?? 6000;
+		this.gameCountdownFromTurns = (config.gameCountdownFrom ?? 10) * SPECS.TURNS_PER_SECOND;
+		this.possessionCountdownFromTurns = (config.possessionCountdownFrom ?? 5) * SPECS.TURNS_PER_SECOND;
+	}
 
 	public compute(current: GameSnapshotObject): AnalyzedEvent<BasicEventData>[] {
 		this.events = [];
@@ -115,6 +148,7 @@ export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
 		 * e quanto mais próxima das extremidades, menos intenso é o jogo.
 		 */
 		this.intensity(prevBall, currBall);
+		this.countdown(current);
 
 		this.prevSnapshot = current;
 
@@ -486,6 +520,42 @@ export class BasicAnalyzer implements IAnalyzer<BasicEventData> {
 				event: "game:ball/stopped",
 				data: null,
 			});
+		}
+	}
+
+	private countdown(current: GameSnapshotObject): void {
+		// --- Shot clock (possession) ---
+		if (current.shotClock) {
+			const remaining = current.shotClock.remainingTurns;
+			if (remaining <= this.possessionCountdownFromTurns && remaining > 0) {
+				const secondsLeft = Math.ceil(remaining / SPECS.TURNS_PER_SECOND);
+				if (secondsLeft !== this.lastPossessionCountdownSecond) {
+					this.lastPossessionCountdownSecond = secondsLeft;
+					this.events.push({
+						event: "game:countdown",
+						data: { remaining: secondsLeft, type: "possession" },
+					});
+				}
+			} else {
+				this.lastPossessionCountdownSecond = null;
+			}
+		}
+
+		// --- Tempo de jogo ---
+		if (this.gameDuration !== null) {
+			const turnsLeft = this.gameDuration - current.turn;
+			if (turnsLeft <= this.gameCountdownFromTurns && turnsLeft > 0) {
+				const secondsLeft = Math.ceil(turnsLeft / SPECS.TURNS_PER_SECOND);
+				if (secondsLeft !== this.lastGameCountdownSecond) {
+					this.lastGameCountdownSecond = secondsLeft;
+					this.events.push({
+						event: "game:countdown",
+						data: { remaining: secondsLeft, type: "game" },
+					});
+				}
+			} else {
+				this.lastGameCountdownSecond = null;
+			}
 		}
 	}
 

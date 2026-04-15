@@ -16,6 +16,14 @@ export class ShotClock implements IShotClock {
 		return SPECS.SHOT_CLOCK_TURNS - this.remainingTurns;
 	}
 
+	getRemainingSecondsWithBall(): number {
+		return Math.ceil(this.remainingTurns / SPECS.TURNS_PER_SECOND);
+	}
+
+	getSecondsWithBall(): number {
+		return Math.floor(this.getTurnsWithBall() / SPECS.TURNS_PER_SECOND);
+	}
+
 	getHolderSide(): Side {
 		return this.side;
 	}

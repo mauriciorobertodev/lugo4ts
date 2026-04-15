@@ -2,6 +2,7 @@
 
 import { credentials } from "@grpc/grpc-js";
 import { GrpcTransport } from "@protobuf-ts/grpc-transport";
+import type { FinishedUnaryCall } from "@protobuf-ts/runtime-rpc";
 import type { Ball } from "@/core/ball.js";
 import type { Environment } from "@/core/environment.js";
 import type { Formation } from "@/core/formation.js";
@@ -14,7 +15,7 @@ import type { Velocity } from "@/core/velocity.js";
 import { BroadcastClient } from "@/generated/broadcast.client.js";
 import type { GameEvent } from "@/generated/broadcast.js";
 import { RemoteClient } from "@/generated/remote.client.js";
-import { GameProperties } from "@/generated/remote.js";
+import { type CommandResponse, GameProperties, type PlayerProperties } from "@/generated/remote.js";
 import type { IAnalyzer } from "@/interfaces/analyzer.interface.js";
 import type { ControllerGameSetup, IGameController, RetryConfig } from "@/interfaces/controller.interface.js";
 import type { CoreEventData, Event, EventData, EventMap, GenericEventListener } from "@/interfaces/events.interface.js";
@@ -177,13 +178,13 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async addPlayer(player: Player): Promise<GameSnapshot> {
 		try {
-			const res = await this.remote.setPlayerProperties({
+			const call = await this.remote.setPlayerProperties({
 				number: player.getNumber(),
 				side: sideToInt(player.getTeamSide()),
 				position: toLugoPoint(player.getPosition()),
 				velocity: toLugoVelocity(player.getVelocity()),
 			});
-			const lugoSnapshot = res.response.gameSnapshot;
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error(`[CONTROLLER] ❌ Erro definir jogador "${player.getNumber()}" do lado "${player.getTeamSide()}"`);
@@ -194,12 +195,12 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async setPlayerPosition(side: Side, number: number, position: Point): Promise<GameSnapshot> {
 		try {
-			const res = await this.remote.setPlayerProperties({
+			const call = await this.remote.setPlayerProperties({
 				number: number,
 				side: sideToInt(side),
 				position: toLugoPoint(position),
 			});
-			const lugoSnapshot = res.response.gameSnapshot;
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao definir posição do jogador");
@@ -210,16 +211,16 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async setPlayersPositions(positions: { side: Side; number: number; position: Point }[]): Promise<GameSnapshot> {
 		try {
+			let call: FinishedUnaryCall<PlayerProperties, CommandResponse> | null = null;
 			for (const { side, number, position } of positions) {
-				await this.remote.setPlayerProperties({
+				call = await this.remote.setPlayerProperties({
 					number: number,
 					side: sideToInt(side),
 					position: toLugoPoint(position),
 				});
 			}
 
-			const res = await this.remote.getGameSnapshot({});
-			const lugoSnapshot = res.response.gameSnapshot;
+			const lugoSnapshot = call?.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao definir posições dos jogadores");
@@ -230,12 +231,12 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async setPlayerVelocity(side: Side, number: number, velocity: Velocity): Promise<GameSnapshot> {
 		try {
-			const res = await this.remote.setPlayerProperties({
+			const call = await this.remote.setPlayerProperties({
 				number: number,
 				side: sideToInt(side),
 				velocity: toLugoVelocity(velocity),
 			});
-			const lugoSnapshot = res.response.gameSnapshot;
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao definir velocidade do jogador");
@@ -246,12 +247,12 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async setPlayerSpeed(side: Side, number: number, speed: number): Promise<GameSnapshot> {
 		try {
-			const res = await this.remote.setPlayerProperties({
+			const call = await this.remote.setPlayerProperties({
 				number: number,
 				side: sideToInt(side),
 				velocity: { speed },
 			});
-			const lugoSnapshot = res.response.gameSnapshot;
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao definir velocidade do jogador");
@@ -262,12 +263,12 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async setBall(ball: Ball): Promise<GameSnapshot> {
 		try {
-			const res = await this.remote.setBallProperties({
+			const call = await this.remote.setBallProperties({
 				position: toLugoPoint(ball.getPosition()),
 				velocity: toLugoVelocity(ball.getVelocity()),
 				holder: ball.getHolder() ? toLugoPlayer(ball.getHolder()!) : undefined,
 			});
-			const lugoSnapshot = res.response.gameSnapshot;
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao definir propriedades da bola");
@@ -278,8 +279,8 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async setBallPosition(position: Point): Promise<GameSnapshot> {
 		try {
-			const res = await this.remote.setBallProperties({ position: toLugoPoint(position) });
-			const lugoSnapshot = res.response.gameSnapshot;
+			const call = await this.remote.setBallProperties({ position: toLugoPoint(position) });
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao definir posição da bola");
@@ -290,8 +291,8 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async setBallVelocity(velocity: Velocity): Promise<GameSnapshot> {
 		try {
-			const res = await this.remote.setBallProperties({ velocity: toLugoVelocity(velocity) });
-			const lugoSnapshot = res.response.gameSnapshot;
+			const call = await this.remote.setBallProperties({ velocity: toLugoVelocity(velocity) });
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao definir velocidade da bola");
@@ -302,8 +303,8 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async setBallSpeed(speed: number): Promise<GameSnapshot> {
 		try {
-			const res = await this.remote.setBallProperties({ velocity: { speed } });
-			const lugoSnapshot = res.response.gameSnapshot;
+			const call = await this.remote.setBallProperties({ velocity: { speed } });
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error("[CONTROLLER] ❌ Erro ao definir velocidade da bola");
@@ -603,15 +604,15 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 				}
 			}
 
-			await this.remote.setGameProperties({
+			const call = await this.remote.setGameProperties({
 				turn: turn ?? 0,
 				homeScore: homeScore ?? 0,
 				awayScore: awayScore ?? 0,
 				frameInterval: BigInt(0),
 				shotClock: environment.getShotClock() ? toLugoShotClock(environment.getShotClock()!) : undefined,
 			});
-
-			const snapshot = await this.getGameSnapshot();
+			const lugoSnapshot = call.response.gameSnapshot;
+			const snapshot = await fromLugoGameSnapshot(lugoSnapshot!);
 
 			logger.debug("[CONTROLLER] ✅ Ambiente aplicado com sucesso");
 			logger.debug(`########################################################`);
@@ -627,8 +628,8 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 	public async setTurn(turn: number): Promise<GameSnapshot> {
 		try {
 			const properties = GameProperties.create();
-			const res = await this.remote.setGameProperties({ ...properties, turn });
-			const lugoSnapshot = res.response.gameSnapshot;
+			const call = await this.remote.setGameProperties({ ...properties, turn });
+			const lugoSnapshot = call.response.gameSnapshot;
 			return fromLugoGameSnapshot(lugoSnapshot!);
 		} catch (error) {
 			logger.error(`[CONTROLLER] Erro ao definir turno como ${turn}:`);

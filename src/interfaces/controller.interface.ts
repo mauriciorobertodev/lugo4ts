@@ -36,6 +36,7 @@ export interface IGameController {
 	resumeListeningPhase(): Promise<void>;
 	resetPlayerPositions(): Promise<IGameSnapshot>;
 	resetBallPosition(): Promise<IGameSnapshot>;
+	resetGame(): Promise<IGameSnapshot>;
 
 	setTurn(turn: number): Promise<IGameSnapshot>;
 	setScore(scores: { home?: number; away?: number }): Promise<IGameSnapshot>;

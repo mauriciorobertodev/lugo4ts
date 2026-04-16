@@ -34,6 +34,7 @@ import {
 import { logger } from "@/utils/logger.utils.js";
 // import { danger, debug, info, success, warn } from '@/utils/logger.js';
 import { intToSide, sideToInt } from "@/utils/side.utils.js";
+import { ShotClock } from "@/core/shot-clock.js";
 
 export class GameController<T extends EventMap = {}> implements IGameController {
 	private uuid: string = crypto.randomUUID();
@@ -174,6 +175,30 @@ export class GameController<T extends EventMap = {}> implements IGameController 
 
 	public async resetBallPosition(): Promise<GameSnapshot> {
 		return this.setBallPosition(new Point(SPECS.CENTER_X_COORDINATE, SPECS.CENTER_Y_COORDINATE));
+	}
+
+	public async resetGame(): Promise<GameSnapshot> {
+		try {
+			const current = await this.getGameSnapshot();
+			await this.resetPlayerPositions();
+			await this.resetBallPosition();
+
+			const currentShotClock = current?.getShotClock();
+			const call = await this.remote.setGameProperties({
+				...GameProperties.create(),
+				turn: 0,
+				homeScore: 0,
+				awayScore: 0,
+				shotClock: currentShotClock ? toLugoShotClock(new ShotClock(currentShotClock.getHolderSide(), SPECS.SHOT_CLOCK_TURNS)) : undefined,
+			});
+			const lugoSnapshot = call.response.gameSnapshot;
+			logger.debug("[CONTROLLER] ✅ Partida resetada com sucesso");
+			return fromLugoGameSnapshot(lugoSnapshot!);
+		} catch (error) {
+			logger.error("[CONTROLLER] ❌ Erro ao resetar partida");
+			console.error(error);
+			throw error;
+		}
 	}
 
 	public async addPlayer(player: Player): Promise<GameSnapshot> {
